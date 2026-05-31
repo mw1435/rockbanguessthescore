@@ -1095,7 +1095,7 @@ function showAdminTab(tab, el) {
 }
 
 async function loadAdminPanel() {
-  showLoading('Loading entries…');
+  showLoading('Loading latest competition…');
   try {
     const d = await api({ action: 'adminLoad', pass: ADMIN_PASS });
     if (!d || d.error) { hideLoading(); document.getElementById('admin-msg').textContent = d ? d.error : 'Failed to load.'; return; }
@@ -1107,8 +1107,8 @@ async function loadAdminPanel() {
     document.getElementById('s-matchDate').value = d.matchDate || '';
     document.getElementById('s-prize').value = d.prize || '';
     document.getElementById('s-revolutLink').value = d.revolutLink || '';
-    document.getElementById('s-entryCloseTime').value = d.entryCloseTime || '';
-    document.getElementById('s-revealTime').value = d.revealTime || '';
+    document.getElementById('s-entryCloseTime').value = toDatetimeLocal(d.entryCloseTime);
+    document.getElementById('s-revealTime').value = toDatetimeLocal(d.revealTime);
 
     // Winner tab team labels
     document.getElementById('final-team1-label').textContent = d.team1 || 'Team 1';
@@ -1163,6 +1163,11 @@ function showLoading(msg) {
 }
 function hideLoading() {
   document.getElementById('loading-overlay').style.display = 'none';
+}
+
+function toDatetimeLocal(val) {
+  if (!val) return '';
+  return String(val).substring(0, 16);
 }
 
 function updateStatAmounts() {
