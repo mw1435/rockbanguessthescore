@@ -325,9 +325,9 @@
       <!-- Entries tab -->
       <div id="admin-tab-entries" style="display:none">
         <div class="stat-row">
-          <div class="stat"><div class="stat-num" id="stat-total">0</div><div class="stat-label">total</div></div>
-          <div class="stat"><div class="stat-num green" id="stat-paid">0</div><div class="stat-label">paid</div></div>
-          <div class="stat"><div class="stat-num red" id="stat-unpaid">0</div><div class="stat-label">unpaid</div></div>
+          <div class="stat"><div class="stat-num" id="stat-total">0</div><div class="stat-label">entries</div></div>
+          <div class="stat"><div class="stat-num green" id="stat-paid">0</div><div class="stat-label">paid</div><div style="font-size:0.72rem;color:#16a34a;font-family:monospace" id="stat-paid-amount">€0</div></div>
+          <div class="stat"><div class="stat-num red" id="stat-unpaid">0</div><div class="stat-label">unpaid</div><div style="font-size:0.72rem;color:#dc2626;font-family:monospace" id="stat-unpaid-amount">€0</div></div>
         </div>
 
         <input type="text" id="entries-search" placeholder="Search by name…" oninput="applyEntryFilters()" style="margin-bottom:0.75rem">
@@ -1066,6 +1066,10 @@ async function loadAdminPanel() {
     document.getElementById('stat-total').textContent = d.count || 0;
     document.getElementById('stat-paid').textContent = d.paidCount || 0;
     document.getElementById('stat-unpaid').textContent = d.unpaidCount || 0;
+    var paidTotal = (d.entries || []).filter(e => e.paid).reduce((sum, e) => sum + (parseFloat(e.price) || 0), 0);
+    var unpaidTotal = (d.entries || []).filter(e => !e.paid).reduce((sum, e) => sum + (parseFloat(e.price) || 0), 0);
+    document.getElementById('stat-paid-amount').textContent = '€' + paidTotal.toFixed(0);
+    document.getElementById('stat-unpaid-amount').textContent = '€' + unpaidTotal.toFixed(0);
 
     allAdminEntries = d.entries || [];
     renderAdminEntries(allAdminEntries);
@@ -1101,6 +1105,16 @@ function setEntrySort(type, el) {
   applyEntryFilters();
 }
 
+function updateStatAmounts() {
+  var paid = allAdminEntries.filter(e => e.paid);
+  var unpaid = allAdminEntries.filter(e => !e.paid);
+  document.getElementById('stat-total').textContent = allAdminEntries.length;
+  document.getElementById('stat-paid').textContent = paid.length;
+  document.getElementById('stat-unpaid').textContent = unpaid.length;
+  document.getElementById('stat-paid-amount').textContent = '€' + paid.reduce((s,e) => s + (parseFloat(e.price)||0), 0).toFixed(0);
+  document.getElementById('stat-unpaid-amount').textContent = '€' + unpaid.reduce((s,e) => s + (parseFloat(e.price)||0), 0).toFixed(0);
+}
+
 function applyEntryFilters() {
   var search = (document.getElementById('entries-search').value || '').toLowerCase();
   var filtered = allAdminEntries.filter(function(e, i) {
@@ -1130,8 +1144,7 @@ async function bulkMarkPaid() {
     var result = await apiPost({ action: 'bulkPaid', pass: ADMIN_PASS, indices });
     if (result.ok) {
       indices.forEach(function(idx) { if (allAdminEntries[idx]) allAdminEntries[idx].paid = true; });
-      document.getElementById('stat-paid').textContent = allAdminEntries.filter(e => e.paid).length;
-      document.getElementById('stat-unpaid').textContent = allAdminEntries.filter(e => !e.paid).length;
+      updateStatAmounts();
       applyEntryFilters();
     }
   } catch(e) { alert('Could not connect.'); }
@@ -1142,8 +1155,7 @@ async function toggleEntryPaid(idx) {
     var result = await apiPost({ action: 'togglePaid', pass: ADMIN_PASS, rowIndex: idx });
     if (result.ok) {
       allAdminEntries[idx].paid = result.paid;
-      document.getElementById('stat-paid').textContent = allAdminEntries.filter(e => e.paid).length;
-      document.getElementById('stat-unpaid').textContent = allAdminEntries.filter(e => !e.paid).length;
+      updateStatAmounts();
       applyEntryFilters();
     }
   } catch(e) {}
