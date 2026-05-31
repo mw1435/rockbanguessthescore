@@ -504,6 +504,7 @@ async function refreshBanner() {
     const d = await api({ action: 'status' });
     bannerLoaded = true;
     refreshMyEntries();
+    if (document.getElementById('admin-panel').style.display === 'block') loadAdminPanel();
     currentStatus = d;
 
     // Header
