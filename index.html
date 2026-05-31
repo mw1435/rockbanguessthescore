@@ -146,6 +146,19 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
     <div id="winner-prize" style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--gold)"></div>
   </div>
 
+  <div id="match-info-strip" style="display:none;background:white;border:1px solid var(--border);border-radius:12px;padding:.9rem 1.25rem;margin-bottom:1rem;display:none;gap:0">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
+      <div style="text-align:center;padding:.5rem">
+        <div style="font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);margin-bottom:.3rem">Match starts</div>
+        <div id="strip-match-time" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--navy)">--:--</div>
+      </div>
+      <div style="text-align:center;padding:.5rem;border-left:1px solid var(--border)">
+        <div style="font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);margin-bottom:.3rem">Entries close</div>
+        <div id="strip-close-time" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--pink)">--:--</div>
+      </div>
+    </div>
+  </div>
+
   <div class="prize-banner">
     <div>
       <div class="prize-amount" id="prize-amount">€100</div>
@@ -237,6 +250,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
         <label>Match date</label><input type="text" id="s-matchDate" placeholder="e.g. June 7th">
         <label>Prize (€)</label><input type="number" id="s-prize" placeholder="100">
         <label>Revolut link</label><input type="text" id="s-revolutLink" placeholder="https://revolut.me/yourname">
+        <label>Match start time</label><input type="datetime-local" id="s-matchStartTime">
         <label>Entries close at</label><input type="datetime-local" id="s-entryCloseTime">
         <label>Reveal entries at</label><input type="datetime-local" id="s-revealTime">
         <button class="btn btn-primary" onclick="saveSettings()">Save settings</button>
@@ -309,6 +323,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
         <label>Match date</label><input type="text" id="new-matchDate" placeholder="e.g. July 14th">
         <label>Prize (€)</label><input type="number" id="new-prize" placeholder="100">
         <label>Revolut link</label><input type="text" id="new-revolutLink" placeholder="https://revolut.me/yourname">
+        <label>Match start time</label><input type="datetime-local" id="new-matchStartTime">
         <label>Entries close at</label><input type="datetime-local" id="new-entryCloseTime">
         <label>Reveal entries at</label><input type="datetime-local" id="new-revealTime">
         <button class="btn btn-gold" onclick="createNewCompetition()">Archive current &amp; start new</button>
@@ -395,6 +410,20 @@ async function refreshBanner(){
       document.getElementById('winner-names').textContent=d.winner.names;
       document.getElementById('winner-score').textContent=d.winner.resultType==='Draw'?'No exact match - drawn at random':'Correct score: '+d.winner.scoreStr;
       document.getElementById('winner-prize').textContent=d.winner.prizeEach?'€'+d.winner.prizeEach+' each':'€'+d.winner.prize+' prize';
+    }
+
+    // Info strip
+    if(d.matchStartTime||d.entryCloseTime){
+      const strip=document.getElementById('match-info-strip');
+      strip.style.display='block';
+      if(d.matchStartTime){
+        const mt=new Date(d.matchStartTime);
+        document.getElementById('strip-match-time').textContent=mt.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+(d.matchDate?' · '+d.matchDate:'');
+      }
+      if(d.entryCloseTime){
+        const ct=new Date(d.entryCloseTime);
+        document.getElementById('strip-close-time').textContent=ct.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+' · '+ct.toLocaleDateString([],{day:'numeric',month:'short'});
+      }
     }
 
     if(d.entriesClosed){
@@ -619,6 +648,7 @@ function loadAdminPanel(){
   document.getElementById('s-matchDate').value=d.matchDate||'';
   document.getElementById('s-prize').value=d.prize||'';
   document.getElementById('s-revolutLink').value=d.revolutLink||'';
+  document.getElementById('s-matchStartTime').value=toDatetimeLocal(d.matchStartTime);
   document.getElementById('s-entryCloseTime').value=toDatetimeLocal(d.entryCloseTime);
   document.getElementById('s-revealTime').value=toDatetimeLocal(d.revealTime);
   document.getElementById('final-team1-label').textContent=d.team1||'Team 1';
@@ -778,6 +808,7 @@ async function saveSettings(){
       matchDate:document.getElementById('s-matchDate').value.trim(),
       prize:document.getElementById('s-prize').value.trim(),
       revolutLink:document.getElementById('s-revolutLink').value.trim(),
+      matchStartTime:toISOForStorage(document.getElementById('s-matchStartTime').value),
       entryCloseTime:toISOForStorage(document.getElementById('s-entryCloseTime').value),
       revealTime:toISOForStorage(document.getElementById('s-revealTime').value)
     });
@@ -868,6 +899,7 @@ async function createNewCompetition(){
       matchDate:document.getElementById('new-matchDate').value.trim(),
       prize:document.getElementById('new-prize').value.trim(),
       revolutLink:document.getElementById('new-revolutLink').value.trim(),
+      matchStartTime:toISOForStorage(document.getElementById('new-matchStartTime').value),
       entryCloseTime:toISOForStorage(document.getElementById('new-entryCloseTime').value),
       revealTime:toISOForStorage(document.getElementById('new-revealTime').value)
     });
