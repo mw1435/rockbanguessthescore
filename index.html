@@ -14,219 +14,147 @@
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --navy: #1a1f3a; --pink: #e0357a; --pink-light: #f5a8c8;
-    --cream: #faf7f2; --gold: #c9a84c; --grey: #6b7280; --border: #e5e0d8;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--navy); min-height: 100vh; }
-
-  header { background: var(--navy); color: white; text-align: center; padding: 1.5rem 1rem; border-bottom: 4px solid var(--pink); }
-  header img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; margin-bottom: 0.75rem; border: 3px solid var(--pink); display: block; margin-left: auto; margin-right: auto; }
-  header .badge { font-family: 'DM Mono', monospace; font-size: 1rem; letter-spacing: 0.15em; color: var(--pink-light); text-transform: uppercase; margin-bottom: 0.4rem; }
-  header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 900; line-height: 1.1; }
-  header h1 span { color: var(--pink); }
-  header p { margin-top: 0.4rem; font-size: 0.85rem; color: #a0aec0; }
-
-  .container { max-width: 640px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
-
-  .prize-banner {
-    background: var(--navy); color: white; border-radius: 12px;
-    padding: 1rem 1.25rem; margin-bottom: 1.5rem;
-    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  }
-  .prize-banner .prize-amount { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--pink); line-height: 1; }
-  .prize-banner .prize-label { font-size: 0.8rem; color: #a0aec0; margin-top: 0.15rem; }
-  .prize-banner .reveal-info { font-size: 0.75rem; color: #a0aec0; text-align: right; line-height: 1.6; }
-  .prize-banner .reveal-info strong { color: var(--pink-light); display: block; }
-
-  .closed-banner { background: #7f1d1d; color: white; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; text-align: center; font-size: 0.9rem; display: none; }
-  .closed-banner strong { display: block; font-size: 1.1rem; margin-bottom: 0.25rem; }
-
-  .card { background: white; border-radius: 16px; border: 1px solid var(--border); padding: 1.5rem; margin-bottom: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-  .card h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-
-  label { display: block; font-size: 0.78rem; font-weight: 500; color: var(--grey); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.35rem; }
-  input[type="text"], input[type="tel"], input[type="number"], input[type="password"], input[type="datetime-local"] {
-    width: 100%; border: 1.5px solid var(--border); border-radius: 8px; padding: 0.7rem 0.9rem;
-    font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--navy); background: var(--cream);
-    outline: none; transition: border-color 0.2s; margin-bottom: 1rem;
-  }
-  input:focus { border-color: var(--pink); }
-  input[type="number"] { -moz-appearance: textfield; }
-  input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
-
-  .packages { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-bottom: 1.25rem; }
-  .package { border: 2px solid var(--border); border-radius: 12px; padding: 0.85rem 0.75rem; cursor: pointer; text-align: center; transition: all 0.15s; background: var(--cream); user-select: none; }
-  .package:active { transform: scale(0.97); }
-  .package.selected { border-color: var(--pink); background: #fff0f6; }
-  .package .pkg-price { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; color: var(--navy); line-height: 1; }
-  .package.selected .pkg-price { color: var(--pink); }
-  .package .pkg-guesses { font-size: 0.78rem; color: var(--grey); margin-top: 0.25rem; }
-  .package.selected .pkg-guesses { color: var(--pink); }
-
-  .score-group { margin-bottom: 1rem; }
-  .score-group-label { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey); margin-bottom: 0.5rem; padding: 0.3rem 0.6rem; background: var(--cream); border-radius: 6px; display: inline-block; }
-  .score-inputs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.75rem; align-items: start; margin-bottom: 0.75rem; }
-  .score-team { font-size: 0.75rem; font-weight: 500; color: var(--grey); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.35rem; }
-  .gp-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.35rem; align-items: center; }
-  .gp-label { font-size: 0.65rem; color: var(--grey); text-align: center; margin-bottom: 0.2rem; }
-  .gp-sep { font-size: 1.1rem; font-weight: 700; color: var(--grey); padding-top: 1.4rem; }
-  .vs-sep { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--grey); padding-top: 2.2rem; text-align: center; }
-
-  .btn { display: block; width: 100%; padding: 0.9rem; border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500; cursor: pointer; transition: opacity 0.15s, transform 0.1s; }
-  .btn:active { transform: scale(0.98); }
-  .btn-primary { background: var(--pink); color: white; }
-  .btn-primary:hover { opacity: 0.9; }
-  .btn-navy { background: var(--navy); color: white; margin-top: 0.5rem; }
-  .btn-small { display: inline-block; width: auto; padding: 0.5rem 1rem; font-size: 0.85rem; border-radius: 8px; }
-  .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--navy); margin-top: 0.5rem; }
-  .btn-danger { background: #dc2626; color: white; margin-top: 0.5rem; }
-  .btn-gold { background: var(--gold); color: white; margin-top: 0.5rem; }
-
-  .privacy-box { background: var(--cream); border: 1.5px solid var(--border); border-radius: 10px; padding: 0.9rem 1rem; margin-bottom: 1rem; font-size: 0.8rem; color: var(--grey); line-height: 1.6; }
-  .privacy-box a { color: var(--pink); }
-  .consent-row { display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 1rem; }
-  .consent-row input[type="checkbox"] { margin-top: 0.2rem; width: 16px; height: 16px; flex-shrink: 0; accent-color: var(--pink); }
-  .consent-row span { font-size: 0.82rem; color: var(--grey); line-height: 1.5; }
-
-  .my-entry { background: var(--cream); border-radius: 8px; padding: 0.6rem 0.9rem; margin-bottom: 0.5rem; font-size: 0.88rem; }
-  .my-entry-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }
-  .my-entry-pkg { font-family: 'DM Mono', monospace; font-size: 0.75rem; background: var(--pink); color: white; padding: 0.15rem 0.5rem; border-radius: 5px; }
-  .my-entry-scores { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.3rem; }
-  .score-tag { font-family: 'DM Mono', monospace; font-size: 0.78rem; background: var(--navy); color: white; padding: 0.2rem 0.5rem; border-radius: 5px; }
-
-  .entry-row { border-bottom: 1px solid var(--border); padding: 0.7rem 0; font-size: 0.88rem; }
-  .entry-row:last-child { border-bottom: none; }
-  .entry-row-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }
-  .entry-name { font-weight: 500; }
-  .entry-phone { font-size: 0.75rem; color: var(--grey); }
-  .entry-scores { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.3rem; }
-  .entry-score { font-family: 'DM Mono', monospace; font-size: 0.78rem; background: var(--navy); color: white; padding: 0.15rem 0.45rem; border-radius: 5px; white-space: nowrap; }
-  .badge-paid { font-size: 0.72rem; background: #16a34a; color: white; padding: 0.15rem 0.5rem; border-radius: 5px; font-family: 'DM Mono', monospace; }
-  .badge-unpaid { font-size: 0.72rem; background: #dc2626; color: white; padding: 0.15rem 0.5rem; border-radius: 5px; font-family: 'DM Mono', monospace; }
-
-  #admin-section { display: none; }
-  .admin-panel { display: none; }
-  .admin-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
-  .admin-tab { padding: 0.4rem 0.9rem; border-radius: 8px; font-size: 0.82rem; cursor: pointer; border: 1.5px solid var(--border); background: var(--cream); color: var(--navy); font-family: 'DM Sans', sans-serif; }
-  .admin-tab.active { background: var(--navy); color: white; border-color: var(--navy); }
-
-  .result-box { background: #fffbeb; border: 1.5px solid var(--gold); border-radius: 12px; padding: 1rem 1.25rem; margin-top: 1rem; }
-  .result-box h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: #92400e; margin-bottom: 0.4rem; }
-  .result-box p { font-size: 0.85rem; color: #92400e; line-height: 1.5; }
-
-  .draw-log-row { border-bottom: 1px solid var(--border); padding: 0.6rem 0; font-size: 0.82rem; }
-  .draw-log-row:last-child { border-bottom: none; }
-  .draw-log-comp { font-weight: 500; }
-  .draw-log-detail { color: var(--grey); font-size: 0.75rem; margin-top: 0.15rem; }
-
-  .toggle-link { display: inline-block; font-size: 0.8rem; color: var(--pink); cursor: pointer; text-decoration: underline; margin-top: 1rem; }
-  .msg { font-size: 0.82rem; color: var(--grey); margin-top: 0.5rem; }
-  .msg.error { color: #dc2626; }
-  .msg.success { color: #16a34a; }
-  .section-title { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey); margin-bottom: 0.75rem; }
-  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-overlay {
-    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(26,31,58,0.6); z-index: 999;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    backdrop-filter: blur(2px);
-  }
-  .loading-overlay .spinner-lg {
-    width: 44px; height: 44px;
-    border: 4px solid rgba(255,255,255,0.2);
-    border-top-color: var(--pink);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    margin-bottom: 1rem;
-  }
-  .loading-overlay p { color: white; font-size: 0.9rem; font-family: 'DM Mono', monospace; }
-  .entry-swipe-wrap.toggling { opacity: 0.5; pointer-events: none; }
-  .inline-spinner {
-    display: inline-block; width: 12px; height: 12px;
-    border: 2px solid rgba(0,0,0,0.15);
-    border-top-color: var(--grey);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    vertical-align: middle; margin-right: 4px;
-  }
-
-  .entry-swipe-wrap {
-    position: relative;
-    overflow: hidden;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-    touch-action: pan-y;
-  }
-  .entry-swipe-inner {
-    position: relative;
-    background: white;
-    transition: transform 0.2s ease;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.7rem 0.9rem;
-    cursor: grab;
-  }
-  .entry-swipe-bg {
-    position: absolute;
-    top: 0; bottom: 0; left: 0; right: 0;
-    display: flex; align-items: center;
-    padding: 0 1rem;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    pointer-events: none;
-  }
-  .entry-swipe-bg.pay { background: #16a34a; color: white; justify-content: flex-start; }
-  .entry-swipe-bg.unpay { background: #dc2626; color: white; justify-content: flex-end; }
-  .entry-check-row { display: flex; align-items: flex-start; gap: 0.6rem; }
-  .entry-check-row input[type="checkbox"] { margin-top: 0.2rem; width: 16px; height: 16px; flex-shrink: 0; accent-color: var(--pink); }
-
-  .gdpr-notice { background: #fef2f2; border: 1.5px solid #fca5a5; border-radius: 10px; padding: 0.9rem 1rem; margin-top: 1rem; font-size: 0.8rem; color: #7f1d1d; line-height: 1.6; }
-  .entries-hidden { display: none; }
-  .divider { margin: 1.25rem 0; border: none; border-top: 1px solid var(--border); }
-  .stat-row { display: flex; gap: 1rem; margin-bottom: 1rem; }
-  .stat { background: var(--cream); border-radius: 10px; padding: 0.75rem 1rem; flex: 1; text-align: center; }
-  .stat-num { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; color: var(--navy); }
-  .stat-num.green { color: #16a34a; }
-  .stat-num.red { color: #dc2626; }
-  .stat-label { font-size: 0.72rem; color: var(--grey); margin-top: 0.1rem; }
+:root{--navy:#1a1f3a;--pink:#e0357a;--pink-light:#f5a8c8;--cream:#faf7f2;--gold:#c9a84c;--grey:#6b7280;--border:#e5e0d8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh}
+header{background:var(--navy);color:white;text-align:center;padding:1.5rem 1rem;border-bottom:4px solid var(--pink)}
+header img{width:80px;height:80px;object-fit:cover;border-radius:8px;margin-bottom:.75rem;border:3px solid var(--pink);display:block;margin-left:auto;margin-right:auto}
+header .badge{font-family:'DM Mono',monospace;font-size:1rem;letter-spacing:.15em;color:var(--pink-light);text-transform:uppercase;margin-bottom:.4rem}
+header h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,6vw,3rem);font-weight:900;line-height:1.1}
+header h1 span{color:var(--pink)}
+header p{margin-top:.4rem;font-size:.85rem;color:#a0aec0}
+.container{max-width:640px;margin:0 auto;padding:1.5rem 1rem 4rem}
+.prize-banner{background:var(--navy);color:white;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.prize-banner .prize-amount{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--pink);line-height:1}
+.prize-banner .prize-label{font-size:.8rem;color:#a0aec0;margin-top:.15rem}
+.prize-banner .reveal-info{font-size:.75rem;color:#a0aec0;text-align:right;line-height:1.6}
+.prize-banner .reveal-info strong{color:var(--pink-light);display:block}
+.closed-banner{background:#7f1d1d;color:white;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:center;font-size:.9rem;display:none}
+.closed-banner strong{display:block;font-size:1.1rem;margin-bottom:.25rem}
+.card{background:white;border-radius:16px;border:1px solid var(--border);padding:1.5rem;margin-bottom:1.25rem;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.card h2{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+label{display:block;font-size:.78rem;font-weight:500;color:var(--grey);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.35rem}
+input[type=text],input[type=tel],input[type=number],input[type=password],input[type=datetime-local]{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:.7rem .9rem;font-family:'DM Sans',sans-serif;font-size:1rem;color:var(--navy);background:var(--cream);outline:none;transition:border-color .2s;margin-bottom:1rem}
+input:focus{border-color:var(--pink)}
+input[type=number]{-moz-appearance:textfield}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+.packages{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-bottom:1.25rem}
+.package{border:2px solid var(--border);border-radius:12px;padding:.85rem .75rem;cursor:pointer;text-align:center;transition:all .15s;background:var(--cream);user-select:none}
+.package:active{transform:scale(.97)}
+.package.selected{border-color:var(--pink);background:#fff0f6}
+.package .pkg-price{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--navy);line-height:1}
+.package.selected .pkg-price{color:var(--pink)}
+.package .pkg-guesses{font-size:.78rem;color:var(--grey);margin-top:.25rem}
+.package.selected .pkg-guesses{color:var(--pink)}
+.score-group{margin-bottom:1rem}
+.score-group-label{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);margin-bottom:.5rem;padding:.3rem .6rem;background:var(--cream);border-radius:6px;display:inline-block}
+.score-inputs{display:grid;grid-template-columns:1fr auto 1fr;gap:.75rem;align-items:start;margin-bottom:.75rem}
+.score-team{font-size:.75rem;font-weight:500;color:var(--grey);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.35rem}
+.gp-row{display:grid;grid-template-columns:1fr auto 1fr;gap:.35rem;align-items:center}
+.gp-label{font-size:.65rem;color:var(--grey);text-align:center;margin-bottom:.2rem}
+.gp-sep{font-size:1.1rem;font-weight:700;color:var(--grey);padding-top:1.4rem}
+.vs-sep{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--grey);padding-top:2.2rem;text-align:center}
+.btn{display:block;width:100%;padding:.9rem;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:500;cursor:pointer;transition:opacity .15s,transform .1s}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--pink);color:white}
+.btn-primary:hover{opacity:.9}
+.btn-navy{background:var(--navy);color:white;margin-top:.5rem}
+.btn-small{display:inline-block;width:auto;padding:.5rem 1rem;font-size:.85rem;border-radius:8px}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--navy);margin-top:.5rem}
+.btn-danger{background:#dc2626;color:white;margin-top:.5rem}
+.btn-gold{background:var(--gold);color:white;margin-top:.5rem}
+.privacy-box{background:var(--cream);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1rem;margin-bottom:1rem;font-size:.8rem;color:var(--grey);line-height:1.6}
+.privacy-box a{color:var(--pink)}
+.consent-row{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:1rem}
+.consent-row input[type=checkbox]{margin-top:.2rem;width:16px;height:16px;flex-shrink:0;accent-color:var(--pink)}
+.consent-row span{font-size:.82rem;color:var(--grey);line-height:1.5}
+.my-entry{background:var(--cream);border-radius:8px;padding:.6rem .9rem;margin-bottom:.5rem;font-size:.88rem}
+.my-entry-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem}
+.my-entry-pkg{font-family:'DM Mono',monospace;font-size:.75rem;background:var(--pink);color:white;padding:.15rem .5rem;border-radius:5px}
+.my-entry-scores{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.3rem}
+.score-tag{font-family:'DM Mono',monospace;font-size:.78rem;background:var(--navy);color:white;padding:.2rem .5rem;border-radius:5px}
+.entry-row{border-bottom:1px solid var(--border);padding:.7rem 0;font-size:.88rem}
+.entry-row:last-child{border-bottom:none}
+.entry-row-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem}
+.entry-name{font-weight:500}
+.entry-phone{font-size:.75rem;color:var(--grey)}
+.entry-scores{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.3rem}
+.entry-score{font-family:'DM Mono',monospace;font-size:.78rem;background:var(--navy);color:white;padding:.15rem .45rem;border-radius:5px;white-space:nowrap}
+.badge-paid{font-size:.72rem;background:#16a34a;color:white;padding:.15rem .5rem;border-radius:5px;font-family:'DM Mono',monospace}
+.badge-unpaid{font-size:.72rem;background:#dc2626;color:white;padding:.15rem .5rem;border-radius:5px;font-family:'DM Mono',monospace}
+#admin-section{display:none}
+.admin-panel{display:none}
+.admin-tabs{display:flex;gap:.5rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.admin-tab{padding:.4rem .9rem;border-radius:8px;font-size:.82rem;cursor:pointer;border:1.5px solid var(--border);background:var(--cream);color:var(--navy);font-family:'DM Sans',sans-serif}
+.admin-tab.active{background:var(--navy);color:white;border-color:var(--navy)}
+.result-box{background:#fffbeb;border:1.5px solid var(--gold);border-radius:12px;padding:1rem 1.25rem;margin-top:1rem}
+.result-box h3{font-family:'Playfair Display',serif;font-size:1rem;color:#92400e;margin-bottom:.4rem}
+.result-box p{font-size:.85rem;color:#92400e;line-height:1.5}
+.draw-log-row{border-bottom:1px solid var(--border);padding:.6rem 0;font-size:.82rem}
+.draw-log-row:last-child{border-bottom:none}
+.draw-log-comp{font-weight:500}
+.draw-log-detail{color:var(--grey);font-size:.75rem;margin-top:.15rem}
+.toggle-link{display:inline-block;font-size:.8rem;color:var(--pink);cursor:pointer;text-decoration:underline;margin-top:1rem}
+.msg{font-size:.82rem;color:var(--grey);margin-top:.5rem}
+.msg.error{color:#dc2626}
+.msg.success{color:#16a34a}
+.section-title{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);margin-bottom:.75rem}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gdpr-notice{background:#fef2f2;border:1.5px solid #fca5a5;border-radius:10px;padding:.9rem 1rem;margin-top:1rem;font-size:.8rem;color:#7f1d1d;line-height:1.6}
+.entries-hidden{display:none}
+.divider{margin:1.25rem 0;border:none;border-top:1px solid var(--border)}
+.stat-row{display:flex;gap:1rem;margin-bottom:1rem}
+.stat{background:var(--cream);border-radius:10px;padding:.75rem 1rem;flex:1;text-align:center}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--navy)}
+.stat-num.green{color:#16a34a}
+.stat-num.red{color:#dc2626}
+.stat-label{font-size:.72rem;color:var(--grey);margin-top:.1rem}
+.loading-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(26,31,58,.6);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(2px)}
+.loading-overlay .spinner-lg{width:44px;height:44px;border:4px solid rgba(255,255,255,.2);border-top-color:var(--pink);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:1rem}
+.loading-overlay p{color:white;font-size:.9rem;font-family:'DM Mono',monospace}
+.entry-swipe-wrap{position:relative;overflow:hidden;border-radius:8px;margin-bottom:.5rem;touch-action:pan-y}
+.entry-swipe-wrap.toggling{opacity:.5;pointer-events:none}
+.entry-swipe-inner{position:relative;background:white;transition:transform .2s ease;border:1px solid var(--border);border-radius:8px;padding:.7rem .9rem;cursor:grab}
+.entry-swipe-bg{position:absolute;top:0;bottom:0;left:0;right:0;display:flex;align-items:center;padding:0 1rem;border-radius:8px;font-size:.8rem;font-weight:600;pointer-events:none}
+.entry-swipe-bg.pay{background:#16a34a;color:white;justify-content:flex-start}
+.entry-swipe-bg.unpay{background:#dc2626;color:white;justify-content:flex-end}
+.entry-check-row{display:flex;align-items:flex-start;gap:.6rem}
+.entry-check-row input[type=checkbox]{margin-top:.2rem;width:16px;height:16px;flex-shrink:0;accent-color:var(--pink)}
+#winner-banner{display:none;background:linear-gradient(135deg,#1a1f3a,#2d1f3a);border:2px solid var(--gold);border-radius:16px;padding:1.5rem 1.25rem;margin-bottom:1.5rem;text-align:center}
 </style>
 </head>
 <body>
-
 <div class="loading-overlay" id="loading-overlay" style="display:none">
   <div class="spinner-lg"></div>
-  <p id="loading-msg">Loading…</p>
+  <p id="loading-msg">Loading...</p>
 </div>
 
 <header>
-  <img src="Rockban_logo.jpg" alt="Rockbán GAA">
-  <div class="badge">Rockbán GAA – Fundraiser</div>
+  <img src="Rockban_logo.jpg" alt="Rockban GAA">
+  <div class="badge">Rockban GAA - Fundraiser</div>
   <h1 id="header-title">"Guess the <span>Score!</span>"</h1>
-  <p id="header-sub">Loading…</p>
+  <p id="header-sub">Loading...</p>
 </header>
 
 <div class="container">
 
+  <div id="winner-banner">
+    <div style="font-family:'DM Mono',monospace;font-size:.75rem;letter-spacing:.15em;color:var(--gold);text-transform:uppercase;margin-bottom:.5rem">Competition Result</div>
+    <div id="winner-names" style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:white;margin-bottom:.4rem"></div>
+    <div id="winner-score" style="font-size:.85rem;color:#a0aec0;margin-bottom:.4rem"></div>
+    <div id="winner-prize" style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--gold)"></div>
+  </div>
+
   <div class="prize-banner">
     <div>
-      <div class="prize-amount" id="prize-amount">€—</div>
+      <div class="prize-amount" id="prize-amount">€100</div>
       <div class="prize-label">prize fund</div>
     </div>
     <div class="reveal-info">
-      <strong id="reveal-status">Loading…</strong>
+      <strong id="reveal-status">Loading...</strong>
       <span id="reveal-countdown"></span>
     </div>
-  </div>
-
-  <div id="winner-banner" style="display:none;background:linear-gradient(135deg,#1a1f3a,#2d1f3a);border:2px solid var(--gold);border-radius:16px;padding:1.5rem 1.25rem;margin-bottom:1.5rem;text-align:center">
-    <div style="font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.15em;color:var(--gold);text-transform:uppercase;margin-bottom:0.5rem">🏆 Competition Result</div>
-    <div id="winner-names" style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:white;margin-bottom:0.4rem"></div>
-    <div id="winner-score" style="font-size:0.85rem;color:#a0aec0;margin-bottom:0.4rem"></div>
-    <div id="winner-prize" style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--gold)"></div>
   </div>
 
   <div class="closed-banner" id="closed-banner">
@@ -234,54 +162,33 @@
     Good luck to everyone who entered!
   </div>
 
-  <!-- Entry form -->
   <div class="card" id="entry-form-card">
     <h2>🎯 Enter your prediction</h2>
-
     <label>Choose your package</label>
     <div class="packages">
-      <div class="package" onclick="selectPackage(this, 2, 1)">
-        <div class="pkg-price">€2</div>
-        <div class="pkg-guesses">1 guess</div>
-      </div>
-      <div class="package" onclick="selectPackage(this, 5, 3)">
-        <div class="pkg-price">€5</div>
-        <div class="pkg-guesses">3 guesses</div>
-      </div>
-      <div class="package" onclick="selectPackage(this, 10, 6)">
-        <div class="pkg-price">€10</div>
-        <div class="pkg-guesses">6 guesses</div>
-      </div>
-      <div class="package" onclick="selectPackage(this, 20, 14)">
-        <div class="pkg-price">€20</div>
-        <div class="pkg-guesses">14 guesses</div>
-      </div>
+      <div class="package" onclick="selectPackage(this,2,1)"><div class="pkg-price">€2</div><div class="pkg-guesses">1 guess</div></div>
+      <div class="package" onclick="selectPackage(this,5,3)"><div class="pkg-price">€5</div><div class="pkg-guesses">3 guesses</div></div>
+      <div class="package" onclick="selectPackage(this,10,6)"><div class="pkg-price">€10</div><div class="pkg-guesses">6 guesses</div></div>
+      <div class="package" onclick="selectPackage(this,20,14)"><div class="pkg-price">€20</div><div class="pkg-guesses">14 guesses</div></div>
     </div>
-
     <div id="details-and-scores" style="display:none">
       <label>Your name</label>
       <input type="text" id="name" placeholder="Full name" autocomplete="name">
-
       <label>Phone number</label>
       <input type="tel" id="phone" placeholder="+353 87 123 4567" autocomplete="tel">
-
-      <div id="score-groups" style="margin-bottom:0.5rem"></div>
-
+      <div id="score-groups" style="margin-bottom:.5rem"></div>
       <div class="privacy-box">
         <strong>Data notice</strong><br>
-        Rockbán GAA collects your name and phone number solely for the purpose of running this competition. Your data will not be shared with any third party and will be deleted after the draw. To request removal of your data, contact <a href="mailto:secretary@rockbangaa.ie">secretary@rockbangaa.ie</a>.<br>
-        Rockbán GAA is the data controller under GDPR.
+        Rockban GAA collects your name and phone number solely for the purpose of running this competition. Your data will not be shared with any third party and will be deleted after the draw. To request removal of your data, contact <a href="mailto:secretary@rockbangaa.ie">secretary@rockbangaa.ie</a>.<br>
+        Rockban GAA is the data controller under GDPR.
       </div>
-
       <div class="consent-row">
         <input type="checkbox" id="consent">
-        <span>I agree that Rockbán GAA may store my name and phone number for the purpose of this competition.</span>
+        <span>I agree that Rockban GAA may store my name and phone number for the purpose of this competition.</span>
       </div>
-
       <button class="btn btn-primary" id="submit-btn" onclick="submitEntry()">Submit prediction &rarr;</button>
       <div class="msg" id="entry-msg"></div>
     </div>
-
     <div id="pay-btn-container" style="display:none;margin-top:1rem">
       <a id="pay-btn" href="https://revolut.me/YOURREVOLUTLINK" target="_blank" class="btn btn-primary" style="display:block;text-align:center;text-decoration:none;font-size:1.2rem;padding:1rem">
         💸 Click here to pay <span id="pay-amount"></span>
@@ -289,14 +196,11 @@
     </div>
   </div>
 
-  <!-- My entries this session -->
   <div class="card" id="my-entries-card" style="display:none">
     <h2>📋 Your entries</h2>
     <div id="my-entries-list"></div>
-
   </div>
 
-  <!-- All entries — visible after reveal -->
   <div class="card entries-hidden" id="all-entries-card">
     <h2>🏆 All entries</h2>
     <div class="section-title" id="entries-header"></div>
@@ -307,20 +211,15 @@
     <span class="toggle-link" onclick="toggleAdmin()">Admin</span>
   </div>
 
-  <!-- Admin -->
   <div class="card" id="admin-section" style="margin-top:1rem">
     <h2>🔐 Admin</h2>
-
     <div id="admin-login-form">
       <label>Password</label>
       <input type="password" id="admin-password" placeholder="Enter password">
       <button class="btn btn-navy" onclick="adminLogin()">Login</button>
       <div class="msg error" id="admin-msg"></div>
     </div>
-
     <div class="admin-panel" id="admin-panel">
-
-      <!-- Tab nav -->
       <div class="admin-tabs">
         <button class="admin-tab active" onclick="showAdminTab('settings',this)">Settings</button>
         <button class="admin-tab" onclick="showAdminTab('entries',this)">Entries</button>
@@ -329,76 +228,65 @@
         <button class="admin-tab" onclick="showAdminTab('drawlog',this)">Draw log</button>
       </div>
 
-      <!-- Settings tab -->
+      <!-- Settings -->
       <div id="admin-tab-settings">
         <div class="section-title">Competition details</div>
-        <label>Match title</label>
-        <input type="text" id="s-matchTitle" placeholder="e.g. What's the Score?">
-        <label>Team 1</label>
-        <input type="text" id="s-team1" placeholder="e.g. Cork">
-        <label>Team 2</label>
-        <input type="text" id="s-team2" placeholder="e.g. Limerick">
-        <label>Match date (display text)</label>
-        <input type="text" id="s-matchDate" placeholder="e.g. June 7th">
-        <label>Prize (€)</label>
-        <input type="number" id="s-prize" placeholder="100">
-        <label>Revolut link</label>
-        <input type="text" id="s-revolutLink" placeholder="https://revolut.me/yourname">
-        <label>Entries close at</label>
-        <input type="datetime-local" id="s-entryCloseTime">
-        <label>Reveal entries at</label>
-        <input type="datetime-local" id="s-revealTime">
+        <label>Match title</label><input type="text" id="s-matchTitle" placeholder="e.g. Guess the Score">
+        <label>Team 1</label><input type="text" id="s-team1" placeholder="e.g. Cork">
+        <label>Team 2</label><input type="text" id="s-team2" placeholder="e.g. Limerick">
+        <label>Match date</label><input type="text" id="s-matchDate" placeholder="e.g. June 7th">
+        <label>Prize (€)</label><input type="number" id="s-prize" placeholder="100">
+        <label>Revolut link</label><input type="text" id="s-revolutLink" placeholder="https://revolut.me/yourname">
+        <label>Entries close at</label><input type="datetime-local" id="s-entryCloseTime">
+        <label>Reveal entries at</label><input type="datetime-local" id="s-revealTime">
         <button class="btn btn-primary" onclick="saveSettings()">Save settings</button>
         <div class="msg" id="settings-msg"></div>
       </div>
 
-      <!-- Entries tab -->
+      <!-- Entries -->
       <div id="admin-tab-entries" style="display:none">
         <div class="stat-row">
           <div class="stat"><div class="stat-num" id="stat-total">0</div><div class="stat-label">entries</div></div>
-          <div class="stat"><div class="stat-num green" id="stat-paid">0</div><div class="stat-label">paid</div><div style="font-size:0.72rem;color:#16a34a;font-family:monospace" id="stat-paid-amount">€0</div></div>
-          <div class="stat"><div class="stat-num red" id="stat-unpaid">0</div><div class="stat-label">unpaid</div><div style="font-size:0.72rem;color:#dc2626;font-family:monospace" id="stat-unpaid-amount">€0</div></div>
+          <div class="stat"><div class="stat-num green" id="stat-paid">0</div><div class="stat-label">paid</div><div style="font-size:.72rem;color:#16a34a;font-family:monospace" id="stat-paid-amount">€0</div></div>
+          <div class="stat"><div class="stat-num red" id="stat-unpaid">0</div><div class="stat-label">unpaid</div><div style="font-size:.72rem;color:#dc2626;font-family:monospace" id="stat-unpaid-amount">€0</div></div>
         </div>
-
-        <input type="text" id="entries-search" placeholder="Search by name…" oninput="applyEntryFilters()" style="margin-bottom:0.75rem">
-
-        <div style="display:flex;gap:0.5rem;margin-bottom:0.75rem;flex-wrap:wrap">
+        <input type="text" id="entries-search" placeholder="Search by name..." oninput="applyEntryFilters()" style="margin-bottom:.75rem">
+        <div style="display:flex;gap:.5rem;margin-bottom:.75rem;flex-wrap:wrap">
           <button class="admin-tab active" onclick="setEntryFilter('all',this)">All</button>
           <button class="admin-tab" onclick="setEntryFilter('unpaid',this)">Unpaid only</button>
-          <button class="admin-tab" onclick="setEntrySort('name',this)">A–Z</button>
+          <button class="admin-tab" onclick="setEntrySort('name',this)" id="sort-name-btn">A-Z</button>
         </div>
-
-        <div style="display:flex;gap:0.5rem;margin-bottom:1rem;align-items:center">
-          <button class="btn btn-small btn-navy" onclick="bulkMarkPaid()" style="font-size:0.78rem;padding:0.4rem 0.8rem">Mark selected as paid</button>
-          <button class="btn btn-small btn-outline" onclick="selectAllVisible()" style="font-size:0.78rem;padding:0.4rem 0.8rem">Select all</button>
-          <button class="btn btn-small btn-outline" onclick="clearSelection()" style="font-size:0.78rem;padding:0.4rem 0.8rem">Clear</button>
+        <div style="display:flex;gap:.5rem;margin-bottom:1rem;align-items:center">
+          <button class="btn btn-small btn-navy" onclick="bulkMarkPaid()" style="font-size:.78rem;padding:.4rem .8rem">Mark selected as paid</button>
+          <button class="btn btn-small btn-outline" onclick="selectAllVisible()" style="font-size:.78rem;padding:.4rem .8rem">Select all</button>
+          <button class="btn btn-small btn-outline" onclick="clearSelection()" style="font-size:.78rem;padding:.4rem .8rem">Clear</button>
         </div>
-
-        <p style="font-size:0.75rem;color:var(--grey);margin-bottom:0.75rem">Swipe right on an entry to mark paid. Swipe left to mark unpaid.</p>
-
+        <p style="font-size:.75rem;color:var(--grey);margin-bottom:.75rem">Swipe right on an entry to mark paid. Swipe left to mark unpaid.</p>
         <div id="admin-entries-list"></div>
       </div>
 
-      <!-- Winners tab -->
+      <!-- Winners -->
       <div id="admin-tab-winners" style="display:none">
         <div class="section-title">Final score</div>
-        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:0.75rem;margin-bottom:1rem;align-items:start">
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:.75rem;margin-bottom:1rem;align-items:start">
           <div>
-            <div class="score-team" id="final-team1-label" style="margin-bottom:0.35rem">Team 1</div>
+            <div class="score-team" id="final-team1-label" style="margin-bottom:.35rem">Team 1</div>
             <div class="gp-row">
-              <div><div class="gp-label">Goals</div><input type="number" id="final-t1-goals" min="0" max="20" placeholder="0" style="text-align:center;margin-bottom:0"></div>
+              <div><div class="gp-label">Goals</div><input type="number" id="final-t1-goals" min="0" max="20" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateFinalTotal();adminAutoAdvance(this,'final-t1-points')"></div>
               <div class="gp-sep">-</div>
-              <div><div class="gp-label">Points</div><input type="number" id="final-t1-points" min="0" max="40" placeholder="0" style="text-align:center;margin-bottom:0"></div>
+              <div><div class="gp-label">Points</div><input type="number" id="final-t1-points" min="0" max="40" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateFinalTotal();adminAutoAdvance(this,'final-t2-goals')"></div>
             </div>
+            <div id="final-t1-total" style="font-size:.72rem;color:var(--grey);text-align:center;margin-top:.25rem;font-family:monospace">= 0 pts</div>
           </div>
           <div class="vs-sep">v</div>
           <div>
-            <div class="score-team" id="final-team2-label" style="margin-bottom:0.35rem">Team 2</div>
+            <div class="score-team" id="final-team2-label" style="margin-bottom:.35rem">Team 2</div>
             <div class="gp-row">
-              <div><div class="gp-label">Goals</div><input type="number" id="final-t2-goals" min="0" max="20" placeholder="0" style="text-align:center;margin-bottom:0"></div>
+              <div><div class="gp-label">Goals</div><input type="number" id="final-t2-goals" min="0" max="20" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateFinalTotal();adminAutoAdvance(this,'final-t2-points')"></div>
               <div class="gp-sep">-</div>
-              <div><div class="gp-label">Points</div><input type="number" id="final-t2-points" min="0" max="40" placeholder="0" style="text-align:center;margin-bottom:0"></div>
+              <div><div class="gp-label">Points</div><input type="number" id="final-t2-points" min="0" max="40" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateFinalTotal()"></div>
             </div>
+            <div id="final-t2-total" style="font-size:.72rem;color:var(--grey);text-align:center;margin-top:.25rem;font-family:monospace">= 0 pts</div>
           </div>
         </div>
         <button class="btn btn-navy" onclick="findWinners()">Find winners</button>
@@ -406,50 +294,40 @@
           <h3 id="result-title"></h3>
           <p id="result-body"></p>
         </div>
-        <button class="btn btn-gold" id="announce-btn" style="display:none;margin-top:0.75rem" onclick="saveAndAnnounce()">📣 Save &amp; announce winner</button>
+        <button class="btn btn-gold" id="announce-btn" style="display:none;margin-top:.75rem" onclick="saveAndAnnounce()">📣 Save &amp; announce winner</button>
         <div class="msg" id="announce-msg"></div>
       </div>
 
-      <!-- New competition tab -->
+      <!-- New competition -->
       <div id="admin-tab-new" style="display:none">
         <div class="section-title">Create new competition</div>
-        <p style="font-size:0.85rem;color:var(--grey);margin-bottom:1rem;line-height:1.6">This archives the current competition and starts a fresh one. All current entries are preserved in the Google Sheet under a new tab.</p>
-        <label>New competition name (used as Sheet tab)</label>
-        <input type="text" id="new-tabName" placeholder="e.g. Cork v Clare 14-07-25">
-        <label>Match title</label>
-        <input type="text" id="new-matchTitle" placeholder="e.g. What's the Score?">
-        <label>Team 1</label>
-        <input type="text" id="new-team1" placeholder="e.g. Cork">
-        <label>Team 2</label>
-        <input type="text" id="new-team2" placeholder="e.g. Clare">
-        <label>Match date</label>
-        <input type="text" id="new-matchDate" placeholder="e.g. July 14th">
-        <label>Prize (€)</label>
-        <input type="number" id="new-prize" placeholder="100">
-        <label>Revolut link</label>
-        <input type="text" id="new-revolutLink" placeholder="https://revolut.me/yourname">
-        <label>Entries close at</label>
-        <input type="datetime-local" id="new-entryCloseTime">
-        <label>Reveal entries at</label>
-        <input type="datetime-local" id="new-revealTime">
+        <p style="font-size:.85rem;color:var(--grey);margin-bottom:1rem;line-height:1.6">This archives the current competition and starts a fresh one. All current entries are preserved in the Google Sheet.</p>
+        <label>Competition name (Sheet tab)</label><input type="text" id="new-tabName" placeholder="e.g. Cork v Clare 14-07-25">
+        <label>Match title</label><input type="text" id="new-matchTitle" placeholder="e.g. Guess the Score">
+        <label>Team 1</label><input type="text" id="new-team1" placeholder="e.g. Cork">
+        <label>Team 2</label><input type="text" id="new-team2" placeholder="e.g. Clare">
+        <label>Match date</label><input type="text" id="new-matchDate" placeholder="e.g. July 14th">
+        <label>Prize (€)</label><input type="number" id="new-prize" placeholder="100">
+        <label>Revolut link</label><input type="text" id="new-revolutLink" placeholder="https://revolut.me/yourname">
+        <label>Entries close at</label><input type="datetime-local" id="new-entryCloseTime">
+        <label>Reveal entries at</label><input type="datetime-local" id="new-revealTime">
         <button class="btn btn-gold" onclick="createNewCompetition()">Archive current &amp; start new</button>
         <div class="msg" id="new-comp-msg"></div>
       </div>
 
-      <!-- Draw log tab -->
+      <!-- Draw log -->
       <div id="admin-tab-drawlog" style="display:none">
         <div class="section-title">Recent draws (last 10)</div>
-        <div id="draw-log-list"><p style="font-size:0.85rem;color:var(--grey)">No draws recorded yet.</p></div>
+        <div id="draw-log-list"><p style="font-size:.85rem;color:var(--grey)">No draws recorded yet.</p></div>
       </div>
 
       <hr class="divider">
-      <div class="section-title" style="color:#dc2626">GDPR — delete all data</div>
+      <div class="section-title" style="color:#dc2626">GDPR - delete all data</div>
       <div class="gdpr-notice">Permanently deletes all entries for the current competition from the Google Sheet. Cannot be undone.</div>
       <button class="btn btn-danger" onclick="deleteAllData()">Delete all entries</button>
       <div class="msg" id="delete-msg"></div>
     </div>
   </div>
-
 </div>
 
 <script>
@@ -460,1057 +338,567 @@ const SESSION_KEY = 'rockban-my-entries';
 let selectedPackage = null;
 let currentStatus = {};
 let allAdminEntries = [];
+let entriesLoaded = false;
+let bannerLoaded = false;
+let entryFilter = 'all';
+let entrySort = 'default';
+let currentWinnerData = {};
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-function hurl(g, p) { return g + '-' + String(p).padStart(2, '0'); }
-function hurlScore(e, t1, t2) {
-  t1 = t1 || 'T1'; t2 = t2 || 'T2';
-  return t1 + ' ' + hurl(e.corkGoals, e.corkPoints) + ' v ' + hurl(e.limGoals, e.limPoints) + ' ' + t2;
-}
+function hurl(g,p){ return g+'-'+String(p).padStart(2,'0'); }
+function hurlScore(e,t1,t2){ return (t1||'T1')+' '+hurl(e.corkGoals,e.corkPoints)+' v '+hurl(e.limGoals,e.limPoints)+' '+(t2||'T2'); }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-async function api(params) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 30000);
-  try {
-    const r = await fetch(SCRIPT_URL + '?' + new URLSearchParams(params), { signal: controller.signal });
-    return r.json();
-  } finally {
-    clearTimeout(timer);
+function showLoading(msg){ document.getElementById('loading-msg').textContent=msg||'Loading...'; document.getElementById('loading-overlay').style.display='flex'; }
+function hideLoading(){ document.getElementById('loading-overlay').style.display='none'; }
+
+function toDatetimeLocal(val){
+  if(!val) return '';
+  var s=String(val);
+  if(s.endsWith('Z')){
+    var d=new Date(s), pad=n=>String(n).padStart(2,'0');
+    return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
   }
+  return s.substring(0,16);
 }
-async function apiPost(payload) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 30000);
+function toISOForStorage(val){ return val&&val.length===16?new Date(val).toISOString():val||''; }
+
+async function api(params){
+  const ctrl=new AbortController(), timer=setTimeout(()=>ctrl.abort(),30000);
+  try{ const r=await fetch(SCRIPT_URL+'?'+new URLSearchParams(params),{signal:ctrl.signal}); return r.json(); }
+  finally{ clearTimeout(timer); }
+}
+async function apiPost(payload){
+  const ctrl=new AbortController(), timer=setTimeout(()=>ctrl.abort(),30000);
+  try{ const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload),signal:ctrl.signal}); return r.json(); }
+  finally{ clearTimeout(timer); }
+}
+
+function getMyEntries(){ try{ return JSON.parse(sessionStorage.getItem(SESSION_KEY)||'[]'); } catch{ return []; } }
+function addMyEntry(e){ const m=getMyEntries(); m.push(e); sessionStorage.setItem(SESSION_KEY,JSON.stringify(m)); }
+
+// ─── Banner ───────────────────────────────────────────────────────────────────
+async function refreshBanner(){
   try {
-    const r = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), signal: controller.signal });
-    return r.json();
-  } finally {
-    clearTimeout(timer);
-  }
-}
-function getMyEntries() {
-  try { return JSON.parse(sessionStorage.getItem(SESSION_KEY) || '[]'); } catch { return []; }
-}
-function addMyEntry(e) {
-  const mine = getMyEntries(); mine.push(e);
-  sessionStorage.setItem(SESSION_KEY, JSON.stringify(mine));
-}
+    const d=await api({action:'status'});
+    currentStatus=d;
+    bannerLoaded=true;
 
-// ─── Status & header ──────────────────────────────────────────────────────────
-let bannerLoaded = false;
+    document.getElementById('header-title').innerHTML='"'+esc(d.matchTitle||'Guess the Score')+'!"';
+    document.getElementById('header-sub').textContent=(d.team1||'Team 1')+' v '+(d.team2||'Team 2')+(d.matchDate?' · '+d.matchDate:'');
+    document.getElementById('prize-amount').textContent='€'+(d.prize||'100');
+    if(d.revolutLink) document.getElementById('pay-btn').href=d.revolutLink;
 
-async function refreshBanner() {
-  try {
-    const d = await api({ action: 'status' });
-    bannerLoaded = true;
-    refreshMyEntries();
-    if (document.getElementById('admin-panel').style.display === 'block') loadAdminPanel();
-    currentStatus = d;
-
-    // Header
-    document.getElementById('header-title').innerHTML = '"' + esc(d.matchTitle || "What's the Score?") + '"';
-    document.getElementById('header-sub').textContent =
-      (d.team1 || 'Team 1') + ' v ' + (d.team2 || 'Team 2') + (d.matchDate ? ' · ' + d.matchDate : '');
-
-    // Prize
-    document.getElementById('prize-amount').textContent = '€' + (d.prize || '100');
-
-    // Revolut link
-    if (d.revolutLink) {
-      document.getElementById('pay-btn').href = d.revolutLink;
+    if(d.winner){
+      var wb=document.getElementById('winner-banner');
+      wb.style.display='block';
+      document.getElementById('winner-names').textContent=d.winner.names;
+      document.getElementById('winner-score').textContent=d.winner.resultType==='Draw'?'No exact match - drawn at random':'Correct score: '+d.winner.scoreStr;
+      document.getElementById('winner-prize').textContent=d.winner.prizeEach?'€'+d.winner.prizeEach+' each':'€'+d.winner.prize+' prize';
     }
 
-    // Entry close
-    // Winner banner
-    if (d.winner) {
-      var wb = document.getElementById('winner-banner');
-      var wn = document.getElementById('winner-names');
-      var ws = document.getElementById('winner-score');
-      var wp = document.getElementById('winner-prize');
-      wb.style.display = 'block';
-      wn.textContent = d.winner.names;
-      ws.textContent = d.winner.resultType === 'Draw' ? 'No exact match — drawn at random' : 'Correct score: ' + d.winner.scoreStr;
-      wp.textContent = d.winner.prizeEach ? '€' + d.winner.prizeEach + ' each' : '€' + d.winner.prize + ' prize';
+    if(d.entriesClosed){
+      document.getElementById('entry-form-card').style.display='none';
+      document.getElementById('closed-banner').style.display='block';
     }
 
-    if (d.entriesClosed) {
-      document.getElementById('entry-form-card').style.display = 'none';
-      document.getElementById('closed-banner').style.display = 'block';
-    }
-
-    // Reveal
-    const statusEl = document.getElementById('reveal-status');
-    const cdEl = document.getElementById('reveal-countdown');
-    if (d.revealed) {
-      document.getElementById('prize-banner').style.display = 'none';
+    const statusEl=document.getElementById('reveal-status');
+    const cdEl=document.getElementById('reveal-countdown');
+    if(d.revealed){
+      document.getElementById('prize-banner').style.display='none';
+      cdEl.textContent='';
       loadAllEntries();
-    } else if (d.revealTime) {
-      const diff = new Date(d.revealTime) - new Date();
-      if (diff > 0) {
-        statusEl.textContent = 'All entries visible in';
-        cdEl.textContent = formatCountdown(diff);
-      } else {
-        document.getElementById('prize-banner').style.display = 'none';
-        loadAllEntries();
-      }
+    } else if(d.revealTime){
+      const diff=new Date(d.revealTime)-new Date();
+      if(diff>0){ statusEl.textContent='All entries visible in'; cdEl.textContent=formatCountdown(diff); }
+      else{ document.getElementById('prize-banner').style.display='none'; cdEl.textContent=''; loadAllEntries(); }
     } else {
-      statusEl.textContent = 'Entries hidden until reveal';
-      cdEl.textContent = '';
+      statusEl.textContent='Entries hidden until reveal'; cdEl.textContent='';
     }
-  } catch(e) {
-    if (!bannerLoaded) {
-      document.getElementById('reveal-status').textContent = 'Could not connect';
-    }
-    hideLoading();
+
+    refreshMyEntries();
+    if(document.getElementById('admin-panel').style.display==='block') loadAdminPanel();
+  } catch(e){
+    if(!bannerLoaded) document.getElementById('reveal-status').textContent='Could not connect';
   }
 }
 
-async function loadAllEntries() {
+async function loadAllEntries(){
   try {
-    const d = await api({ action: 'entries' });
-    if (!d.entries) return;
-    const card = document.getElementById('all-entries-card');
-    const list = document.getElementById('all-entries-list');
-    const header = document.getElementById('entries-header');
+    const d=await api({action:'entries'});
+    if(!d.entries) return;
+    const card=document.getElementById('all-entries-card');
+    const list=document.getElementById('all-entries-list');
     card.classList.remove('entries-hidden');
-    const totalGuesses = d.entries.reduce((a, e) => a + e.guesses.length, 0);
-    header.textContent = d.entries.length + ' entrant' + (d.entries.length !== 1 ? 's' : '') + ', ' + totalGuesses + ' guess' + (totalGuesses !== 1 ? 'es' : '');
-    list.innerHTML = d.entries.map(e => {
-      const scores = e.guesses.map(g => '<span class="entry-score">' + esc(hurlScore(g, currentStatus.team1, currentStatus.team2)) + '</span>').join('');
-      return '<div class="entry-row"><div class="entry-row-header"><div class="entry-name">' + esc(e.name) + '</div></div><div class="entry-scores">' + scores + '</div></div>';
+    const tg=d.entries.reduce((a,e)=>a+e.guesses.length,0);
+    document.getElementById('entries-header').textContent=d.entries.length+' entrant'+(d.entries.length!==1?'s':'')+', '+tg+' guess'+(tg!==1?'es':'');
+    list.innerHTML=d.entries.map(e=>{
+      const scores=e.guesses.map(g=>'<span class="entry-score">'+esc(hurlScore(g,currentStatus.team1,currentStatus.team2))+'</span>').join('');
+      return '<div class="entry-row"><div class="entry-row-header"><div class="entry-name">'+esc(e.name)+'</div></div><div class="entry-scores">'+scores+'</div></div>';
     }).join('');
-  } catch(e) {}
+  } catch(e){}
 }
 
-function formatCountdown(ms) {
-  const h = Math.floor(ms / 3600000), m = Math.floor((ms % 3600000) / 60000), s = Math.floor((ms % 60000) / 1000);
-  if (h > 0) return h + 'h ' + m + 'm';
-  if (m > 0) return m + 'm ' + s + 's';
-  return s + 's';
+function formatCountdown(ms){
+  const h=Math.floor(ms/3600000),m=Math.floor((ms%3600000)/60000),s=Math.floor((ms%60000)/1000);
+  if(h>0) return h+'h '+m+'m'; if(m>0) return m+'m '+s+'s'; return s+'s';
 }
 
-// ─── Package & score inputs ───────────────────────────────────────────────────
-function selectPackage(el, price, guesses) {
-  document.querySelectorAll('.package').forEach(p => p.classList.remove('selected'));
+// ─── Packages & score inputs ──────────────────────────────────────────────────
+function selectPackage(el,price,guesses){
+  document.querySelectorAll('.package').forEach(p=>p.classList.remove('selected'));
   el.classList.add('selected');
-  selectedPackage = { price, guesses };
+  selectedPackage={price,guesses};
   buildScoreInputs(guesses);
-  document.getElementById('details-and-scores').style.display = 'block';
-  document.getElementById('pay-btn-container').style.display = 'none';
-  document.getElementById('entry-msg').textContent = '';
+  document.getElementById('details-and-scores').style.display='block';
+  document.getElementById('pay-btn-container').style.display='none';
+  document.getElementById('entry-msg').textContent='';
 }
 
-function buildScoreInputs(count) {
-  const groups = document.getElementById('score-groups');
-  groups.innerHTML = '';
-  for (let i = 0; i < count; i++) {
-    const label = count === 1 ? 'Your prediction' : 'Prediction ' + (i + 1);
-    groups.innerHTML += scoreGroupHTML(i, label);
+function buildScoreInputs(count){
+  const groups=document.getElementById('score-groups');
+  groups.innerHTML='';
+  for(let i=0;i<count;i++){
+    const label=count===1?'Your prediction':'Prediction '+(i+1);
+    groups.innerHTML+=scoreGroupHTML(i,label);
   }
 }
 
-function calcTotal(goalsEl, pointsEl) {
-  const g = parseInt(goalsEl.value) || 0;
-  const p = parseInt(pointsEl.value) || 0;
-  return g * 3 + p;
-}
-
-function updateTotal(i, side) {
-  const s = side.replace(/&quot;/g, '');
-  const gEl = document.querySelector('.' + s + '-goals[data-i="' + i + '"]');
-  const pEl = document.querySelector('.' + s + '-points[data-i="' + i + '"]');
-  const tEl = document.getElementById(s + '-total-' + i);
-  if (gEl && pEl && tEl) tEl.textContent = '= ' + calcTotal(gEl, pEl) + ' pts';
-}
-
-function autoAdvance(el, nextSelector) {
-  const val = el.value;
-  const max = parseInt(el.max);
-  // Advance if 2 digits entered, or value hits max
-  if (val.length >= 2 || parseInt(val) >= max) {
-    const next = document.querySelector(nextSelector);
-    if (next) { next.focus(); next.select(); }
-  }
-}
-
-// Build ordered list of all score inputs for tab-like advancing
-function getScoreInputOrder() {
-  const groups = document.querySelectorAll('.score-group');
-  const order = [];
-  groups.forEach((g, i) => {
-    order.push('.cork-goals[data-i="' + i + '"]');
-    order.push('.cork-points[data-i="' + i + '"]');
-    order.push('.lim-goals[data-i="' + i + '"]');
-    order.push('.lim-points[data-i="' + i + '"]');
-  });
-  return order;
-}
-
-function advanceFromInput(el) {
-  const order = getScoreInputOrder();
-  const currentSel = order.find(sel => document.querySelector(sel) === el);
-  const currentIdx = order.indexOf(currentSel);
-  if (currentIdx >= 0 && currentIdx < order.length - 1) {
-    const val = el.value;
-    if (val.length >= 2 || parseInt(val) >= parseInt(el.max)) {
-      const next = document.querySelector(order[currentIdx + 1]);
-      if (next) { next.focus(); next.select(); }
-    }
-  }
-}
-
-function scoreGroupHTML(i, label) {
-  var t1 = esc(currentStatus.team1 || 'Team 1');
-  var t2 = esc(currentStatus.team2 || 'Team 2');
-  var ii = String(i);
-  var ts = 'font-size:0.72rem;color:#6b7280;text-align:center;margin-top:0.25rem;font-family:monospace';
-  var out = '<div class="score-group">';
-  out += '<span class="score-group-label">' + label + '</span>';
-  out += '<div class="score-inputs">';
-
-  // Team 1
-  out += '<div>';
-  out += '<div class="score-team">' + t1 + '</div>';
-  out += '<div class="gp-row">';
-  out += '<div><div class="gp-label">Goals</div>';
-  out += '<input type="number" class="cork-goals" data-i="' + ii + '" min="0" max="20" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateSide(this,' + ii + ',0)"></div>';
-  out += '<div class="gp-sep">-</div>';
-  out += '<div><div class="gp-label">Points</div>';
-  out += '<input type="number" class="cork-points" data-i="' + ii + '" min="0" max="40" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateSide(this,' + ii + ',0)"></div>';
-  out += '</div>';
-  out += '<div id="cork-total-' + ii + '" style="' + ts + '">= 0 pts</div>';
-  out += '</div>';
-
-  out += '<div class="vs-sep">v</div>';
-
-  // Team 2
-  out += '<div>';
-  out += '<div class="score-team">' + t2 + '</div>';
-  out += '<div class="gp-row">';
-  out += '<div><div class="gp-label">Goals</div>';
-  out += '<input type="number" class="lim-goals" data-i="' + ii + '" min="0" max="20" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateSide(this,' + ii + ',1)"></div>';
-  out += '<div class="gp-sep">-</div>';
-  out += '<div><div class="gp-label">Points</div>';
-  out += '<input type="number" class="lim-points" data-i="' + ii + '" min="0" max="40" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateSide(this,' + ii + ',1)"></div>';
-  out += '</div>';
-  out += '<div id="lim-total-' + ii + '" style="' + ts + '">= 0 pts</div>';
-  out += '</div>';
-
-  out += '</div></div>';
+function scoreGroupHTML(i,label){
+  const t1=esc(currentStatus.team1||'Team 1');
+  const t2=esc(currentStatus.team2||'Team 2');
+  const ii=String(i);
+  const ts='font-size:.72rem;color:#6b7280;text-align:center;margin-top:.25rem;font-family:monospace';
+  let out='<div class="score-group">';
+  out+='<span class="score-group-label">'+label+'</span>';
+  out+='<div class="score-inputs">';
+  out+='<div><div class="score-team">'+t1+'</div><div class="gp-row">';
+  out+='<div><div class="gp-label">Goals</div><input type="number" class="cork-goals" data-i="'+ii+'" min="0" max="20" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateSide(this,'+ii+',0)"></div>';
+  out+='<div class="gp-sep">-</div>';
+  out+='<div><div class="gp-label">Points</div><input type="number" class="cork-points" data-i="'+ii+'" min="0" max="40" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateSide(this,'+ii+',0)"></div>';
+  out+='</div><div id="cork-total-'+ii+'" style="'+ts+'">= 0 pts</div></div>';
+  out+='<div class="vs-sep">v</div>';
+  out+='<div><div class="score-team">'+t2+'</div><div class="gp-row">';
+  out+='<div><div class="gp-label">Goals</div><input type="number" class="lim-goals" data-i="'+ii+'" min="0" max="20" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateSide(this,'+ii+',1)"></div>';
+  out+='<div class="gp-sep">-</div>';
+  out+='<div><div class="gp-label">Points</div><input type="number" class="lim-points" data-i="'+ii+'" min="0" max="40" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateSide(this,'+ii+',1)"></div>';
+  out+='</div><div id="lim-total-'+ii+'" style="'+ts+'">= 0 pts</div></div>';
+  out+='</div></div>';
   return out;
 }
 
-
-function selectPackage(el, price, guesses) {
-  document.querySelectorAll('.package').forEach(p => p.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedPackage = { price, guesses };
-  buildScoreInputs(guesses);
-  document.getElementById('details-and-scores').style.display = 'block';
-  document.getElementById('pay-btn-container').style.display = 'none';
-  document.getElementById('entry-msg').textContent = '';
+function updateSide(el,i,sideIdx){
+  const sides=['cork','lim'];
+  const s=sides[sideIdx];
+  const g=parseInt(document.querySelector('.'+s+'-goals[data-i="'+i+'"]').value)||0;
+  const p=parseInt(document.querySelector('.'+s+'-points[data-i="'+i+'"]').value)||0;
+  const t=document.getElementById(s+'-total-'+i);
+  if(t) t.textContent='= '+(g*3+p)+' pts';
+  advanceFromInput(el,i,sideIdx);
 }
 
-function buildScoreInputs(count) {
-  const groups = document.getElementById('score-groups');
-  groups.innerHTML = '';
-  for (let i = 0; i < count; i++) {
-    const label = count === 1 ? 'Your prediction' : 'Prediction ' + (i + 1);
-    groups.innerHTML += scoreGroupHTML(i, label);
-  }
-}
-
-function calcTotal(goalsEl, pointsEl) {
-  const g = parseInt(goalsEl.value) || 0;
-  const p = parseInt(pointsEl.value) || 0;
-  return g * 3 + p;
-}
-
-function updateTotal(i, side) {
-  const s = side.replace(/&quot;/g, '');
-  const gEl = document.querySelector('.' + s + '-goals[data-i="' + i + '"]');
-  const pEl = document.querySelector('.' + s + '-points[data-i="' + i + '"]');
-  const tEl = document.getElementById(s + '-total-' + i);
-  if (gEl && pEl && tEl) tEl.textContent = '= ' + calcTotal(gEl, pEl) + ' pts';
-}
-
-function autoAdvance(el, nextSelector) {
-  const val = el.value;
-  const max = parseInt(el.max);
-  // Advance if 2 digits entered, or value hits max
-  if (val.length >= 2 || parseInt(val) >= max) {
-    const next = document.querySelector(nextSelector);
-    if (next) { next.focus(); next.select(); }
-  }
-}
-
-// Build ordered list of all score inputs for tab-like advancing
-function getScoreInputOrder() {
-  const groups = document.querySelectorAll('.score-group');
-  const order = [];
-  groups.forEach((g, i) => {
-    order.push('.cork-goals[data-i="' + i + '"]');
-    order.push('.cork-points[data-i="' + i + '"]');
-    order.push('.lim-goals[data-i="' + i + '"]');
-    order.push('.lim-points[data-i="' + i + '"]');
-  });
-  return order;
-}
-
-function advanceFromInput(el) {
-  const order = getScoreInputOrder();
-  const currentSel = order.find(sel => document.querySelector(sel) === el);
-  const currentIdx = order.indexOf(currentSel);
-  if (currentIdx >= 0 && currentIdx < order.length - 1) {
-    const val = el.value;
-    if (val.length >= 2 || parseInt(val) >= parseInt(el.max)) {
-      const next = document.querySelector(order[currentIdx + 1]);
-      if (next) { next.focus(); next.select(); }
+function advanceFromInput(el,i,sideIdx){
+  const val=el.value;
+  if(val.length>=2||parseInt(val)>=parseInt(el.max)){
+    const order=[
+      '.cork-goals[data-i="'+i+'"]','.cork-points[data-i="'+i+'"]',
+      '.lim-goals[data-i="'+i+'"]','.lim-points[data-i="'+i+'"]'
+    ];
+    const classes=['cork-goals','cork-points','lim-goals','lim-points'];
+    const curClass=sideIdx===0?(el.classList.contains('cork-goals')?0:1):(el.classList.contains('lim-goals')?2:3);
+    if(curClass<3){
+      const next=document.querySelector(order[curClass+1]);
+      if(next){ next.focus(); next.select(); }
+    } else {
+      // Move to first input of next prediction
+      const nextI=i+1;
+      const nextEl=document.querySelector('.cork-goals[data-i="'+nextI+'"]');
+      if(nextEl){ nextEl.focus(); nextEl.select(); }
     }
   }
 }
 
-
-
-function updateSide(el, i, sideIdx) {
-  var sides = ['cork', 'lim'];
-  var side = sides[sideIdx];
-  var gEl = document.querySelector('.' + side + '-goals[data-i="' + i + '"]');
-  var pEl = document.querySelector('.' + side + '-points[data-i="' + i + '"]');
-  var tEl = document.getElementById(side + '-total-' + i);
-  if (gEl && pEl && tEl) {
-    var g = parseInt(gEl.value) || 0;
-    var p = parseInt(pEl.value) || 0;
-    tEl.textContent = '= ' + (g * 3 + p) + ' pts';
-  }
-  advanceFromInput(el);
-}
-
-function selectPackage(el, price, guesses) {
-  document.querySelectorAll('.package').forEach(p => p.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedPackage = { price, guesses };
-  buildScoreInputs(guesses);
-  document.getElementById('details-and-scores').style.display = 'block';
-  document.getElementById('pay-btn-container').style.display = 'none';
-  document.getElementById('entry-msg').textContent = '';
-}
-
-function buildScoreInputs(count) {
-  const groups = document.getElementById('score-groups');
-  groups.innerHTML = '';
-  for (let i = 0; i < count; i++) {
-    const label = count === 1 ? 'Your prediction' : 'Prediction ' + (i + 1);
-    groups.innerHTML += scoreGroupHTML(i, label);
+function adminAutoAdvance(el,nextId){
+  const val=el.value;
+  if(val.length>=2||parseInt(val)>=parseInt(el.max)){
+    const next=document.getElementById(nextId);
+    if(next){ next.focus(); next.select(); }
   }
 }
 
-function calcTotal(goalsEl, pointsEl) {
-  const g = parseInt(goalsEl.value) || 0;
-  const p = parseInt(pointsEl.value) || 0;
-  return g * 3 + p;
+function updateFinalTotal(){
+  const t1g=parseInt(document.getElementById('final-t1-goals').value)||0;
+  const t1p=parseInt(document.getElementById('final-t1-points').value)||0;
+  const t2g=parseInt(document.getElementById('final-t2-goals').value)||0;
+  const t2p=parseInt(document.getElementById('final-t2-points').value)||0;
+  document.getElementById('final-t1-total').textContent='= '+(t1g*3+t1p)+' pts';
+  document.getElementById('final-t2-total').textContent='= '+(t2g*3+t2p)+' pts';
 }
-
-function updateTotal(i, side) {
-  const s = side.replace(/&quot;/g, '');
-  const gEl = document.querySelector('.' + s + '-goals[data-i="' + i + '"]');
-  const pEl = document.querySelector('.' + s + '-points[data-i="' + i + '"]');
-  const tEl = document.getElementById(s + '-total-' + i);
-  if (gEl && pEl && tEl) tEl.textContent = '= ' + calcTotal(gEl, pEl) + ' pts';
-}
-
-function autoAdvance(el, nextSelector) {
-  const val = el.value;
-  const max = parseInt(el.max);
-  // Advance if 2 digits entered, or value hits max
-  if (val.length >= 2 || parseInt(val) >= max) {
-    const next = document.querySelector(nextSelector);
-    if (next) { next.focus(); next.select(); }
-  }
-}
-
-// Build ordered list of all score inputs for tab-like advancing
-function getScoreInputOrder() {
-  const groups = document.querySelectorAll('.score-group');
-  const order = [];
-  groups.forEach((g, i) => {
-    order.push('.cork-goals[data-i="' + i + '"]');
-    order.push('.cork-points[data-i="' + i + '"]');
-    order.push('.lim-goals[data-i="' + i + '"]');
-    order.push('.lim-points[data-i="' + i + '"]');
-  });
-  return order;
-}
-
-function advanceFromInput(el) {
-  const order = getScoreInputOrder();
-  const currentSel = order.find(sel => document.querySelector(sel) === el);
-  const currentIdx = order.indexOf(currentSel);
-  if (currentIdx >= 0 && currentIdx < order.length - 1) {
-    const val = el.value;
-    if (val.length >= 2 || parseInt(val) >= parseInt(el.max)) {
-      const next = document.querySelector(order[currentIdx + 1]);
-      if (next) { next.focus(); next.select(); }
-    }
-  }
-}
-
-
-
-function selectPackage(el, price, guesses) {
-  document.querySelectorAll('.package').forEach(p => p.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedPackage = { price, guesses };
-  buildScoreInputs(guesses);
-  document.getElementById('details-and-scores').style.display = 'block';
-  document.getElementById('pay-btn-container').style.display = 'none';
-  document.getElementById('entry-msg').textContent = '';
-}
-
-function buildScoreInputs(count) {
-  const groups = document.getElementById('score-groups');
-  groups.innerHTML = '';
-  for (let i = 0; i < count; i++) {
-    const label = count === 1 ? 'Your prediction' : 'Prediction ' + (i + 1);
-    groups.innerHTML += scoreGroupHTML(i, label);
-  }
-}
-
-function calcTotal(goalsEl, pointsEl) {
-  const g = parseInt(goalsEl.value) || 0;
-  const p = parseInt(pointsEl.value) || 0;
-  return g * 3 + p;
-}
-
-function updateTotal(i, side) {
-  const s = side.replace(/&quot;/g, '');
-  const gEl = document.querySelector('.' + s + '-goals[data-i="' + i + '"]');
-  const pEl = document.querySelector('.' + s + '-points[data-i="' + i + '"]');
-  const tEl = document.getElementById(s + '-total-' + i);
-  if (gEl && pEl && tEl) tEl.textContent = '= ' + calcTotal(gEl, pEl) + ' pts';
-}
-
-function autoAdvance(el, nextSelector) {
-  const val = el.value;
-  const max = parseInt(el.max);
-  // Advance if 2 digits entered, or value hits max
-  if (val.length >= 2 || parseInt(val) >= max) {
-    const next = document.querySelector(nextSelector);
-    if (next) { next.focus(); next.select(); }
-  }
-}
-
-// Build ordered list of all score inputs for tab-like advancing
-function getScoreInputOrder() {
-  const groups = document.querySelectorAll('.score-group');
-  const order = [];
-  groups.forEach((g, i) => {
-    order.push('.cork-goals[data-i="' + i + '"]');
-    order.push('.cork-points[data-i="' + i + '"]');
-    order.push('.lim-goals[data-i="' + i + '"]');
-    order.push('.lim-points[data-i="' + i + '"]');
-  });
-  return order;
-}
-
-function advanceFromInput(el) {
-  const order = getScoreInputOrder();
-  const currentSel = order.find(sel => document.querySelector(sel) === el);
-  const currentIdx = order.indexOf(currentSel);
-  if (currentIdx >= 0 && currentIdx < order.length - 1) {
-    const val = el.value;
-    if (val.length >= 2 || parseInt(val) >= parseInt(el.max)) {
-      const next = document.querySelector(order[currentIdx + 1]);
-      if (next) { next.focus(); next.select(); }
-    }
-  }
-}
-
-
-
-function selectPackage(el, price, guesses) {
-  document.querySelectorAll('.package').forEach(p => p.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedPackage = { price, guesses };
-  buildScoreInputs(guesses);
-  document.getElementById('details-and-scores').style.display = 'block';
-  document.getElementById('pay-btn-container').style.display = 'none';
-  document.getElementById('entry-msg').textContent = '';
-}
-
-function buildScoreInputs(count) {
-  const groups = document.getElementById('score-groups');
-  groups.innerHTML = '';
-  for (let i = 0; i < count; i++) {
-    const label = count === 1 ? 'Your prediction' : 'Prediction ' + (i + 1);
-    groups.innerHTML += scoreGroupHTML(i, label);
-  }
-}
-
-function calcTotal(goalsEl, pointsEl) {
-  const g = parseInt(goalsEl.value) || 0;
-  const p = parseInt(pointsEl.value) || 0;
-  return g * 3 + p;
-}
-
-function updateTotal(i, side) {
-  const gEl = document.querySelector('.' + side + '-goals[data-i="' + i + '"]');
-  const pEl = document.querySelector('.' + side + '-points[data-i="' + i + '"]');
-  const tEl = document.getElementById(side + '-total-' + i);
-  if (gEl && pEl && tEl) tEl.textContent = '= ' + calcTotal(gEl, pEl) + ' pts';
-}
-
-function autoAdvance(el, nextSelector) {
-  const val = el.value;
-  const max = parseInt(el.max);
-  // Advance if 2 digits entered, or value hits max
-  if (val.length >= 2 || parseInt(val) >= max) {
-    const next = document.querySelector(nextSelector);
-    if (next) { next.focus(); next.select(); }
-  }
-}
-
-// Build ordered list of all score inputs for tab-like advancing
-function getScoreInputOrder() {
-  const groups = document.querySelectorAll('.score-group');
-  const order = [];
-  groups.forEach((g, i) => {
-    order.push('.cork-goals[data-i="' + i + '"]');
-    order.push('.cork-points[data-i="' + i + '"]');
-    order.push('.lim-goals[data-i="' + i + '"]');
-    order.push('.lim-points[data-i="' + i + '"]');
-  });
-  return order;
-}
-
-function advanceFromInput(el) {
-  const order = getScoreInputOrder();
-  const currentSel = order.find(sel => document.querySelector(sel) === el);
-  const currentIdx = order.indexOf(currentSel);
-  if (currentIdx >= 0 && currentIdx < order.length - 1) {
-    const val = el.value;
-    if (val.length >= 2 || parseInt(val) >= parseInt(el.max)) {
-      const next = document.querySelector(order[currentIdx + 1]);
-      if (next) { next.focus(); next.select(); }
-    }
-  }
-}
-
-
 
 // ─── Submit ───────────────────────────────────────────────────────────────────
-async function submitEntry() {
-  const name = document.getElementById('name').value.trim();
-  const phone = document.getElementById('phone').value.trim();
-  const consent = document.getElementById('consent').checked;
-  const msg = document.getElementById('entry-msg');
-  const btn = document.getElementById('submit-btn');
+async function submitEntry(){
+  const name=document.getElementById('name').value.trim();
+  const phone=document.getElementById('phone').value.trim();
+  const consent=document.getElementById('consent').checked;
+  const msg=document.getElementById('entry-msg');
+  const btn=document.getElementById('submit-btn');
 
-  if (!name) { msg.className = 'msg error'; msg.textContent = 'Please enter your name.'; return; }
-  if (!phone) { msg.className = 'msg error'; msg.textContent = 'Please enter your phone number.'; return; }
-  if (!selectedPackage) { msg.className = 'msg error'; msg.textContent = 'Please choose a package.'; return; }
-  if (!consent) { msg.className = 'msg error'; msg.textContent = 'Please tick the consent box.'; return; }
+  if(!name){ msg.className='msg error'; msg.textContent='Please enter your name.'; return; }
+  if(!phone){ msg.className='msg error'; msg.textContent='Please enter your phone number.'; return; }
+  if(!selectedPackage){ msg.className='msg error'; msg.textContent='Please choose a package.'; return; }
+  if(!consent){ msg.className='msg error'; msg.textContent='Please tick the consent box.'; return; }
 
-  const guesses = [];
-  let valid = true;
-  document.querySelectorAll('.cork-points').forEach((el, i) => {
-    const cp = el.value;
-    const lp = document.querySelectorAll('.lim-points')[i].value;
-    if (cp === '' || lp === '') { valid = false; return; }
-    const cg = document.querySelectorAll('.cork-goals')[i].value;
-    const lg = document.querySelectorAll('.lim-goals')[i].value;
-    guesses.push({ corkGoals: parseInt(cg) || 0, corkPoints: parseInt(cp), limGoals: parseInt(lg) || 0, limPoints: parseInt(lp) });
+  const guesses=[];
+  let valid=true;
+  document.querySelectorAll('.cork-points').forEach((el,i)=>{
+    const cp=el.value, lp=document.querySelectorAll('.lim-points')[i].value;
+    if(cp===''||lp===''){ valid=false; return; }
+    const cg=document.querySelectorAll('.cork-goals')[i].value;
+    const lg=document.querySelectorAll('.lim-goals')[i].value;
+    guesses.push({corkGoals:parseInt(cg)||0,corkPoints:parseInt(cp),limGoals:parseInt(lg)||0,limPoints:parseInt(lp)});
   });
-  if (!valid) { msg.className = 'msg error'; msg.textContent = 'Please fill in the points for both teams in each prediction.'; return; }
+  if(!valid){ msg.className='msg error'; msg.textContent='Please fill in the points for both teams in each prediction.'; return; }
 
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>Saving…';
-
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Saving...';
   try {
-    const result = await apiPost({ action: 'submit', entry: { name, phone, price: selectedPackage.price, guesses } });
-    if (result.ok) {
-      msg.className = 'msg success';
-      msg.textContent = 'Predictions saved!';
-      addMyEntry({ name, phone, price: selectedPackage.price, guesses });
-      document.getElementById('pay-amount').textContent = '€' + selectedPackage.price;
-      document.getElementById('pay-btn-container').style.display = 'block';
-      document.getElementById('details-and-scores').style.display = 'none';
-      document.getElementById('score-groups').innerHTML = '';
-      document.getElementById('name').value = '';
-      document.getElementById('phone').value = '';
-      document.getElementById('consent').checked = false;
-      document.querySelectorAll('.package').forEach(p => p.classList.remove('selected'));
-      selectedPackage = null;
+    const result=await apiPost({action:'submit',entry:{name,phone,price:selectedPackage.price,guesses}});
+    if(result.ok){
+      msg.className='msg success'; msg.textContent='Predictions saved!';
+      addMyEntry({name,phone,price:selectedPackage.price,guesses});
+      document.getElementById('pay-amount').textContent='€'+selectedPackage.price;
+      document.getElementById('pay-btn-container').style.display='block';
+      document.getElementById('details-and-scores').style.display='none';
+      document.getElementById('score-groups').innerHTML='';
+      document.getElementById('name').value='';
+      document.getElementById('phone').value='';
+      document.getElementById('consent').checked=false;
+      document.querySelectorAll('.package').forEach(p=>p.classList.remove('selected'));
+      selectedPackage=null;
       refreshMyEntries();
     } else {
-      msg.className = 'msg error';
-      msg.textContent = result.error || 'Something went wrong.';
+      msg.className='msg error'; msg.textContent=result.error||'Something went wrong.';
     }
-  } catch(e) {
-    msg.className = 'msg error';
-    msg.textContent = 'Could not connect. Try again.';
-  }
-  btn.disabled = false;
-  btn.innerHTML = 'Submit prediction &rarr;';
+  } catch(e){ msg.className='msg error'; msg.textContent='Could not connect. Try again.'; }
+  btn.disabled=false; btn.innerHTML='Submit prediction &rarr;';
 }
 
 // ─── My entries ───────────────────────────────────────────────────────────────
-function refreshMyEntries() {
-  const mine = getMyEntries();
-  if (mine.length === 0) return;
-  document.getElementById('my-entries-card').style.display = 'block';
-  document.getElementById('my-entries-list').innerHTML = mine.map(e => {
-    const scores = e.guesses.map(g => '<span class="score-tag">' + esc(hurlScore(g, currentStatus.team1, currentStatus.team2)) + '</span>').join('');
-    return '<div class="my-entry"><div class="my-entry-header"><span>' + esc(e.name) + '</span><span class="my-entry-pkg">€' + e.price + '</span></div><div class="my-entry-scores">' + scores + '</div></div>';
+function refreshMyEntries(){
+  const mine=getMyEntries();
+  if(!mine.length) return;
+  document.getElementById('my-entries-card').style.display='block';
+  document.getElementById('my-entries-list').innerHTML=mine.map(e=>{
+    const scores=e.guesses.map(g=>'<span class="score-tag">'+esc(hurlScore(g,currentStatus.team1,currentStatus.team2))+'</span>').join('');
+    return '<div class="my-entry"><div class="my-entry-header"><span>'+esc(e.name)+'</span><span class="my-entry-pkg">€'+e.price+'</span></div><div class="my-entry-scores">'+scores+'</div></div>';
   }).join('');
-}
-
-function showEntryForm() {
-  document.getElementById('entry-msg').textContent = '';
-  document.getElementById('pay-btn-container').style.display = 'none';
 }
 
 // ─── Admin ────────────────────────────────────────────────────────────────────
-function toggleAdmin() {
-  const el = document.getElementById('admin-section');
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+function toggleAdmin(){
+  const el=document.getElementById('admin-section');
+  el.style.display=el.style.display==='none'?'block':'none';
 }
 
-function adminLogin() {
-  if (document.getElementById('admin-password').value === ADMIN_PASS) {
-    document.getElementById('admin-login-form').style.display = 'none';
-    document.getElementById('admin-panel').style.display = 'block';
+function adminLogin(){
+  if(document.getElementById('admin-password').value===ADMIN_PASS){
+    document.getElementById('admin-login-form').style.display='none';
+    document.getElementById('admin-panel').style.display='block';
     loadAdminPanel();
   } else {
-    document.getElementById('admin-msg').textContent = 'Wrong password.';
+    document.getElementById('admin-msg').textContent='Wrong password.';
   }
 }
 
-function showAdminTab(tab, el) {
-  ['settings','entries','winners','new','drawlog'].forEach(t => {
-    document.getElementById('admin-tab-' + t).style.display = t === tab ? 'block' : 'none';
+function loadAdminPanel(){
+  const d=currentStatus;
+  if(!d||!d.matchTitle) return;
+  document.getElementById('s-matchTitle').value=d.matchTitle||'';
+  document.getElementById('s-team1').value=d.team1||'';
+  document.getElementById('s-team2').value=d.team2||'';
+  document.getElementById('s-matchDate').value=d.matchDate||'';
+  document.getElementById('s-prize').value=d.prize||'';
+  document.getElementById('s-revolutLink').value=d.revolutLink||'';
+  document.getElementById('s-entryCloseTime').value=toDatetimeLocal(d.entryCloseTime);
+  document.getElementById('s-revealTime').value=toDatetimeLocal(d.revealTime);
+  document.getElementById('final-team1-label').textContent=d.team1||'Team 1';
+  document.getElementById('final-team2-label').textContent=d.team2||'Team 2';
+}
+
+function showAdminTab(tab,el){
+  ['settings','entries','winners','new','drawlog'].forEach(t=>{
+    document.getElementById('admin-tab-'+t).style.display=t===tab?'block':'none';
   });
-  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
-  if (tab === 'entries' || tab === 'winners' || tab === 'drawlog') loadAdminEntries();
+  if(tab==='entries'||tab==='winners'||tab==='drawlog') loadAdminEntries();
 }
 
-async function loadAdminPanel() {
-  const d = currentStatus;
-  if (!d || !d.matchTitle) return;
-  document.getElementById('s-matchTitle').value = d.matchTitle || '';
-  document.getElementById('s-team1').value = d.team1 || '';
-  document.getElementById('s-team2').value = d.team2 || '';
-  document.getElementById('s-matchDate').value = d.matchDate || '';
-  document.getElementById('s-prize').value = d.prize || '';
-  document.getElementById('s-revolutLink').value = d.revolutLink || '';
-  document.getElementById('s-entryCloseTime').value = toDatetimeLocal(d.entryCloseTime);
-  document.getElementById('s-revealTime').value = toDatetimeLocal(d.revealTime);
-  document.getElementById('final-team1-label').textContent = d.team1 || 'Team 1';
-  document.getElementById('final-team2-label').textContent = d.team2 || 'Team 2';
-}
-
-// ─── Entry filter/sort/search state ──────────────────────────────────────────
-var entryFilter = 'all';
-var entrySort = 'default';
-
-var entriesLoaded = false;
-
-async function loadAdminEntries() {
-  if (entriesLoaded) { applyEntryFilters(); return; }
-  showLoading('Loading latest competition…');
+async function loadAdminEntries(){
+  if(entriesLoaded){ applyEntryFilters(); return; }
+  showLoading('Loading latest competition...');
   try {
-    const d = await api({ action: 'adminLoad', pass: ADMIN_PASS });
-    if (!d || d.error) { hideLoading(); return; }
-    document.getElementById('stat-total').textContent = d.count || 0;
-    document.getElementById('stat-paid').textContent = d.paidCount || 0;
-    document.getElementById('stat-unpaid').textContent = d.unpaidCount || 0;
-    var paidTotal = (d.entries || []).filter(e => e.paid).reduce((sum, e) => sum + (parseFloat(e.price) || 0), 0);
-    var unpaidTotal = (d.entries || []).filter(e => !e.paid).reduce((sum, e) => sum + (parseFloat(e.price) || 0), 0);
-    document.getElementById('stat-paid-amount').textContent = '€' + paidTotal.toFixed(0);
-    document.getElementById('stat-unpaid-amount').textContent = '€' + unpaidTotal.toFixed(0);
-    allAdminEntries = d.entries || [];
-    entriesLoaded = true;
+    const d=await api({action:'adminLoad',pass:ADMIN_PASS});
+    if(!d||d.error){ hideLoading(); return; }
+    document.getElementById('stat-total').textContent=d.count||0;
+    document.getElementById('stat-paid').textContent=d.paidCount||0;
+    document.getElementById('stat-unpaid').textContent=d.unpaidCount||0;
+    const pt=(d.entries||[]).filter(e=>e.paid).reduce((s,e)=>s+(parseFloat(e.price)||0),0);
+    const ut=(d.entries||[]).filter(e=>!e.paid).reduce((s,e)=>s+(parseFloat(e.price)||0),0);
+    document.getElementById('stat-paid-amount').textContent='€'+pt.toFixed(0);
+    document.getElementById('stat-unpaid-amount').textContent='€'+ut.toFixed(0);
+    allAdminEntries=d.entries||[];
+    entriesLoaded=true;
     applyEntryFilters();
-    const drawList = document.getElementById('draw-log-list');
-    if (d.drawLog && d.drawLog.length > 0) {
-      drawList.innerHTML = d.drawLog.map(row => {
-        return '<div class="draw-log-row"><div class="draw-log-comp">' + esc(String(row[1])) + ' — ' + esc(String(row[2])) + '</div>' +
-          '<div class="draw-log-detail">' + esc(String(row[3])) + ': ' + esc(String(row[4])) + '</div>' +
-          '<div class="draw-log-detail" style="color:#a0aec0">' + esc(String(row[0]).substring(0,16).replace('T',' ')) + '</div></div>';
-      }).join('');
+    const drawList=document.getElementById('draw-log-list');
+    if(d.drawLog&&d.drawLog.length>0){
+      drawList.innerHTML=d.drawLog.map(row=>'<div class="draw-log-row"><div class="draw-log-comp">'+esc(String(row[1]))+' - '+esc(String(row[2]))+'</div><div class="draw-log-detail">'+esc(String(row[3]))+': '+esc(String(row[4]))+'</div><div class="draw-log-detail" style="color:#a0aec0">'+esc(String(row[0]).substring(0,16).replace('T',' '))+'</div></div>').join('');
     }
-  } catch(e) { console.error(e); }
-  finally { hideLoading(); }
+  } catch(e){ console.error(e); }
+  finally{ hideLoading(); }
 }
 
-function setEntryFilter(type, el) {
-  entryFilter = type;
-  document.querySelectorAll('#admin-tab-entries .admin-tab').forEach(b => {
-    if (['All','Unpaid only'].includes(b.textContent)) b.classList.remove('active');
-  });
+function updateStatAmounts(){
+  const paid=allAdminEntries.filter(e=>e.paid);
+  const unpaid=allAdminEntries.filter(e=>!e.paid);
+  document.getElementById('stat-total').textContent=allAdminEntries.length;
+  document.getElementById('stat-paid').textContent=paid.length;
+  document.getElementById('stat-unpaid').textContent=unpaid.length;
+  document.getElementById('stat-paid-amount').textContent='€'+paid.reduce((s,e)=>s+(parseFloat(e.price)||0),0).toFixed(0);
+  document.getElementById('stat-unpaid-amount').textContent='€'+unpaid.reduce((s,e)=>s+(parseFloat(e.price)||0),0).toFixed(0);
+}
+
+function setEntryFilter(type,el){
+  entryFilter=type;
+  document.querySelectorAll('#admin-tab-entries .admin-tab').forEach(b=>{ if(['All','Unpaid only'].includes(b.textContent)) b.classList.remove('active'); });
   el.classList.add('active');
   applyEntryFilters();
 }
 
-function setEntrySort(type, el) {
-  entrySort = entrySort === type ? 'default' : type;
-  el.classList.toggle('active', entrySort === type);
+function setEntrySort(type,el){
+  entrySort=entrySort===type?'default':type;
+  el.classList.toggle('active',entrySort===type);
   applyEntryFilters();
 }
 
-function showLoading(msg) {
-  document.getElementById('loading-msg').textContent = msg || 'Loading…';
-  document.getElementById('loading-overlay').style.display = 'flex';
-}
-function hideLoading() {
-  document.getElementById('loading-overlay').style.display = 'none';
-}
-
-function toDatetimeLocal(val) {
-  if (!val) return '';
-  // Handle both ISO (2026-05-31T13:30:00.000Z) and local (2026-05-31T13:30) formats
-  var s = String(val);
-  if (s.endsWith('Z')) {
-    // Convert UTC ISO to local datetime-local format
-    var d = new Date(s);
-    var pad = n => String(n).padStart(2,'0');
-    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
-  }
-  return s.substring(0, 16);
-}
-
-function toISOForStorage(val) {
-  if (!val) return '';
-  // datetime-local gives us 2026-05-31T13:30 — convert to full ISO
-  return val.length === 16 ? new Date(val).toISOString() : val;
-}
-
-function updateStatAmounts() {
-  var paid = allAdminEntries.filter(e => e.paid);
-  var unpaid = allAdminEntries.filter(e => !e.paid);
-  document.getElementById('stat-total').textContent = allAdminEntries.length;
-  document.getElementById('stat-paid').textContent = paid.length;
-  document.getElementById('stat-unpaid').textContent = unpaid.length;
-  document.getElementById('stat-paid-amount').textContent = '€' + paid.reduce((s,e) => s + (parseFloat(e.price)||0), 0).toFixed(0);
-  document.getElementById('stat-unpaid-amount').textContent = '€' + unpaid.reduce((s,e) => s + (parseFloat(e.price)||0), 0).toFixed(0);
-}
-
-function applyEntryFilters() {
-  var search = (document.getElementById('entries-search').value || '').toLowerCase();
-  var filtered = allAdminEntries.filter(function(e, i) {
-    var nameMatch = !search || e.name.toLowerCase().includes(search);
-    var paidMatch = entryFilter === 'all' || (entryFilter === 'unpaid' && !e.paid);
-    return nameMatch && paidMatch;
+function applyEntryFilters(){
+  const search=(document.getElementById('entries-search').value||'').toLowerCase();
+  let filtered=allAdminEntries.filter((e)=>{
+    const nm=!search||e.name.toLowerCase().includes(search);
+    const pm=entryFilter==='all'||(entryFilter==='unpaid'&&!e.paid);
+    return nm&&pm;
   });
-  if (entrySort === 'name') {
-    filtered = filtered.slice().sort(function(a, b) { return a.name.localeCompare(b.name); });
-  }
+  if(entrySort==='name') filtered=filtered.slice().sort((a,b)=>a.name.localeCompare(b.name));
   renderAdminEntries(filtered);
 }
 
-function selectAllVisible() {
-  document.querySelectorAll('.entry-checkbox').forEach(cb => cb.checked = true);
-}
+function selectAllVisible(){ document.querySelectorAll('.entry-checkbox').forEach(cb=>cb.checked=true); }
+function clearSelection(){ document.querySelectorAll('.entry-checkbox').forEach(cb=>cb.checked=false); }
 
-function clearSelection() {
-  document.querySelectorAll('.entry-checkbox').forEach(cb => cb.checked = false);
-}
-
-async function bulkMarkPaid() {
-  var checked = Array.from(document.querySelectorAll('.entry-checkbox:checked'));
-  if (checked.length === 0) { alert('No entries selected.'); return; }
-  var indices = checked.map(cb => parseInt(cb.dataset.idx));
-  showLoading('Marking ' + indices.length + ' entr' + (indices.length === 1 ? 'y' : 'ies') + ' as paid…');
+async function bulkMarkPaid(){
+  const checked=Array.from(document.querySelectorAll('.entry-checkbox:checked'));
+  if(!checked.length){ alert('No entries selected.'); return; }
+  const indices=checked.map(cb=>parseInt(cb.dataset.idx));
+  showLoading('Marking '+indices.length+' entr'+(indices.length===1?'y':'ies')+' as paid...');
   try {
-    var result = await apiPost({ action: 'bulkPaid', pass: ADMIN_PASS, indices });
-    if (result.ok) {
-      indices.forEach(function(idx) { if (allAdminEntries[idx]) allAdminEntries[idx].paid = true; });
-      updateStatAmounts();
-      hideLoading();
-      applyEntryFilters();
-    } else { hideLoading(); }
-  } catch(e) { hideLoading(); alert('Could not connect.'); }
-}
-
-async function toggleEntryPaid(idx) {
-  var el = document.getElementById('swipe-' + idx);
-  if (el) el.classList.add('toggling');
-  try {
-    var result = await apiPost({ action: 'togglePaid', pass: ADMIN_PASS, rowIndex: idx });
-    if (result.ok) {
-      if (el) el.classList.remove('toggling');
-      allAdminEntries[idx].paid = result.paid;
-      updateStatAmounts();
-      applyEntryFilters();
+    const result=await apiPost({action:'bulkPaid',pass:ADMIN_PASS,indices});
+    if(result.ok){
+      indices.forEach(idx=>{ if(allAdminEntries[idx]) allAdminEntries[idx].paid=true; });
+      updateStatAmounts(); applyEntryFilters();
     }
-    if (el) el.classList.remove('toggling');
-  } catch(e) { if (el) el.classList.remove('toggling'); }
+  } catch(e){ alert('Could not connect.'); }
+  finally{ hideLoading(); }
 }
 
-function attachSwipe(el, idx) {
-  var startX = 0, currentX = 0, swiping = false;
-  var inner = el.querySelector('.entry-swipe-inner');
-  var bgPay = el.querySelector('.entry-swipe-bg.pay');
-  var bgUnpay = el.querySelector('.entry-swipe-bg.unpay');
+async function toggleEntryPaid(idx){
+  const el=document.getElementById('swipe-'+idx);
+  if(el) el.classList.add('toggling');
+  try {
+    const result=await apiPost({action:'togglePaid',pass:ADMIN_PASS,rowIndex:idx});
+    if(result.ok){ allAdminEntries[idx].paid=result.paid; updateStatAmounts(); applyEntryFilters(); }
+  } catch(e){ console.error(e); }
+  finally{ if(el) el.classList.remove('toggling'); }
+}
 
-  el.addEventListener('touchstart', function(e) {
-    startX = e.touches[0].clientX;
-    swiping = true;
-  }, { passive: true });
-
-  el.addEventListener('touchmove', function(e) {
-    if (!swiping) return;
-    currentX = e.touches[0].clientX - startX;
-    inner.style.transform = 'translateX(' + Math.max(-80, Math.min(80, currentX)) + 'px)';
-    if (currentX > 0) { bgPay.style.opacity = Math.min(1, currentX / 60); bgUnpay.style.opacity = 0; }
-    else { bgUnpay.style.opacity = Math.min(1, -currentX / 60); bgPay.style.opacity = 0; }
-  }, { passive: true });
-
-  el.addEventListener('touchend', function() {
-    swiping = false;
-    inner.style.transform = '';
-    bgPay.style.opacity = 0;
-    bgUnpay.style.opacity = 0;
-    if (Math.abs(currentX) > 60) toggleEntryPaid(idx);
-    currentX = 0;
+function attachSwipe(el,idx){
+  let startX=0,currentX=0,swiping=false;
+  const inner=el.querySelector('.entry-swipe-inner');
+  const bgPay=el.querySelector('.entry-swipe-bg.pay');
+  const bgUnpay=el.querySelector('.entry-swipe-bg.unpay');
+  el.addEventListener('touchstart',e=>{ startX=e.touches[0].clientX; swiping=true; },{passive:true});
+  el.addEventListener('touchmove',e=>{
+    if(!swiping) return;
+    currentX=e.touches[0].clientX-startX;
+    inner.style.transform='translateX('+Math.max(-80,Math.min(80,currentX))+'px)';
+    if(currentX>0){ bgPay.style.opacity=Math.min(1,currentX/60); bgUnpay.style.opacity=0; }
+    else{ bgUnpay.style.opacity=Math.min(1,-currentX/60); bgPay.style.opacity=0; }
+  },{passive:true});
+  el.addEventListener('touchend',()=>{
+    swiping=false; inner.style.transform=''; bgPay.style.opacity=0; bgUnpay.style.opacity=0;
+    if(Math.abs(currentX)>60) toggleEntryPaid(idx);
+    currentX=0;
   });
 }
 
-function renderAdminEntries(entries) {
-  var list = document.getElementById('admin-entries-list');
-  var t1 = currentStatus.team1 || 'T1';
-  var t2 = currentStatus.team2 || 'T2';
-  if (entries.length === 0) { list.innerHTML = '<p style="font-size:0.85rem;color:var(--grey)">No entries found.</p>'; return; }
-  list.innerHTML = entries.map(function(e) {
-    var realIdx = allAdminEntries.indexOf(e);
-    var scores = e.guesses.map(function(g) { return '<span class="entry-score">' + esc(hurlScore(g, t1, t2)) + '</span>'; }).join('');
-    var badge = e.paid ? '<span class="badge-paid">PAID</span>' : '<span class="badge-unpaid">UNPAID</span>';
-    return '<div class="entry-swipe-wrap" id="swipe-' + realIdx + '">' +
-      '<div class="entry-swipe-bg pay">✓ Paid</div>' +
-      '<div class="entry-swipe-bg unpay">Unpaid ✕</div>' +
+function renderAdminEntries(entries){
+  const list=document.getElementById('admin-entries-list');
+  const t1=currentStatus.team1||'T1', t2=currentStatus.team2||'T2';
+  if(!entries.length){ list.innerHTML='<p style="font-size:.85rem;color:var(--grey)">No entries found.</p>'; return; }
+  list.innerHTML=entries.map(e=>{
+    const ri=allAdminEntries.indexOf(e);
+    const scores=e.guesses.map(g=>'<span class="entry-score">'+esc(hurlScore(g,t1,t2))+'</span>').join('');
+    const badge=e.paid?'<span class="badge-paid">PAID</span>':'<span class="badge-unpaid">UNPAID</span>';
+    return '<div class="entry-swipe-wrap" id="swipe-'+ri+'">' +
+      '<div class="entry-swipe-bg pay">Paid</div>' +
+      '<div class="entry-swipe-bg unpay">Unpaid</div>' +
       '<div class="entry-swipe-inner">' +
         '<div class="entry-check-row">' +
-          '<input type="checkbox" class="entry-checkbox" data-idx="' + realIdx + '">' +
+          '<input type="checkbox" class="entry-checkbox" data-idx="'+ri+'">' +
           '<div style="flex:1">' +
             '<div class="entry-row-header">' +
-              '<div><div class="entry-name">' + esc(e.name) + '</div><div class="entry-phone">' + esc(e.phone) + '</div></div>' +
-              '<div style="display:flex;gap:0.4rem;align-items:center">' + badge + '<span class="my-entry-pkg">€' + e.price + '</span></div>' +
+              '<div><div class="entry-name">'+esc(e.name)+'</div><div class="entry-phone">'+esc(e.phone)+'</div></div>' +
+              '<div style="display:flex;gap:.4rem;align-items:center">'+badge+'<span class="my-entry-pkg">€'+e.price+'</span></div>' +
             '</div>' +
-            '<div class="entry-scores">' + scores + '</div>' +
+            '<div class="entry-scores">'+scores+'</div>' +
           '</div>' +
         '</div>' +
-      '</div>' +
-    '</div>';
+      '</div></div>';
   }).join('');
-  entries.forEach(function(e) {
-    var realIdx = allAdminEntries.indexOf(e);
-    var el = document.getElementById('swipe-' + realIdx);
-    if (el) attachSwipe(el, realIdx);
-  });
+  entries.forEach(e=>{ const ri=allAdminEntries.indexOf(e); const el=document.getElementById('swipe-'+ri); if(el) attachSwipe(el,ri); });
 }
 
-
-
-async function saveSettings() {
-  showLoading('Saving…');
+async function saveSettings(){
+  showLoading('Saving...');
   try {
     await apiPost({
-      action: 'saveSettings', pass: ADMIN_PASS,
-      matchTitle: document.getElementById('s-matchTitle').value.trim(),
-      team1: document.getElementById('s-team1').value.trim(),
-      team2: document.getElementById('s-team2').value.trim(),
-      matchDate: document.getElementById('s-matchDate').value.trim(),
-      prize: document.getElementById('s-prize').value.trim(),
-      revolutLink: document.getElementById('s-revolutLink').value.trim(),
-      entryCloseTime: toISOForStorage(document.getElementById('s-entryCloseTime').value),
-      revealTime: toISOForStorage(document.getElementById('s-revealTime').value)
+      action:'saveSettings',pass:ADMIN_PASS,
+      matchTitle:document.getElementById('s-matchTitle').value.trim(),
+      team1:document.getElementById('s-team1').value.trim(),
+      team2:document.getElementById('s-team2').value.trim(),
+      matchDate:document.getElementById('s-matchDate').value.trim(),
+      prize:document.getElementById('s-prize').value.trim(),
+      revolutLink:document.getElementById('s-revolutLink').value.trim(),
+      entryCloseTime:toISOForStorage(document.getElementById('s-entryCloseTime').value),
+      revealTime:toISOForStorage(document.getElementById('s-revealTime').value)
     });
-    hideLoading();
-    document.getElementById('settings-msg').className = 'msg success';
-    document.getElementById('settings-msg').textContent = 'Saved.';
-    setTimeout(() => document.getElementById('settings-msg').textContent = '', 2000);
+    document.getElementById('settings-msg').className='msg success';
+    document.getElementById('settings-msg').textContent='Saved.';
+    setTimeout(()=>document.getElementById('settings-msg').textContent='',2000);
     refreshBanner();
-  } catch(e) {
-    hideLoading();
-    document.getElementById('settings-msg').className = 'msg error';
-    document.getElementById('settings-msg').textContent = 'Save failed.';
-  }
+  } catch(e){
+    document.getElementById('settings-msg').className='msg error';
+    document.getElementById('settings-msg').textContent='Save failed.';
+  } finally{ hideLoading(); }
 }
 
-async function saveAndAnnounce() {
-  var btn = document.getElementById('announce-btn');
-  var msg = document.getElementById('announce-msg');
-  btn.disabled = true;
-  btn.textContent = 'Saving…';
-  showLoading('Announcing winner…');
+async function findWinners(){
+  const t1g=parseInt(document.getElementById('final-t1-goals').value);
+  const t1p=parseInt(document.getElementById('final-t1-points').value);
+  const t2g=parseInt(document.getElementById('final-t2-goals').value);
+  const t2p=parseInt(document.getElementById('final-t2-points').value);
+  if([t1g,t1p,t2g,t2p].some(isNaN)){ alert('Enter goals and points for both teams.'); return; }
+
+  showLoading('Checking entries...');
+  await new Promise(r=>setTimeout(r,50));
+
   try {
-    var result = await apiPost({
-      action: 'saveWinner',
-      pass: ADMIN_PASS,
-      names: currentWinnerData.names,
-      scoreStr: currentWinnerData.scoreStr,
-      resultType: currentWinnerData.resultType,
-      prize: currentWinnerData.prize,
-      prizeEach: currentWinnerData.prizeEach
-    });
-    if (result.ok) {
-      hideLoading();
-      msg.className = 'msg success';
-      msg.textContent = 'Winner saved and announced on the public page.';
-      btn.style.display = 'none';
-      refreshBanner();
+    if(!allAdminEntries.length){ hideLoading(); alert('No entries loaded. Open the Entries tab first.'); return; }
+    const paidEntries=allAdminEntries.filter(e=>e.paid);
+    const unpaidCount=allAdminEntries.length-paidEntries.length;
+    const winners=[];
+    paidEntries.forEach(e=>e.guesses.forEach(g=>{ if(g.corkGoals===t1g&&g.corkPoints===t1p&&g.limGoals===t2g&&g.limPoints===t2p) winners.push(e.name); }));
+    const t1=currentStatus.team1||'Team 1', t2=currentStatus.team2||'Team 2';
+    const scoreStr=t1+' '+hurl(t1g,t1p)+' v '+hurl(t2g,t2p)+' '+t2;
+    const unpaidNote=unpaidCount>0?' ('+unpaidCount+' unpaid entr'+(unpaidCount===1?'y':'ies')+' excluded)':'';
+    const prize=parseInt(currentStatus.prize||100);
+    const box=document.getElementById('result-box');
+    box.style.display='block';
+    let resultType,namesStr,prizeEach;
+    if(winners.length>0){
+      const uw=[...new Set(winners)];
+      resultType=uw.length>1?'Winners':'Winner';
+      namesStr=uw.join(', ');
+      prizeEach=uw.length>1?(prize/uw.length).toFixed(2):prize;
+      const prizeMsg=uw.length>1?' Prize split: €'+prizeEach+' each.':' Prize: €'+prize+'.';
+      document.getElementById('result-title').textContent='Winner'+(uw.length>1?'s':'')+'!';
+      document.getElementById('result-body').textContent='Correct prediction ('+scoreStr+'): '+namesStr+'.'+prizeMsg+unpaidNote;
     } else {
-      hideLoading();
-      msg.className = 'msg error';
-      msg.textContent = result.error || 'Save failed.';
+      const pool=[];
+      paidEntries.forEach(e=>e.guesses.forEach(()=>pool.push(e.name)));
+      const shuffled=pool.slice().sort(()=>Math.random()-.5);
+      const drawn=[], seen=new Set();
+      for(const n of shuffled){ if(!seen.has(n)){ seen.add(n); drawn.push(n); } if(drawn.length===2) break; }
+      resultType='Draw'; namesStr=drawn.join(' & '); prizeEach=(prize/2).toFixed(2);
+      document.getElementById('result-title').textContent='No exact match - draw required';
+      document.getElementById('result-body').textContent='No one predicted '+scoreStr+'. Random draw from '+pool.length+' paid guesses: '+namesStr+'. Prize split: €'+prizeEach+' each.'+unpaidNote;
     }
-  } catch(e) {
-    hideLoading();
-    msg.className = 'msg error';
-    msg.textContent = 'Could not connect.';
-  }
-  btn.disabled = false;
-  btn.textContent = '📣 Save & announce winner';
+    currentWinnerData={names:namesStr,scoreStr,resultType,prize,prizeEach};
+    document.getElementById('announce-btn').style.display='block';
+    document.getElementById('announce-msg').textContent='';
+  } catch(e){ console.error(e); }
+  finally{ hideLoading(); }
 }
 
-var currentWinnerData = {};
+async function saveAndAnnounce(){
+  const btn=document.getElementById('announce-btn');
+  const msg=document.getElementById('announce-msg');
+  btn.disabled=true; btn.textContent='Saving...';
+  showLoading('Announcing winner...');
+  try {
+    const result=await apiPost({action:'saveWinner',pass:ADMIN_PASS,...currentWinnerData});
+    if(result.ok){
+      msg.className='msg success'; msg.textContent='Winner saved and announced on the public page.';
+      btn.style.display='none'; refreshBanner();
+    } else { msg.className='msg error'; msg.textContent=result.error||'Save failed.'; }
+  } catch(e){ msg.className='msg error'; msg.textContent='Could not connect.'; }
+  finally{ hideLoading(); btn.disabled=false; btn.textContent='Save & announce winner'; }
+}
 
-async function findWinners() {
-  const t1g = parseInt(document.getElementById('final-t1-goals').value);
-  const t1p = parseInt(document.getElementById('final-t1-points').value);
-  const t2g = parseInt(document.getElementById('final-t2-goals').value);
-  const t2p = parseInt(document.getElementById('final-t2-points').value);
-  if ([t1g,t1p,t2g,t2p].some(isNaN)) { alert('Enter goals and points for both teams.'); return; }
-
-  showLoading('Checking entries…');
-  await new Promise(r => setTimeout(r, 100)); // allow UI to update
-  const entries = allAdminEntries;
-  const paidEntries = entries.filter(e => e.paid);
-  const unpaidCount = entries.length - paidEntries.length;
-  const winners = [];
-  paidEntries.forEach(e => {
-    e.guesses.forEach(g => {
-      if (g.corkGoals === t1g && g.corkPoints === t1p && g.limGoals === t2g && g.limPoints === t2p) {
-        winners.push(e.name);
-      }
+async function createNewCompetition(){
+  const tabName=document.getElementById('new-tabName').value.trim();
+  if(!tabName){ document.getElementById('new-comp-msg').className='msg error'; document.getElementById('new-comp-msg').textContent='Please enter a competition name.'; return; }
+  if(!confirm('This will archive the current competition and start a new one. Are you sure?')) return;
+  showLoading('Creating new competition...');
+  try {
+    const result=await apiPost({
+      action:'newCompetition',pass:ADMIN_PASS,tabName,
+      matchTitle:document.getElementById('new-matchTitle').value.trim(),
+      team1:document.getElementById('new-team1').value.trim(),
+      team2:document.getElementById('new-team2').value.trim(),
+      matchDate:document.getElementById('new-matchDate').value.trim(),
+      prize:document.getElementById('new-prize').value.trim(),
+      revolutLink:document.getElementById('new-revolutLink').value.trim(),
+      entryCloseTime:toISOForStorage(document.getElementById('new-entryCloseTime').value),
+      revealTime:toISOForStorage(document.getElementById('new-revealTime').value)
     });
-  });
+    if(result.ok){
+      entriesLoaded=false;
+      document.getElementById('new-comp-msg').className='msg success';
+      document.getElementById('new-comp-msg').textContent='New competition started!';
+      refreshBanner(); loadAdminPanel();
+    } else { document.getElementById('new-comp-msg').className='msg error'; document.getElementById('new-comp-msg').textContent=result.error||'Failed.'; }
+  } catch(e){ document.getElementById('new-comp-msg').className='msg error'; document.getElementById('new-comp-msg').textContent='Could not connect.'; }
+  finally{ hideLoading(); }
+}
 
-  const t1 = currentStatus.team1 || 'Team 1';
-  const t2 = currentStatus.team2 || 'Team 2';
-  const scoreStr = t1 + ' ' + hurl(t1g, t1p) + ' v ' + hurl(t2g, t2p) + ' ' + t2;
-  const unpaidNote = unpaidCount > 0 ? ' (' + unpaidCount + ' unpaid entr' + (unpaidCount === 1 ? 'y' : 'ies') + ' excluded)' : '';
-
-  const box = document.getElementById('result-box');
-  const title = document.getElementById('result-title');
-  const body = document.getElementById('result-body');
-  box.style.display = 'block';
-
-  let resultText, resultType, namesStr;
-
-  if (winners.length > 0) {
-    resultType = 'Winner' + (winners.length > 1 ? 's' : '');
-    namesStr = winners.join(', ');
-    title.textContent = '🎉 ' + winners.length + ' winner' + (winners.length > 1 ? 's' : '') + '!';
-    body.textContent = 'Correct prediction (' + scoreStr + '): ' + namesStr + '.' + unpaidNote;
-  } else {
-    const pool = [];
-    paidEntries.forEach(e => e.guesses.forEach(() => pool.push(e.name)));
-    const drawn = pool.slice().sort(() => Math.random() - 0.5).slice(0, 2);
-    resultType = 'Draw';
-    namesStr = drawn.join(' & ');
-    title.textContent = 'No exact match — draw required';
-    body.textContent = 'No one predicted ' + scoreStr + '. Random draw from ' + pool.length + ' paid guesses: ' + namesStr + '.' + unpaidNote;
-  }
-
-  // Log to sheet
+async function deleteAllData(){
+  if(!confirm('Permanently delete all entries for the current competition?')) return;
+  if(!confirm('Last chance - are you sure?')) return;
+  showLoading('Deleting...');
   try {
-    await apiPost({ action: 'logDraw', pass: ADMIN_PASS, finalScore: scoreStr, result: resultType, names: namesStr });
-  } catch(e) {}
-}
-
-async function createNewCompetition() {
-  const tabName = document.getElementById('new-tabName').value.trim();
-  if (!tabName) { document.getElementById('new-comp-msg').className = 'msg error'; document.getElementById('new-comp-msg').textContent = 'Please enter a competition name.'; return; }
-  if (!confirm('This will archive the current competition and start a new one. Are you sure?')) return;
-  showLoading('Creating new competition…');
-  try {
-    const result = await apiPost({
-      action: 'newCompetition', pass: ADMIN_PASS,
-      tabName,
-      matchTitle: document.getElementById('new-matchTitle').value.trim(),
-      team1: document.getElementById('new-team1').value.trim(),
-      team2: document.getElementById('new-team2').value.trim(),
-      matchDate: document.getElementById('new-matchDate').value.trim(),
-      prize: document.getElementById('new-prize').value.trim(),
-      revolutLink: document.getElementById('new-revolutLink').value.trim(),
-      entryCloseTime: toISOForStorage(document.getElementById('new-entryCloseTime').value),
-      revealTime: toISOForStorage(document.getElementById('new-revealTime').value)
-    });
-    if (result.ok) {
-      hideLoading();
-      entriesLoaded = false;
-      document.getElementById('new-comp-msg').className = 'msg success';
-      document.getElementById('new-comp-msg').textContent = 'New competition started!';
-      refreshBanner();
-      loadAdminPanel();
-    } else {
-      hideLoading();
-      document.getElementById('new-comp-msg').className = 'msg error';
-      document.getElementById('new-comp-msg').textContent = result.error || 'Failed.';
-    }
-  } catch(e) {
-    hideLoading();
-    document.getElementById('new-comp-msg').className = 'msg error';
-    document.getElementById('new-comp-msg').textContent = 'Could not connect.';
-  }
-}
-
-async function deleteAllData() {
-  if (!confirm('Permanently delete all entries for the current competition?')) return;
-  if (!confirm('Last chance — are you sure?')) return;
-  try {
-    const result = await apiPost({ action: 'deleteAll', pass: ADMIN_PASS });
-    if (result.ok) {
-      document.getElementById('delete-msg').className = 'msg success';
-      document.getElementById('delete-msg').textContent = 'All entries deleted.';
-      loadAdminPanel();
-    } else {
-      document.getElementById('delete-msg').className = 'msg error';
-      document.getElementById('delete-msg').textContent = 'Delete failed.';
-    }
-  } catch(e) {
-    document.getElementById('delete-msg').className = 'msg error';
-    document.getElementById('delete-msg').textContent = 'Could not connect.';
-  }
-}
-
-function adminAutoAdvance(el, nextId) {
-  const val = el.value;
-  const max = parseInt(el.max);
-  if (val.length >= 2 || parseInt(val) >= max) {
-    const next = document.getElementById(nextId);
-    if (next) { next.focus(); next.select(); }
-  }
-}
-
-function updateFinalTotal() {
-  const t1g = parseInt(document.getElementById('final-t1-goals').value) || 0;
-  const t1p = parseInt(document.getElementById('final-t1-points').value) || 0;
-  const t2g = parseInt(document.getElementById('final-t2-goals').value) || 0;
-  const t2p = parseInt(document.getElementById('final-t2-points').value) || 0;
-  document.getElementById('final-t1-total').textContent = '= ' + (t1g * 3 + t1p) + ' pts';
-  document.getElementById('final-t2-total').textContent = '= ' + (t2g * 3 + t2p) + ' pts';
-}
-
-function esc(str) {
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    const result=await apiPost({action:'deleteAll',pass:ADMIN_PASS});
+    if(result.ok){
+      entriesLoaded=false; allAdminEntries=[];
+      document.getElementById('delete-msg').className='msg success';
+      document.getElementById('delete-msg').textContent='All entries deleted.';
+      updateStatAmounts(); applyEntryFilters();
+    } else { document.getElementById('delete-msg').className='msg error'; document.getElementById('delete-msg').textContent='Delete failed.'; }
+  } catch(e){ document.getElementById('delete-msg').className='msg error'; document.getElementById('delete-msg').textContent='Could not connect.'; }
+  finally{ hideLoading(); }
 }
 
 refreshMyEntries();
 refreshBanner();
-setInterval(refreshBanner, 15000);
+setInterval(refreshBanner,15000);
 </script>
 </body>
 </html>
