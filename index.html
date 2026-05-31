@@ -205,7 +205,7 @@
 <header>
   <img src="Rockban_logo.jpg" alt="Rockbán GAA">
   <div class="badge">Rockbán GAA – Fundraiser</div>
-  <h1 id="header-title">"Guess the <span>Score?</span>"</h1>
+  <h1 id="header-title">"Guess the <span>Score!</span>"</h1>
   <p id="header-sub">Loading…</p>
 </header>
 
@@ -469,12 +469,24 @@ function hurlScore(e, t1, t2) {
 }
 
 async function api(params) {
-  const r = await fetch(SCRIPT_URL + '?' + new URLSearchParams(params));
-  return r.json();
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 30000);
+  try {
+    const r = await fetch(SCRIPT_URL + '?' + new URLSearchParams(params), { signal: controller.signal });
+    return r.json();
+  } finally {
+    clearTimeout(timer);
+  }
 }
 async function apiPost(payload) {
-  const r = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-  return r.json();
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 30000);
+  try {
+    const r = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), signal: controller.signal });
+    return r.json();
+  } finally {
+    clearTimeout(timer);
+  }
 }
 function getMyEntries() {
   try { return JSON.parse(sessionStorage.getItem(SESSION_KEY) || '[]'); } catch { return []; }
@@ -542,6 +554,7 @@ async function refreshBanner() {
     }
   } catch(e) {
     document.getElementById('reveal-status').textContent = 'Could not connect';
+    hideLoading();
   }
 }
 
@@ -1078,6 +1091,7 @@ async function loadAdminPanel() {
   showLoading('Loading entries…');
   try {
     const d = await api({ action: 'adminLoad', pass: ADMIN_PASS });
+    if (!d || d.error) { hideLoading(); document.getElementById('admin-msg').textContent = d ? d.error : 'Failed to load.'; return; }
 
     // Settings tab
     document.getElementById('s-matchTitle').value = d.matchTitle || '';
