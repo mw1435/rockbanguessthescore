@@ -1169,7 +1169,21 @@ function hideLoading() {
 
 function toDatetimeLocal(val) {
   if (!val) return '';
-  return String(val).substring(0, 16);
+  // Handle both ISO (2026-05-31T13:30:00.000Z) and local (2026-05-31T13:30) formats
+  var s = String(val);
+  if (s.endsWith('Z')) {
+    // Convert UTC ISO to local datetime-local format
+    var d = new Date(s);
+    var pad = n => String(n).padStart(2,'0');
+    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+  return s.substring(0, 16);
+}
+
+function toISOForStorage(val) {
+  if (!val) return '';
+  // datetime-local gives us 2026-05-31T13:30 — convert to full ISO
+  return val.length === 16 ? new Date(val).toISOString() : val;
 }
 
 function updateStatAmounts() {
@@ -1309,8 +1323,8 @@ async function saveSettings() {
       matchDate: document.getElementById('s-matchDate').value.trim(),
       prize: document.getElementById('s-prize').value.trim(),
       revolutLink: document.getElementById('s-revolutLink').value.trim(),
-      entryCloseTime: document.getElementById('s-entryCloseTime').value || '',
-      revealTime: document.getElementById('s-revealTime').value || ''
+      entryCloseTime: toISOForStorage(document.getElementById('s-entryCloseTime').value),
+      revealTime: toISOForStorage(document.getElementById('s-revealTime').value)
     });
     hideLoading();
     document.getElementById('settings-msg').className = 'msg success';
@@ -1431,8 +1445,8 @@ async function createNewCompetition() {
       matchDate: document.getElementById('new-matchDate').value.trim(),
       prize: document.getElementById('new-prize').value.trim(),
       revolutLink: document.getElementById('new-revolutLink').value.trim(),
-      entryCloseTime: document.getElementById('new-entryCloseTime').value || '',
-      revealTime: document.getElementById('new-revealTime').value || ''
+      entryCloseTime: toISOForStorage(document.getElementById('new-entryCloseTime').value),
+      revealTime: toISOForStorage(document.getElementById('new-revealTime').value)
     });
     if (result.ok) {
       hideLoading();
