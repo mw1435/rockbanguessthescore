@@ -1093,7 +1093,7 @@ function showAdminTab(tab, el) {
 }
 
 async function loadAdminPanel() {
-  showLoading('Loading entries…');
+  showLoading('Loading Competition…');
   try {
     const d = await api({ action: 'adminLoad', pass: ADMIN_PASS });
     if (!d || d.error) { hideLoading(); document.getElementById('admin-msg').textContent = d ? d.error : 'Failed to load.'; return; }
