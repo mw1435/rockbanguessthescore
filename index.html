@@ -128,6 +128,37 @@
   .section-title { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey); margin-bottom: 0.75rem; }
   .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
   @keyframes spin { to { transform: rotate(360deg); } }
+  .entry-swipe-wrap {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    touch-action: pan-y;
+  }
+  .entry-swipe-inner {
+    position: relative;
+    background: white;
+    transition: transform 0.2s ease;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    cursor: grab;
+  }
+  .entry-swipe-bg {
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
+    display: flex; align-items: center;
+    padding: 0 1rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    pointer-events: none;
+  }
+  .entry-swipe-bg.pay { background: #16a34a; color: white; justify-content: flex-start; }
+  .entry-swipe-bg.unpay { background: #dc2626; color: white; justify-content: flex-end; }
+  .entry-check-row { display: flex; align-items: flex-start; gap: 0.6rem; }
+  .entry-check-row input[type="checkbox"] { margin-top: 0.2rem; width: 16px; height: 16px; flex-shrink: 0; accent-color: var(--pink); }
+
   .gdpr-notice { background: #fef2f2; border: 1.5px solid #fca5a5; border-radius: 10px; padding: 0.9rem 1rem; margin-top: 1rem; font-size: 0.8rem; color: #7f1d1d; line-height: 1.6; }
   .entries-hidden { display: none; }
   .divider { margin: 1.25rem 0; border: none; border-top: 1px solid var(--border); }
@@ -298,11 +329,23 @@
           <div class="stat"><div class="stat-num green" id="stat-paid">0</div><div class="stat-label">paid</div></div>
           <div class="stat"><div class="stat-num red" id="stat-unpaid">0</div><div class="stat-label">unpaid</div></div>
         </div>
-        <div class="section-title">Filter</div>
-        <div style="display:flex;gap:0.5rem;margin-bottom:1rem">
-          <button class="admin-tab active" onclick="filterEntries('all',this)" id="filter-all">All</button>
-          <button class="admin-tab" onclick="filterEntries('unpaid',this)" id="filter-unpaid">Unpaid only</button>
+
+        <input type="text" id="entries-search" placeholder="Search by name…" oninput="applyEntryFilters()" style="margin-bottom:0.75rem">
+
+        <div style="display:flex;gap:0.5rem;margin-bottom:0.75rem;flex-wrap:wrap">
+          <button class="admin-tab active" onclick="setEntryFilter('all',this)">All</button>
+          <button class="admin-tab" onclick="setEntryFilter('unpaid',this)">Unpaid only</button>
+          <button class="admin-tab" onclick="setEntrySort('name',this)">A–Z</button>
         </div>
+
+        <div style="display:flex;gap:0.5rem;margin-bottom:1rem;align-items:center">
+          <button class="btn btn-small btn-navy" onclick="bulkMarkPaid()" style="font-size:0.78rem;padding:0.4rem 0.8rem">Mark selected as paid</button>
+          <button class="btn btn-small btn-outline" onclick="selectAllVisible()" style="font-size:0.78rem;padding:0.4rem 0.8rem">Select all</button>
+          <button class="btn btn-small btn-outline" onclick="clearSelection()" style="font-size:0.78rem;padding:0.4rem 0.8rem">Clear</button>
+        </div>
+
+        <p style="font-size:0.75rem;color:var(--grey);margin-bottom:0.75rem">Swipe right on an entry to mark paid. Swipe left to mark unpaid.</p>
+
         <div id="admin-entries-list"></div>
       </div>
 
@@ -1039,25 +1082,136 @@ async function loadAdminPanel() {
   } catch(e) {}
 }
 
-function renderAdminEntries(entries) {
-  const list = document.getElementById('admin-entries-list');
-  const t1 = currentStatus.team1 || 'T1';
-  const t2 = currentStatus.team2 || 'T2';
-  list.innerHTML = entries.map(e => {
-    const scores = e.guesses.map(g => '<span class="entry-score">' + esc(hurlScore(g, t1, t2)) + '</span>').join('');
-    const badge = e.paid
-      ? '<span class="badge-paid">PAID</span>'
-      : '<span class="badge-unpaid">UNPAID</span>';
-    return '<div class="entry-row"><div class="entry-row-header"><div><div class="entry-name">' + esc(e.name) + '</div><div class="entry-phone">' + esc(e.phone) + '</div></div><div style="display:flex;gap:0.4rem;align-items:center">' + badge + '<span class="my-entry-pkg">€' + e.price + '</span></div></div><div class="entry-scores">' + scores + '</div></div>';
-  }).join('') || '<p style="font-size:0.85rem;color:var(--grey)">No entries yet.</p>';
+// ─── Entry filter/sort/search state ──────────────────────────────────────────
+var entryFilter = 'all';
+var entrySort = 'default';
+
+function setEntryFilter(type, el) {
+  entryFilter = type;
+  document.querySelectorAll('#admin-tab-entries .admin-tab').forEach(b => {
+    if (['All','Unpaid only'].includes(b.textContent)) b.classList.remove('active');
+  });
+  el.classList.add('active');
+  applyEntryFilters();
 }
 
-function filterEntries(type, el) {
-  document.querySelectorAll('#admin-tab-entries .admin-tab').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  const filtered = type === 'unpaid' ? allAdminEntries.filter(e => !e.paid) : allAdminEntries;
+function setEntrySort(type, el) {
+  entrySort = entrySort === type ? 'default' : type;
+  el.classList.toggle('active', entrySort === type);
+  applyEntryFilters();
+}
+
+function applyEntryFilters() {
+  var search = (document.getElementById('entries-search').value || '').toLowerCase();
+  var filtered = allAdminEntries.filter(function(e, i) {
+    var nameMatch = !search || e.name.toLowerCase().includes(search);
+    var paidMatch = entryFilter === 'all' || (entryFilter === 'unpaid' && !e.paid);
+    return nameMatch && paidMatch;
+  });
+  if (entrySort === 'name') {
+    filtered = filtered.slice().sort(function(a, b) { return a.name.localeCompare(b.name); });
+  }
   renderAdminEntries(filtered);
 }
+
+function selectAllVisible() {
+  document.querySelectorAll('.entry-checkbox').forEach(cb => cb.checked = true);
+}
+
+function clearSelection() {
+  document.querySelectorAll('.entry-checkbox').forEach(cb => cb.checked = false);
+}
+
+async function bulkMarkPaid() {
+  var checked = Array.from(document.querySelectorAll('.entry-checkbox:checked'));
+  if (checked.length === 0) { alert('No entries selected.'); return; }
+  var indices = checked.map(cb => parseInt(cb.dataset.idx));
+  try {
+    var result = await apiPost({ action: 'bulkPaid', pass: ADMIN_PASS, indices });
+    if (result.ok) {
+      indices.forEach(function(idx) { if (allAdminEntries[idx]) allAdminEntries[idx].paid = true; });
+      document.getElementById('stat-paid').textContent = allAdminEntries.filter(e => e.paid).length;
+      document.getElementById('stat-unpaid').textContent = allAdminEntries.filter(e => !e.paid).length;
+      applyEntryFilters();
+    }
+  } catch(e) { alert('Could not connect.'); }
+}
+
+async function toggleEntryPaid(idx) {
+  try {
+    var result = await apiPost({ action: 'togglePaid', pass: ADMIN_PASS, rowIndex: idx });
+    if (result.ok) {
+      allAdminEntries[idx].paid = result.paid;
+      document.getElementById('stat-paid').textContent = allAdminEntries.filter(e => e.paid).length;
+      document.getElementById('stat-unpaid').textContent = allAdminEntries.filter(e => !e.paid).length;
+      applyEntryFilters();
+    }
+  } catch(e) {}
+}
+
+function attachSwipe(el, idx) {
+  var startX = 0, currentX = 0, swiping = false;
+  var inner = el.querySelector('.entry-swipe-inner');
+  var bgPay = el.querySelector('.entry-swipe-bg.pay');
+  var bgUnpay = el.querySelector('.entry-swipe-bg.unpay');
+
+  el.addEventListener('touchstart', function(e) {
+    startX = e.touches[0].clientX;
+    swiping = true;
+  }, { passive: true });
+
+  el.addEventListener('touchmove', function(e) {
+    if (!swiping) return;
+    currentX = e.touches[0].clientX - startX;
+    inner.style.transform = 'translateX(' + Math.max(-80, Math.min(80, currentX)) + 'px)';
+    if (currentX > 0) { bgPay.style.opacity = Math.min(1, currentX / 60); bgUnpay.style.opacity = 0; }
+    else { bgUnpay.style.opacity = Math.min(1, -currentX / 60); bgPay.style.opacity = 0; }
+  }, { passive: true });
+
+  el.addEventListener('touchend', function() {
+    swiping = false;
+    inner.style.transform = '';
+    bgPay.style.opacity = 0;
+    bgUnpay.style.opacity = 0;
+    if (Math.abs(currentX) > 60) toggleEntryPaid(idx);
+    currentX = 0;
+  });
+}
+
+function renderAdminEntries(entries) {
+  var list = document.getElementById('admin-entries-list');
+  var t1 = currentStatus.team1 || 'T1';
+  var t2 = currentStatus.team2 || 'T2';
+  if (entries.length === 0) { list.innerHTML = '<p style="font-size:0.85rem;color:var(--grey)">No entries found.</p>'; return; }
+  list.innerHTML = entries.map(function(e) {
+    var realIdx = allAdminEntries.indexOf(e);
+    var scores = e.guesses.map(function(g) { return '<span class="entry-score">' + esc(hurlScore(g, t1, t2)) + '</span>'; }).join('');
+    var badge = e.paid ? '<span class="badge-paid">PAID</span>' : '<span class="badge-unpaid">UNPAID</span>';
+    return '<div class="entry-swipe-wrap" id="swipe-' + realIdx + '">' +
+      '<div class="entry-swipe-bg pay">✓ Paid</div>' +
+      '<div class="entry-swipe-bg unpay">Unpaid ✕</div>' +
+      '<div class="entry-swipe-inner">' +
+        '<div class="entry-check-row">' +
+          '<input type="checkbox" class="entry-checkbox" data-idx="' + realIdx + '">' +
+          '<div style="flex:1">' +
+            '<div class="entry-row-header">' +
+              '<div><div class="entry-name">' + esc(e.name) + '</div><div class="entry-phone">' + esc(e.phone) + '</div></div>' +
+              '<div style="display:flex;gap:0.4rem;align-items:center">' + badge + '<span class="my-entry-pkg">€' + e.price + '</span></div>' +
+            '</div>' +
+            '<div class="entry-scores">' + scores + '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  entries.forEach(function(e) {
+    var realIdx = allAdminEntries.indexOf(e);
+    var el = document.getElementById('swipe-' + realIdx);
+    if (el) attachSwipe(el, realIdx);
+  });
+}
+
+
 
 async function saveSettings() {
   try {
