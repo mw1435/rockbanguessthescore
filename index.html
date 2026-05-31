@@ -1095,47 +1095,18 @@ function showAdminTab(tab, el) {
 }
 
 async function loadAdminPanel() {
-  showLoading('Loading latest competition…');
-  try {
-    const d = await api({ action: 'adminLoad', pass: ADMIN_PASS });
-    if (!d || d.error) { hideLoading(); document.getElementById('admin-msg').textContent = d ? d.error : 'Failed to load.'; return; }
-
-    // Settings tab
-    document.getElementById('s-matchTitle').value = d.matchTitle || '';
-    document.getElementById('s-team1').value = d.team1 || '';
-    document.getElementById('s-team2').value = d.team2 || '';
-    document.getElementById('s-matchDate').value = d.matchDate || '';
-    document.getElementById('s-prize').value = d.prize || '';
-    document.getElementById('s-revolutLink').value = d.revolutLink || '';
-    document.getElementById('s-entryCloseTime').value = toDatetimeLocal(d.entryCloseTime);
-    document.getElementById('s-revealTime').value = toDatetimeLocal(d.revealTime);
-
-    // Winner tab team labels
-    document.getElementById('final-team1-label').textContent = d.team1 || 'Team 1';
-    document.getElementById('final-team2-label').textContent = d.team2 || 'Team 2';
-
-    // Entries stats
-    document.getElementById('stat-total').textContent = d.count || 0;
-    document.getElementById('stat-paid').textContent = d.paidCount || 0;
-    document.getElementById('stat-unpaid').textContent = d.unpaidCount || 0;
-    var paidTotal = (d.entries || []).filter(e => e.paid).reduce((sum, e) => sum + (parseFloat(e.price) || 0), 0);
-    var unpaidTotal = (d.entries || []).filter(e => !e.paid).reduce((sum, e) => sum + (parseFloat(e.price) || 0), 0);
-    document.getElementById('stat-paid-amount').textContent = '€' + paidTotal.toFixed(0);
-    document.getElementById('stat-unpaid-amount').textContent = '€' + unpaidTotal.toFixed(0);
-
-    allAdminEntries = d.entries || [];
-    renderAdminEntries(allAdminEntries);
-
-    // Draw log
-    const drawList = document.getElementById('draw-log-list');
-    if (d.drawLog && d.drawLog.length > 0) {
-      drawList.innerHTML = d.drawLog.map(row => {
-        return '<div class="draw-log-row"><div class="draw-log-comp">' + esc(String(row[1])) + ' — ' + esc(String(row[2])) + '</div>' +
-          '<div class="draw-log-detail">' + esc(String(row[3])) + ': ' + esc(String(row[4])) + '</div>' +
-          '<div class="draw-log-detail" style="color:#a0aec0">' + esc(String(row[0]).substring(0,16).replace('T',' ')) + '</div></div>';
-      }).join('');
-    }
-  } catch(e) {}
+  const d = currentStatus;
+  if (!d || !d.matchTitle) return;
+  document.getElementById('s-matchTitle').value = d.matchTitle || '';
+  document.getElementById('s-team1').value = d.team1 || '';
+  document.getElementById('s-team2').value = d.team2 || '';
+  document.getElementById('s-matchDate').value = d.matchDate || '';
+  document.getElementById('s-prize').value = d.prize || '';
+  document.getElementById('s-revolutLink').value = d.revolutLink || '';
+  document.getElementById('s-entryCloseTime').value = toDatetimeLocal(d.entryCloseTime);
+  document.getElementById('s-revealTime').value = toDatetimeLocal(d.revealTime);
+  document.getElementById('final-team1-label').textContent = d.team1 || 'Team 1';
+  document.getElementById('final-team2-label').textContent = d.team2 || 'Team 2';
 }
 
 // ─── Entry filter/sort/search state ──────────────────────────────────────────
