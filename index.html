@@ -746,7 +746,7 @@ function renderAdminEntries(entries){
   list.innerHTML=entries.map(e=>{
     const ri=allAdminEntries.indexOf(e);
     const scores=e.guesses.map(g=>'<span class="entry-score">'+esc(hurlScore(g,t1,t2))+'</span>').join('');
-    const badge=e.paid?'<span class="badge-paid">PAID</span>':'<span class="badge-unpaid">UNPAID</span>';
+    const badge=e.paid?'<span class="badge-paid" onclick="toggleEntryPaid('+ri+')" style="cursor:pointer" title="Click to mark unpaid">PAID</span>':'<span class="badge-unpaid" onclick="toggleEntryPaid('+ri+')" style="cursor:pointer" title="Click to mark paid">UNPAID</span>';
     return '<div class="entry-swipe-wrap" id="swipe-'+ri+'">' +
       '<div class="entry-swipe-bg pay">Paid</div>' +
       '<div class="entry-swipe-bg unpay">Unpaid</div>' +
