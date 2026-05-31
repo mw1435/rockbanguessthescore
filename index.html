@@ -247,7 +247,6 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
         <label>Match title</label><input type="text" id="s-matchTitle" placeholder="e.g. Guess the Score">
         <label>Team 1</label><input type="text" id="s-team1" placeholder="e.g. Cork">
         <label>Team 2</label><input type="text" id="s-team2" placeholder="e.g. Limerick">
-        <label>Match date</label><input type="text" id="s-matchDate" placeholder="e.g. June 7th">
         <label>Prize (€)</label><input type="number" id="s-prize" placeholder="100">
         <label>Revolut link</label><input type="text" id="s-revolutLink" placeholder="https://revolut.me/yourname">
         <label>Match start time</label><input type="datetime-local" id="s-matchStartTime">
@@ -320,7 +319,6 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
         <label>Match title</label><input type="text" id="new-matchTitle" placeholder="e.g. Guess the Score">
         <label>Team 1</label><input type="text" id="new-team1" placeholder="e.g. Cork">
         <label>Team 2</label><input type="text" id="new-team2" placeholder="e.g. Clare">
-        <label>Match date</label><input type="text" id="new-matchDate" placeholder="e.g. July 14th">
         <label>Prize (€)</label><input type="number" id="new-prize" placeholder="100">
         <label>Revolut link</label><input type="text" id="new-revolutLink" placeholder="https://revolut.me/yourname">
         <label>Match start time</label><input type="datetime-local" id="new-matchStartTime">
@@ -364,6 +362,15 @@ function hurl(g,p){ return g+'-'+String(p).padStart(2,'0'); }
 function hurlScore(e,t1,t2){ return (t1||'T1')+' '+hurl(e.corkGoals,e.corkPoints)+' v '+hurl(e.limGoals,e.limPoints)+' '+(t2||'T2'); }
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+function fmtDateTime(val){
+  if(!val) return '--';
+  var d=new Date(val);
+  var days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var pad=n=>String(n).padStart(2,'0');
+  return days[d.getDay()]+' '+pad(d.getDate())+' '+months[d.getMonth()]+' '+d.getFullYear()+' '+pad(d.getHours())+':'+pad(d.getMinutes());
+}
+
 function showLoading(msg){ document.getElementById('loading-msg').textContent=msg||'Loading...'; document.getElementById('loading-overlay').style.display='flex'; }
 function hideLoading(){ document.getElementById('loading-overlay').style.display='none'; }
 
@@ -400,7 +407,15 @@ async function refreshBanner(){
     bannerLoaded=true;
 
     document.getElementById('header-title').innerHTML='"'+esc(d.matchTitle||'Guess the Score')+'!"';
-    document.getElementById('header-sub').textContent=(d.team1||'Team 1')+' v '+(d.team2||'Team 2')+(d.matchDate?' · '+d.matchDate:'');
+    var matchDateStr='';
+    if(d.matchStartTime){
+      var md=new Date(d.matchStartTime);
+      var days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      var pad=n=>String(n).padStart(2,'0');
+      matchDateStr=' · '+days[md.getDay()]+' '+pad(md.getDate())+' '+months[md.getMonth()]+' '+md.getFullYear();
+    }
+    document.getElementById('header-sub').textContent=(d.team1||'Team 1')+' v '+(d.team2||'Team 2')+matchDateStr;
     document.getElementById('prize-amount').textContent='€'+(d.prize||'100');
     if(d.revolutLink) document.getElementById('pay-btn').href=d.revolutLink;
 
@@ -417,12 +432,10 @@ async function refreshBanner(){
       const strip=document.getElementById('match-info-strip');
       strip.style.display='block';
       if(d.matchStartTime){
-        const mt=new Date(d.matchStartTime);
-        document.getElementById('strip-match-time').textContent=mt.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+(d.matchDate?' · '+d.matchDate:'');
+        document.getElementById('strip-match-time').textContent=fmtDateTime(d.matchStartTime);
       }
       if(d.entryCloseTime){
-        const ct=new Date(d.entryCloseTime);
-        document.getElementById('strip-close-time').textContent=ct.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+' · '+ct.toLocaleDateString([],{day:'numeric',month:'short'});
+        document.getElementById('strip-close-time').textContent=fmtDateTime(d.entryCloseTime);
       }
     }
 
@@ -645,7 +658,6 @@ function loadAdminPanel(){
   document.getElementById('s-matchTitle').value=d.matchTitle||'';
   document.getElementById('s-team1').value=d.team1||'';
   document.getElementById('s-team2').value=d.team2||'';
-  document.getElementById('s-matchDate').value=d.matchDate||'';
   document.getElementById('s-prize').value=d.prize||'';
   document.getElementById('s-revolutLink').value=d.revolutLink||'';
   document.getElementById('s-matchStartTime').value=toDatetimeLocal(d.matchStartTime);
@@ -805,7 +817,6 @@ async function saveSettings(){
       matchTitle:document.getElementById('s-matchTitle').value.trim(),
       team1:document.getElementById('s-team1').value.trim(),
       team2:document.getElementById('s-team2').value.trim(),
-      matchDate:document.getElementById('s-matchDate').value.trim(),
       prize:document.getElementById('s-prize').value.trim(),
       revolutLink:document.getElementById('s-revolutLink').value.trim(),
       matchStartTime:toISOForStorage(document.getElementById('s-matchStartTime').value),
@@ -896,7 +907,6 @@ async function createNewCompetition(){
       matchTitle:document.getElementById('new-matchTitle').value.trim(),
       team1:document.getElementById('new-team1').value.trim(),
       team2:document.getElementById('new-team2').value.trim(),
-      matchDate:document.getElementById('new-matchDate').value.trim(),
       prize:document.getElementById('new-prize').value.trim(),
       revolutLink:document.getElementById('new-revolutLink').value.trim(),
       matchStartTime:toISOForStorage(document.getElementById('new-matchStartTime').value),
