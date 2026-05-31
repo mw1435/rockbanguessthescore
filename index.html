@@ -128,6 +128,31 @@
   .section-title { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey); margin-bottom: 0.75rem; }
   .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
   @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(26,31,58,0.6); z-index: 999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    backdrop-filter: blur(2px);
+  }
+  .loading-overlay .spinner-lg {
+    width: 44px; height: 44px;
+    border: 4px solid rgba(255,255,255,0.2);
+    border-top-color: var(--pink);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin-bottom: 1rem;
+  }
+  .loading-overlay p { color: white; font-size: 0.9rem; font-family: 'DM Mono', monospace; }
+  .entry-swipe-wrap.toggling { opacity: 0.5; pointer-events: none; }
+  .inline-spinner {
+    display: inline-block; width: 12px; height: 12px;
+    border: 2px solid rgba(0,0,0,0.15);
+    border-top-color: var(--grey);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle; margin-right: 4px;
+  }
+
   .entry-swipe-wrap {
     position: relative;
     overflow: hidden;
@@ -172,10 +197,15 @@
 </head>
 <body>
 
+<div class="loading-overlay" id="loading-overlay" style="display:none">
+  <div class="spinner-lg"></div>
+  <p id="loading-msg">Loading…</p>
+</div>
+
 <header>
   <img src="Rockban_logo.jpg" alt="Rockbán GAA">
   <div class="badge">Rockbán GAA – Fundraiser</div>
-  <h1 id="header-title">"What's the <span>Score?</span>"</h1>
+  <h1 id="header-title">"Guess the <span>Score?</span>"</h1>
   <p id="header-sub">Loading…</p>
 </header>
 
@@ -1045,6 +1075,7 @@ function showAdminTab(tab, el) {
 }
 
 async function loadAdminPanel() {
+  showLoading('Loading entries…');
   try {
     const d = await api({ action: 'adminLoad', pass: ADMIN_PASS });
 
@@ -1105,6 +1136,14 @@ function setEntrySort(type, el) {
   applyEntryFilters();
 }
 
+function showLoading(msg) {
+  document.getElementById('loading-msg').textContent = msg || 'Loading…';
+  document.getElementById('loading-overlay').style.display = 'flex';
+}
+function hideLoading() {
+  document.getElementById('loading-overlay').style.display = 'none';
+}
+
 function updateStatAmounts() {
   var paid = allAdminEntries.filter(e => e.paid);
   var unpaid = allAdminEntries.filter(e => !e.paid);
@@ -1140,25 +1179,31 @@ async function bulkMarkPaid() {
   var checked = Array.from(document.querySelectorAll('.entry-checkbox:checked'));
   if (checked.length === 0) { alert('No entries selected.'); return; }
   var indices = checked.map(cb => parseInt(cb.dataset.idx));
+  showLoading('Marking ' + indices.length + ' entr' + (indices.length === 1 ? 'y' : 'ies') + ' as paid…');
   try {
     var result = await apiPost({ action: 'bulkPaid', pass: ADMIN_PASS, indices });
     if (result.ok) {
       indices.forEach(function(idx) { if (allAdminEntries[idx]) allAdminEntries[idx].paid = true; });
       updateStatAmounts();
+      hideLoading();
       applyEntryFilters();
-    }
-  } catch(e) { alert('Could not connect.'); }
+    } else { hideLoading(); }
+  } catch(e) { hideLoading(); alert('Could not connect.'); }
 }
 
 async function toggleEntryPaid(idx) {
+  var el = document.getElementById('swipe-' + idx);
+  if (el) el.classList.add('toggling');
   try {
     var result = await apiPost({ action: 'togglePaid', pass: ADMIN_PASS, rowIndex: idx });
     if (result.ok) {
+      if (el) el.classList.remove('toggling');
       allAdminEntries[idx].paid = result.paid;
       updateStatAmounts();
       applyEntryFilters();
     }
-  } catch(e) {}
+    if (el) el.classList.remove('toggling');
+  } catch(e) { if (el) el.classList.remove('toggling'); }
 }
 
 function attachSwipe(el, idx) {
@@ -1226,6 +1271,7 @@ function renderAdminEntries(entries) {
 
 
 async function saveSettings() {
+  showLoading('Saving…');
   try {
     await apiPost({
       action: 'saveSettings', pass: ADMIN_PASS,
@@ -1238,11 +1284,13 @@ async function saveSettings() {
       entryCloseTime: document.getElementById('s-entryCloseTime').value || '',
       revealTime: document.getElementById('s-revealTime').value || ''
     });
+    hideLoading();
     document.getElementById('settings-msg').className = 'msg success';
     document.getElementById('settings-msg').textContent = 'Saved.';
     setTimeout(() => document.getElementById('settings-msg').textContent = '', 2000);
     refreshBanner();
   } catch(e) {
+    hideLoading();
     document.getElementById('settings-msg').className = 'msg error';
     document.getElementById('settings-msg').textContent = 'Save failed.';
   }
@@ -1253,6 +1301,7 @@ async function saveAndAnnounce() {
   var msg = document.getElementById('announce-msg');
   btn.disabled = true;
   btn.textContent = 'Saving…';
+  showLoading('Announcing winner…');
   try {
     var result = await apiPost({
       action: 'saveWinner',
@@ -1264,15 +1313,18 @@ async function saveAndAnnounce() {
       prizeEach: currentWinnerData.prizeEach
     });
     if (result.ok) {
+      hideLoading();
       msg.className = 'msg success';
       msg.textContent = 'Winner saved and announced on the public page.';
       btn.style.display = 'none';
       refreshBanner();
     } else {
+      hideLoading();
       msg.className = 'msg error';
       msg.textContent = result.error || 'Save failed.';
     }
   } catch(e) {
+    hideLoading();
     msg.className = 'msg error';
     msg.textContent = 'Could not connect.';
   }
@@ -1289,6 +1341,8 @@ async function findWinners() {
   const t2p = parseInt(document.getElementById('final-t2-points').value);
   if ([t1g,t1p,t2g,t2p].some(isNaN)) { alert('Enter goals and points for both teams.'); return; }
 
+  showLoading('Checking entries…');
+  await new Promise(r => setTimeout(r, 100)); // allow UI to update
   const entries = allAdminEntries;
   const paidEntries = entries.filter(e => e.paid);
   const unpaidCount = entries.length - paidEntries.length;
@@ -1338,6 +1392,7 @@ async function createNewCompetition() {
   const tabName = document.getElementById('new-tabName').value.trim();
   if (!tabName) { document.getElementById('new-comp-msg').className = 'msg error'; document.getElementById('new-comp-msg').textContent = 'Please enter a competition name.'; return; }
   if (!confirm('This will archive the current competition and start a new one. Are you sure?')) return;
+  showLoading('Creating new competition…');
   try {
     const result = await apiPost({
       action: 'newCompetition', pass: ADMIN_PASS,
@@ -1352,15 +1407,18 @@ async function createNewCompetition() {
       revealTime: document.getElementById('new-revealTime').value || ''
     });
     if (result.ok) {
+      hideLoading();
       document.getElementById('new-comp-msg').className = 'msg success';
       document.getElementById('new-comp-msg').textContent = 'New competition started!';
       refreshBanner();
       loadAdminPanel();
     } else {
+      hideLoading();
       document.getElementById('new-comp-msg').className = 'msg error';
       document.getElementById('new-comp-msg').textContent = result.error || 'Failed.';
     }
   } catch(e) {
+    hideLoading();
     document.getElementById('new-comp-msg').className = 'msg error';
     document.getElementById('new-comp-msg').textContent = 'Could not connect.';
   }
