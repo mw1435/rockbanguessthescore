@@ -1113,6 +1113,36 @@ async function loadAdminPanel() {
 var entryFilter = 'all';
 var entrySort = 'default';
 
+var entriesLoaded = false;
+
+async function loadAdminEntries() {
+  if (entriesLoaded) { applyEntryFilters(); return; }
+  showLoading('Loading latest competition…');
+  try {
+    const d = await api({ action: 'adminLoad', pass: ADMIN_PASS });
+    if (!d || d.error) { hideLoading(); return; }
+    document.getElementById('stat-total').textContent = d.count || 0;
+    document.getElementById('stat-paid').textContent = d.paidCount || 0;
+    document.getElementById('stat-unpaid').textContent = d.unpaidCount || 0;
+    var paidTotal = (d.entries || []).filter(e => e.paid).reduce((sum, e) => sum + (parseFloat(e.price) || 0), 0);
+    var unpaidTotal = (d.entries || []).filter(e => !e.paid).reduce((sum, e) => sum + (parseFloat(e.price) || 0), 0);
+    document.getElementById('stat-paid-amount').textContent = '€' + paidTotal.toFixed(0);
+    document.getElementById('stat-unpaid-amount').textContent = '€' + unpaidTotal.toFixed(0);
+    allAdminEntries = d.entries || [];
+    entriesLoaded = true;
+    applyEntryFilters();
+    const drawList = document.getElementById('draw-log-list');
+    if (d.drawLog && d.drawLog.length > 0) {
+      drawList.innerHTML = d.drawLog.map(row => {
+        return '<div class="draw-log-row"><div class="draw-log-comp">' + esc(String(row[1])) + ' — ' + esc(String(row[2])) + '</div>' +
+          '<div class="draw-log-detail">' + esc(String(row[3])) + ': ' + esc(String(row[4])) + '</div>' +
+          '<div class="draw-log-detail" style="color:#a0aec0">' + esc(String(row[0]).substring(0,16).replace('T',' ')) + '</div></div>';
+      }).join('');
+    }
+  } catch(e) { console.error(e); }
+  finally { hideLoading(); }
+}
+
 function setEntryFilter(type, el) {
   entryFilter = type;
   document.querySelectorAll('#admin-tab-entries .admin-tab').forEach(b => {
