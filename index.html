@@ -497,9 +497,12 @@ function addMyEntry(e) {
 }
 
 // ─── Status & header ──────────────────────────────────────────────────────────
+let bannerLoaded = false;
+
 async function refreshBanner() {
   try {
     const d = await api({ action: 'status' });
+    bannerLoaded = true;
     currentStatus = d;
 
     // Header
@@ -553,7 +556,9 @@ async function refreshBanner() {
       cdEl.textContent = '';
     }
   } catch(e) {
-    document.getElementById('reveal-status').textContent = 'Could not connect';
+    if (!bannerLoaded) {
+      document.getElementById('reveal-status').textContent = 'Could not connect';
+    }
     hideLoading();
   }
 }
