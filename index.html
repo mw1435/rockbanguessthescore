@@ -22,7 +22,10 @@ header img{width:80px;height:80px;object-fit:cover;border-radius:8px;margin-bott
 header .badge{font-family:'DM Mono',monospace;font-size:1rem;letter-spacing:.15em;color:var(--pink-light);text-transform:uppercase;margin-bottom:.4rem}
 header h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,6vw,3rem);font-weight:900;line-height:1.1}
 header h1 span{color:var(--pink)}
-header p{margin-top:.5rem;font-size:1.1rem;color:white;font-weight:500;letter-spacing:.02em}
+header p{display:none}
+.fixture-banner{background:var(--pink);color:white;text-align:center;padding:.75rem 1rem;border-bottom:3px solid #b01e5e}
+.fixture-banner .fixture-teams{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,5vw,2rem);font-weight:900;letter-spacing:.02em}
+.fixture-banner .fixture-date{font-family:'DM Mono',monospace;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;margin-top:.25rem;opacity:.9}
 .container{max-width:640px;margin:0 auto;padding:1.5rem 1rem 4rem}
 .prize-banner{background:var(--navy);color:white;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .prize-banner .prize-amount{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--pink);line-height:1}
@@ -136,6 +139,11 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
   <h1 id="header-title">"Guess the <span>Score!</span>"</h1>
   <p id="header-sub">Loading...</p>
 </header>
+
+<div class="fixture-banner" id="fixture-banner" style="display:none">
+  <div class="fixture-teams" id="fixture-teams">Team 1 v Team 2</div>
+  <div class="fixture-date" id="fixture-date"></div>
+</div>
 
 <div class="container">
 
@@ -416,6 +424,13 @@ async function refreshBanner(){
       matchDateStr=' · '+days[md.getDay()]+' '+pad(md.getDate())+' '+months[md.getMonth()]+' '+md.getFullYear();
     }
     document.getElementById('header-sub').textContent=(d.team1||'Team 1')+' v '+(d.team2||'Team 2')+matchDateStr;
+    // Fixture banner
+    const fb=document.getElementById('fixture-banner');
+    const ft=document.getElementById('fixture-teams');
+    const fd=document.getElementById('fixture-date');
+    ft.textContent=(d.team1||'Team 1')+' v '+(d.team2||'Team 2');
+    fd.textContent=matchDateStr.replace(' · ','');
+    fb.style.display='block';
     document.getElementById('prize-amount').textContent='€'+(d.prize||'100');
     if(d.revolutLink) document.getElementById('pay-btn').href=d.revolutLink;
 
