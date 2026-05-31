@@ -1090,10 +1090,11 @@ function showAdminTab(tab, el) {
   });
   document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
+  if (tab === 'entries' || tab === 'winners' || tab === 'drawlog') loadAdminEntries();
 }
 
 async function loadAdminPanel() {
-  showLoading('Loading Competition…');
+  showLoading('Loading entries…');
   try {
     const d = await api({ action: 'adminLoad', pass: ADMIN_PASS });
     if (!d || d.error) { hideLoading(); document.getElementById('admin-msg').textContent = d ? d.error : 'Failed to load.'; return; }
@@ -1427,6 +1428,7 @@ async function createNewCompetition() {
     });
     if (result.ok) {
       hideLoading();
+      entriesLoaded = false;
       document.getElementById('new-comp-msg').className = 'msg success';
       document.getElementById('new-comp-msg').textContent = 'New competition started!';
       refreshBanner();
