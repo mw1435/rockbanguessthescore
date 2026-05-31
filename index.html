@@ -261,7 +261,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
           <button class="btn btn-small btn-outline" onclick="selectAllVisible()" style="font-size:.78rem;padding:.4rem .8rem">Select all</button>
           <button class="btn btn-small btn-outline" onclick="clearSelection()" style="font-size:.78rem;padding:.4rem .8rem">Clear</button>
         </div>
-        <p style="font-size:.75rem;color:var(--grey);margin-bottom:.75rem">Swipe right on an entry to mark paid. Swipe left to mark unpaid.</p>
+        <p style="font-size:.75rem;color:var(--grey);margin-bottom:.75rem">On mobile: swipe right to mark paid, swipe left to mark unpaid. On desktop: click the PAID/UNPAID badge to toggle.</p>
         <div id="admin-entries-list"></div>
       </div>
 
@@ -596,7 +596,8 @@ function refreshMyEntries(){
 // ─── Admin ────────────────────────────────────────────────────────────────────
 function toggleAdmin(){
   const el=document.getElementById('admin-section');
-  el.style.display=el.style.display==='none'?'block':'none';
+  const current=window.getComputedStyle(el).display;
+  el.style.display=current==='none'?'block':'none';
 }
 
 function adminLogin(){
