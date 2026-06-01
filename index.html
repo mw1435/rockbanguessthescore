@@ -182,8 +182,8 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 </div>
 
 <header>
-  <img src="Rockban_logo.jpg" alt="Rockban GAA">
-  <div class="badge">Rockban GAA - Fundraiser</div>
+  <img src="Rockban_logo.jpg" alt="Rockbán GAA">
+  <div class="badge">Rockbán GAA - Fundraiser</div>
   <h1 id="header-title">"Guess the <span>Score!</span>"</h1>
   <p id="header-sub"></p>
 </header>
@@ -265,11 +265,11 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 
       <div class="privacy-box">
         <strong>Data notice</strong><br>
-        Rockban GAA collects your name, phone number and optional email solely for the purpose of running this competition. Your data will not be shared with any third party and will be deleted after the draw. To request removal, contact <a href="mailto:secretary@rockbangaa.ie">secretary@rockbangaa.ie</a>. Rockban GAA is the data controller under GDPR.
+        Rockbán GAA collects your name, phone number and optional email solely for the purpose of running this competition. Your data will not be shared with any third party and will be deleted after the draw. To request removal, contact <a href="mailto:secretary@rockbangaa.ie">secretary@rockbangaa.ie</a>. Rockbán GAA is the data controller under GDPR.
       </div>
       <div class="consent-row">
         <input type="checkbox" id="consent">
-        <span>I agree that Rockban GAA may store my name, phone number and email for the purpose of this competition.</span>
+        <span>I agree that Rockbán GAA may store my name, phone number and email for the purpose of this competition.</span>
       </div>
       <button class="btn btn-primary" id="submit-btn" onclick="submitEntry()">Submit prediction &rarr;</button>
       <div class="msg" id="entry-msg"></div>
@@ -302,11 +302,11 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
       <strong>Prize</strong><br>
       The prize fund is shared equally between all entrants who correctly predict the exact final score (goals and points for both teams). If no entry matches the exact score, two entries are selected at random from all paid entries to share the prize equally.<br><br>
       <strong>Draw</strong><br>
-      The draw is conducted electronically and is final. Results are announced on this page. Rockban GAA's decision is final in all matters relating to this competition.<br><br>
+      The draw is conducted electronically and is final. Results are announced on this page. Rockbán GAA's decision is final in all matters relating to this competition.<br><br>
       <strong>Eligibility</strong><br>
-      This competition is open to players, parents and friends of Rockban GAA. Entries must be submitted and paid before the closing time shown above.<br><br>
+      This competition is open to players, parents and friends of Rockbán GAA. Entries must be submitted and paid before the closing time shown above.<br><br>
       <strong>Data &amp; privacy</strong><br>
-      Personal data collected (name, phone, optional email) is used solely to administer this competition and will be deleted following the draw. Rockban GAA is the data controller under GDPR. You may request deletion of your data at any time by contacting secretary@rockbangaa.ie.<br><br>
+      Personal data collected (name, phone, optional email) is used solely to administer this competition and will be deleted following the draw. Rockbán GAA is the data controller under GDPR. You may request deletion of your data at any time by contacting secretary@rockbangaa.ie.<br><br>
       <strong>Responsible gambling</strong><br>
       This is a fundraising competition run by a voluntary GAA club. Please only enter amounts you are comfortable with.
     </div>
@@ -598,7 +598,7 @@ function formatCountdown(ms){
 async function shareLink(){
   const url=NETLIFY_URL;
   if(navigator.share){
-    try{await navigator.share({title:'Guess the Score - Rockban GAA',text:'Enter your prediction and win €'+((currentStatus.prize)||100)+'!',url});return;}catch(e){}
+    try{await navigator.share({title:'Guess the Score - Rockbán GAA',text:'Enter your prediction and win €'+((currentStatus.prize)||100)+'!',url});return;}catch(e){}
   }
   try{await navigator.clipboard.writeText(url);alert('Link copied to clipboard!');}
   catch(e){prompt('Copy this link:',url);}
