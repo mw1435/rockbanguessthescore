@@ -861,7 +861,7 @@ function clearSelection(){document.querySelectorAll('.entry-checkbox').forEach(c
 function exportCSV(){
   const headers=['Name','Phone','Email','Price','Reference','Paid','Guesses','Timestamp'];
   const rows=allAdminEntries.map(e=>[
-    '"'+e.name+'"','"'+(e.phone||'')+'"','"'+(e.email||'')+'"',e.price,'"'+(e.ref||'')+'"',e.paid?'Y':'N',
+    '"'+e.name+'"','"'+(e.phone||'')+'"',e.price,'"'+(e.ref||'')+'"',e.paid?'Y':'N',
     '"'+e.guesses.map(g=>hurlScore(g,currentStatus.team1,currentStatus.team2)).join(' | ')+'"','"'+(e.timestamp||'')+'"'
   ]);
   const csv=[headers.join(','),...rows.map(r=>r.join(','))].join('\n');
