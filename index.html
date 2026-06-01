@@ -17,7 +17,7 @@
 :root{--navy:#1a1f3a;--pink:#e0357a;--pink-light:#f5a8c8;--cream:#faf7f2;--gold:#c9a84c;--grey:#6b7280;--border:#e5e0d8}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh}
-header{background:var(--navy);color:white;text-align:center;padding:1.5rem 1rem;border-bottom:4px solid var(--pink)}
+header{background:var(--navy);color:white;text-align:center;padding:1.5rem 1rem 1rem;border-bottom:none}
 header img{width:80px;height:80px;object-fit:cover;border-radius:8px;margin-bottom:.75rem;border:3px solid var(--pink);display:block;margin-left:auto;margin-right:auto}
 header .badge{font-family:'DM Mono',monospace;font-size:1rem;letter-spacing:.15em;color:var(--pink-light);text-transform:uppercase;margin-bottom:.4rem}
 header h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,6vw,3rem);font-weight:900;line-height:1.1}
@@ -27,17 +27,29 @@ header p{display:none}
 .fixture-banner .fixture-teams{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,5vw,2rem);font-weight:900;letter-spacing:.02em}
 .fixture-banner .fixture-date{font-family:'DM Mono',monospace;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;margin-top:.25rem;opacity:.9}
 .container{max-width:640px;margin:0 auto;padding:1.5rem 1rem 4rem}
-.prize-banner{background:var(--navy);color:white;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.prize-banner{background:var(--navy);color:white;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .prize-banner .prize-amount{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--pink);line-height:1}
 .prize-banner .prize-label{font-size:.8rem;color:#a0aec0;margin-top:.15rem}
 .prize-banner .reveal-info{font-size:.75rem;color:#a0aec0;text-align:right;line-height:1.6}
 .prize-banner .reveal-info strong{color:var(--pink-light);display:block}
-.closed-banner{background:#7f1d1d;color:white;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;text-align:center;font-size:.9rem;display:none}
+.info-strip{background:white;border:1px solid var(--border);border-radius:12px;padding:.9rem 1.25rem;margin-bottom:1rem;display:none}
+.info-strip-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.info-strip-item{text-align:center;padding:.5rem}
+.info-strip-item+.info-strip-item{border-left:1px solid var(--border)}
+.info-strip-label{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);margin-bottom:.3rem}
+.info-strip-value{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--navy)}
+.info-strip-value.pink{color:var(--pink)}
+.entry-count-bar{background:white;border:1px solid var(--border);border-radius:12px;padding:.75rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between}
+.entry-count-bar .count{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--pink)}
+.entry-count-bar .count-label{font-size:.8rem;color:var(--grey)}
+.share-btn{background:var(--navy);color:white;border:none;border-radius:8px;padding:.5rem 1rem;font-family:'DM Sans',sans-serif;font-size:.85rem;cursor:pointer;display:flex;align-items:center;gap:.4rem}
+.share-btn:active{opacity:.8}
+.closed-banner{background:#7f1d1d;color:white;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;text-align:center;font-size:.9rem;display:none}
 .closed-banner strong{display:block;font-size:1.1rem;margin-bottom:.25rem}
 .card{background:white;border-radius:16px;border:1px solid var(--border);padding:1.5rem;margin-bottom:1.25rem;box-shadow:0 2px 8px rgba(0,0,0,.04)}
 .card h2{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
 label{display:block;font-size:.78rem;font-weight:500;color:var(--grey);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.35rem}
-input[type=text],input[type=tel],input[type=number],input[type=password],input[type=datetime-local]{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:.7rem .9rem;font-family:'DM Sans',sans-serif;font-size:1rem;color:var(--navy);background:var(--cream);outline:none;transition:border-color .2s;margin-bottom:1rem}
+input[type=text],input[type=tel],input[type=email],input[type=number],input[type=password],input[type=datetime-local]{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:.7rem .9rem;font-family:'DM Sans',sans-serif;font-size:1rem;color:var(--navy);background:var(--cream);outline:none;transition:border-color .2s;margin-bottom:1rem}
 input:focus{border-color:var(--pink)}
 input[type=number]{-moz-appearance:textfield}
 input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
@@ -51,7 +63,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .package.selected .pkg-guesses{color:var(--pink)}
 .score-group{margin-bottom:1rem}
 .score-group-label{font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);margin-bottom:.5rem;padding:.3rem .6rem;background:var(--cream);border-radius:6px;display:inline-block}
-.score-inputs{display:grid;grid-template-columns:1fr auto 1fr;gap:.75rem;align-items:start;margin-bottom:.75rem}
+.score-inputs{display:grid;grid-template-columns:1fr auto 1fr;gap:.75rem;align-items:start}
 .score-team{font-size:.75rem;font-weight:500;color:var(--grey);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.35rem}
 .gp-row{display:grid;grid-template-columns:1fr auto 1fr;gap:.35rem;align-items:center}
 .gp-label{font-size:.65rem;color:var(--grey);text-align:center;margin-bottom:.2rem}
@@ -66,6 +78,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--navy);margin-top:.5rem}
 .btn-danger{background:#dc2626;color:white;margin-top:.5rem}
 .btn-gold{background:var(--gold);color:white;margin-top:.5rem}
+.btn-green{background:#16a34a;color:white;margin-top:.5rem}
 .privacy-box{background:var(--cream);border:1.5px solid var(--border);border-radius:10px;padding:.9rem 1rem;margin-bottom:1rem;font-size:.8rem;color:var(--grey);line-height:1.6}
 .privacy-box a{color:var(--pink)}
 .consent-row{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:1rem}
@@ -74,6 +87,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .my-entry{background:var(--cream);border-radius:8px;padding:.6rem .9rem;margin-bottom:.5rem;font-size:.88rem}
 .my-entry-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem}
 .my-entry-pkg{font-family:'DM Mono',monospace;font-size:.75rem;background:var(--pink);color:white;padding:.15rem .5rem;border-radius:5px}
+.my-entry-ref{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--grey);margin-top:.2rem}
 .my-entry-scores{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.3rem}
 .score-tag{font-family:'DM Mono',monospace;font-size:.78rem;background:var(--navy);color:white;padding:.2rem .5rem;border-radius:5px}
 .entry-row{border-bottom:1px solid var(--border);padding:.7rem 0;font-size:.88rem}
@@ -81,10 +95,11 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .entry-row-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem}
 .entry-name{font-weight:500}
 .entry-phone{font-size:.75rem;color:var(--grey)}
+.entry-ref{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--grey)}
 .entry-scores{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.3rem}
 .entry-score{font-family:'DM Mono',monospace;font-size:.78rem;background:var(--navy);color:white;padding:.15rem .45rem;border-radius:5px;white-space:nowrap}
-.badge-paid{font-size:.72rem;background:#16a34a;color:white;padding:.15rem .5rem;border-radius:5px;font-family:'DM Mono',monospace}
-.badge-unpaid{font-size:.72rem;background:#dc2626;color:white;padding:.15rem .5rem;border-radius:5px;font-family:'DM Mono',monospace}
+.badge-paid{font-size:.72rem;background:#16a34a;color:white;padding:.15rem .5rem;border-radius:5px;font-family:'DM Mono',monospace;cursor:pointer}
+.badge-unpaid{font-size:.72rem;background:#dc2626;color:white;padding:.15rem .5rem;border-radius:5px;font-family:'DM Mono',monospace;cursor:pointer}
 #admin-section{display:none}
 .admin-panel{display:none}
 .admin-tabs{display:flex;gap:.5rem;margin-bottom:1.25rem;flex-wrap:wrap}
@@ -118,26 +133,59 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .loading-overlay p{color:white;font-size:.9rem;font-family:'DM Mono',monospace}
 .entry-swipe-wrap{position:relative;overflow:hidden;border-radius:8px;margin-bottom:.5rem;touch-action:pan-y}
 .entry-swipe-wrap.toggling{opacity:.5;pointer-events:none}
-.entry-swipe-inner{position:relative;background:white;transition:transform .2s ease;border:1px solid var(--border);border-radius:8px;padding:.7rem .9rem;cursor:grab}
+.entry-swipe-inner{position:relative;background:white;transition:transform .2s ease;border:1px solid var(--border);border-radius:8px;padding:.7rem .9rem}
 .entry-swipe-bg{position:absolute;top:0;bottom:0;left:0;right:0;display:flex;align-items:center;padding:0 1rem;border-radius:8px;font-size:.8rem;font-weight:600;pointer-events:none}
 .entry-swipe-bg.pay{background:#16a34a;color:white;justify-content:flex-start}
 .entry-swipe-bg.unpay{background:#dc2626;color:white;justify-content:flex-end}
 .entry-check-row{display:flex;align-items:flex-start;gap:.6rem}
 .entry-check-row input[type=checkbox]{margin-top:.2rem;width:16px;height:16px;flex-shrink:0;accent-color:var(--pink)}
-#winner-banner{display:none;background:linear-gradient(135deg,#1a1f3a,#2d1f3a);border:2px solid var(--gold);border-radius:16px;padding:1.5rem 1.25rem;margin-bottom:1.5rem;text-align:center}
+#winner-banner{display:none;background:linear-gradient(135deg,#1a1f3a,#2d1f3a);border:2px solid var(--gold);border-radius:16px;padding:1.5rem 1.25rem;margin-bottom:1rem;text-align:center}
+/* Payment modal */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(26,31,58,.7);z-index:998;display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(3px)}
+.modal{background:white;border-radius:20px;padding:2rem 1.5rem;max-width:400px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h2{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:.5rem;color:var(--navy)}
+.modal .amount{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:var(--pink);line-height:1;margin:.75rem 0}
+.modal .ref-box{background:var(--navy);border-radius:12px;padding:1rem;margin:1rem 0}
+.modal .ref-label{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:#a0aec0;margin-bottom:.4rem}
+.modal .ref-code{font-family:'DM Mono',monospace;font-size:2rem;font-weight:700;color:white;letter-spacing:.15em}
+.modal .ref-instruction{font-size:.78rem;color:#a0aec0;margin-top:.4rem}
+.modal .modal-continue{display:block;background:var(--pink);color:white;border:none;border-radius:10px;padding:1rem;font-family:'DM Sans',sans-serif;font-size:1.1rem;font-weight:600;cursor:pointer;width:100%;margin-top:1rem;text-decoration:none;text-align:center}
+.modal .modal-dismiss{display:block;font-size:.8rem;color:var(--grey);cursor:pointer;margin-top:.75rem;background:none;border:none;width:100%}
+/* Terms */
+.terms-toggle{font-size:.78rem;color:var(--pink);cursor:pointer;text-decoration:underline;display:block;text-align:center;margin-top:.5rem}
+.terms-content{font-size:.78rem;color:var(--grey);line-height:1.7;display:none;margin-top:.75rem;padding:.75rem;background:var(--cream);border-radius:8px}
+/* Warning */
+.dup-warning{background:#fff7ed;border:1.5px solid #fed7aa;border-radius:8px;padding:.75rem;margin-bottom:.75rem;font-size:.82rem;color:#9a3412;display:none}
 </style>
 </head>
 <body>
+
 <div class="loading-overlay" id="loading-overlay" style="display:none">
   <div class="spinner-lg"></div>
   <p id="loading-msg">Loading...</p>
+</div>
+
+<!-- Payment modal -->
+<div class="modal-overlay" id="payment-modal" style="display:none">
+  <div class="modal">
+    <h2>Payment due</h2>
+    <div class="amount" id="modal-amount">€2</div>
+    <div class="ref-box">
+      <div class="ref-label">Your payment reference</div>
+      <div class="ref-code" id="modal-ref">RB-XXXX</div>
+      <div class="ref-instruction">Use this as your Revolut reference when paying</div>
+    </div>
+    <p style="font-size:.8rem;color:var(--grey);margin-bottom:.5rem">Tap Continue to open Revolut. Enter the reference above so we can match your payment.</p>
+    <a id="modal-revolut-btn" href="#" target="_blank" class="modal-continue">💸 Continue to pay on Revolut</a>
+    <button class="modal-dismiss" onclick="closePaymentModal()">I'll pay later</button>
+  </div>
 </div>
 
 <header>
   <img src="Rockban_logo.jpg" alt="Rockban GAA">
   <div class="badge">Rockban GAA - Fundraiser</div>
   <h1 id="header-title">"Guess the <span>Score!</span>"</h1>
-  <p id="header-sub">Loading...</p>
+  <p id="header-sub"></p>
 </header>
 
 <div class="fixture-banner" id="fixture-banner" style="display:none">
@@ -154,19 +202,6 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
     <div id="winner-prize" style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--gold)"></div>
   </div>
 
-  <div id="match-info-strip" style="display:none;background:white;border:1px solid var(--border);border-radius:12px;padding:.9rem 1.25rem;margin-bottom:1rem;display:none;gap:0">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
-      <div style="text-align:center;padding:.5rem">
-        <div style="font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);margin-bottom:.3rem">Match starts</div>
-        <div id="strip-match-time" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--navy)">--:--</div>
-      </div>
-      <div style="text-align:center;padding:.5rem;border-left:1px solid var(--border)">
-        <div style="font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);margin-bottom:.3rem">Entries close</div>
-        <div id="strip-close-time" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--pink)">--:--</div>
-      </div>
-    </div>
-  </div>
-
   <div class="prize-banner">
     <div>
       <div class="prize-amount" id="prize-amount">€100</div>
@@ -178,11 +213,36 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
     </div>
   </div>
 
+  <div class="info-strip" id="info-strip">
+    <div class="info-strip-grid">
+      <div class="info-strip-item">
+        <div class="info-strip-label">Match starts</div>
+        <div class="info-strip-value" id="strip-match-time">--</div>
+      </div>
+      <div class="info-strip-item">
+        <div class="info-strip-label">Entries close</div>
+        <div class="info-strip-value pink" id="strip-close-time">--</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry-count-bar" id="entry-count-bar">
+    <div>
+      <div class="count" id="public-entry-count">—</div>
+      <div class="count-label">entries so far</div>
+    </div>
+    <button class="share-btn" onclick="shareLink()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      Share
+    </button>
+  </div>
+
   <div class="closed-banner" id="closed-banner">
     <strong>Entries are now closed</strong>
     Good luck to everyone who entered!
   </div>
 
+  <!-- Entry form -->
   <div class="card" id="entry-form-card">
     <h2>🎯 Enter your prediction</h2>
     <label>Choose your package</label>
@@ -192,46 +252,71 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
       <div class="package" onclick="selectPackage(this,10,6)"><div class="pkg-price">€10</div><div class="pkg-guesses">6 guesses</div></div>
       <div class="package" onclick="selectPackage(this,20,14)"><div class="pkg-price">€20</div><div class="pkg-guesses">14 guesses</div></div>
     </div>
+
     <div id="details-and-scores" style="display:none">
       <label>Your name</label>
       <input type="text" id="name" placeholder="Full name" autocomplete="name">
       <label>Phone number</label>
       <input type="tel" id="phone" placeholder="+353 87 123 4567" autocomplete="tel">
+      <label>Email (optional — for entry confirmation)</label>
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+      <div class="dup-warning" id="dup-warning"></div>
       <div id="score-groups" style="margin-bottom:.5rem"></div>
+
       <div class="privacy-box">
         <strong>Data notice</strong><br>
-        Rockban GAA collects your name and phone number solely for the purpose of running this competition. Your data will not be shared with any third party and will be deleted after the draw. To request removal of your data, contact <a href="mailto:secretary@rockbangaa.ie">secretary@rockbangaa.ie</a>.<br>
-        Rockban GAA is the data controller under GDPR.
+        Rockban GAA collects your name, phone number and optional email solely for the purpose of running this competition. Your data will not be shared with any third party and will be deleted after the draw. To request removal, contact <a href="mailto:secretary@rockbangaa.ie">secretary@rockbangaa.ie</a>. Rockban GAA is the data controller under GDPR.
       </div>
       <div class="consent-row">
         <input type="checkbox" id="consent">
-        <span>I agree that Rockban GAA may store my name and phone number for the purpose of this competition.</span>
+        <span>I agree that Rockban GAA may store my name, phone number and email for the purpose of this competition.</span>
       </div>
       <button class="btn btn-primary" id="submit-btn" onclick="submitEntry()">Submit prediction &rarr;</button>
       <div class="msg" id="entry-msg"></div>
     </div>
+
     <div id="pay-btn-container" style="display:none;margin-top:1rem">
-      <a id="pay-btn" href="https://revolut.me/YOURREVOLUTLINK" target="_blank" class="btn btn-primary" style="display:block;text-align:center;text-decoration:none;font-size:1.2rem;padding:1rem">
-        💸 Click here to pay <span id="pay-amount"></span>
-      </a>
+      <button class="btn btn-primary" onclick="openPaymentModal()" style="font-size:1.1rem">💸 Pay Now</button>
     </div>
   </div>
 
+  <!-- My entries -->
   <div class="card" id="my-entries-card" style="display:none">
     <h2>📋 Your entries</h2>
     <div id="my-entries-list"></div>
   </div>
 
+  <!-- All entries after reveal -->
   <div class="card entries-hidden" id="all-entries-card">
     <h2>🏆 All entries</h2>
     <div class="section-title" id="entries-header"></div>
     <div id="all-entries-list"></div>
   </div>
 
+  <!-- Terms -->
+  <div class="card">
+    <span class="terms-toggle" onclick="toggleTerms()">Competition rules &amp; terms</span>
+    <div class="terms-content" id="terms-content">
+      <strong>How it works</strong><br>
+      Enter your prediction for the final score of the match. Each guess costs €2 (or as part of a bundle). Payment must be made via Revolut using your unique reference code. Unpaid entries are not eligible for the draw or prize.<br><br>
+      <strong>Prize</strong><br>
+      The prize fund is shared equally between all entrants who correctly predict the exact final score (goals and points for both teams). If no entry matches the exact score, two entries are selected at random from all paid entries to share the prize equally.<br><br>
+      <strong>Draw</strong><br>
+      The draw is conducted electronically and is final. Results are announced on this page. Rockban GAA's decision is final in all matters relating to this competition.<br><br>
+      <strong>Eligibility</strong><br>
+      This competition is open to players, parents and friends of Rockban GAA. Entries must be submitted and paid before the closing time shown above.<br><br>
+      <strong>Data &amp; privacy</strong><br>
+      Personal data collected (name, phone, optional email) is used solely to administer this competition and will be deleted following the draw. Rockban GAA is the data controller under GDPR. You may request deletion of your data at any time by contacting secretary@rockbangaa.ie.<br><br>
+      <strong>Responsible gambling</strong><br>
+      This is a fundraising competition run by a voluntary GAA club. Please only enter amounts you are comfortable with.
+    </div>
+  </div>
+
   <div style="text-align:center">
     <span class="toggle-link" onclick="toggleAdmin()">Admin</span>
   </div>
 
+  <!-- Admin -->
   <div class="card" id="admin-section" style="margin-top:1rem">
     <h2>🔐 Admin</h2>
     <div id="admin-login-form">
@@ -245,6 +330,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
         <button class="admin-tab active" onclick="showAdminTab('settings',this)">Settings</button>
         <button class="admin-tab" onclick="showAdminTab('entries',this)">Entries</button>
         <button class="admin-tab" onclick="showAdminTab('winners',this)">Winners</button>
+        <button class="admin-tab" onclick="showAdminTab('manual',this)">Add entry</button>
         <button class="admin-tab" onclick="showAdminTab('new',this)">New competition</button>
         <button class="admin-tab" onclick="showAdminTab('drawlog',this)">Draw log</button>
       </div>
@@ -275,12 +361,13 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
         <div style="display:flex;gap:.5rem;margin-bottom:.75rem;flex-wrap:wrap">
           <button class="admin-tab active" onclick="setEntryFilter('all',this)">All</button>
           <button class="admin-tab" onclick="setEntryFilter('unpaid',this)">Unpaid only</button>
-          <button class="admin-tab" onclick="setEntrySort('name',this)" id="sort-name-btn">A-Z</button>
+          <button class="admin-tab" onclick="setEntrySort('name',this)">A-Z</button>
         </div>
-        <div style="display:flex;gap:.5rem;margin-bottom:1rem;align-items:center">
+        <div style="display:flex;gap:.5rem;margin-bottom:.75rem;align-items:center;flex-wrap:wrap">
           <button class="btn btn-small btn-navy" onclick="bulkMarkPaid()" style="font-size:.78rem;padding:.4rem .8rem">Mark selected as paid</button>
           <button class="btn btn-small btn-outline" onclick="selectAllVisible()" style="font-size:.78rem;padding:.4rem .8rem">Select all</button>
           <button class="btn btn-small btn-outline" onclick="clearSelection()" style="font-size:.78rem;padding:.4rem .8rem">Clear</button>
+          <button class="btn btn-small btn-green" onclick="exportCSV()" style="font-size:.78rem;padding:.4rem .8rem;margin-top:0">Export CSV</button>
         </div>
         <p style="font-size:.75rem;color:var(--grey);margin-bottom:.75rem">On mobile: swipe right to mark paid, swipe left to mark unpaid. On desktop: click the PAID/UNPAID badge to toggle.</p>
         <div id="admin-entries-list"></div>
@@ -319,10 +406,32 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
         <div class="msg" id="announce-msg"></div>
       </div>
 
+      <!-- Manual entry -->
+      <div id="admin-tab-manual" style="display:none">
+        <div class="section-title">Add entry manually</div>
+        <p style="font-size:.85rem;color:var(--grey);margin-bottom:1rem;line-height:1.6">Use this to add an entry on behalf of someone who paid cash or couldn't use the app.</p>
+        <label>Name</label><input type="text" id="m-name" placeholder="Full name">
+        <label>Phone</label><input type="tel" id="m-phone" placeholder="+353 87 123 4567">
+        <label>Package</label>
+        <div class="packages" style="margin-bottom:1rem">
+          <div class="package" onclick="selectManualPackage(this,2,1)"><div class="pkg-price">€2</div><div class="pkg-guesses">1 guess</div></div>
+          <div class="package" onclick="selectManualPackage(this,5,3)"><div class="pkg-price">€5</div><div class="pkg-guesses">3 guesses</div></div>
+          <div class="package" onclick="selectManualPackage(this,10,6)"><div class="pkg-price">€10</div><div class="pkg-guesses">6 guesses</div></div>
+          <div class="package" onclick="selectManualPackage(this,20,14)"><div class="pkg-price">€20</div><div class="pkg-guesses">14 guesses</div></div>
+        </div>
+        <div id="manual-score-groups"></div>
+        <label style="margin-top:.5rem">
+          <input type="checkbox" id="m-paid" style="width:auto;margin-bottom:0;margin-right:.4rem">
+          Mark as paid immediately
+        </label>
+        <button class="btn btn-navy" onclick="submitManualEntry()" style="margin-top:1rem">Add entry</button>
+        <div class="msg" id="manual-msg"></div>
+      </div>
+
       <!-- New competition -->
       <div id="admin-tab-new" style="display:none">
         <div class="section-title">Create new competition</div>
-        <p style="font-size:.85rem;color:var(--grey);margin-bottom:1rem;line-height:1.6">This archives the current competition and starts a fresh one. All current entries are preserved in the Google Sheet.</p>
+        <p style="font-size:.85rem;color:var(--grey);margin-bottom:1rem;line-height:1.6">Archives the current competition and starts a fresh one. All current entries are preserved in the Google Sheet.</p>
         <label>Competition name (Sheet tab)</label><input type="text" id="new-tabName" placeholder="e.g. Cork v Clare 14-07-25">
         <label>Match title</label><input type="text" id="new-matchTitle" placeholder="e.g. Guess the Score">
         <label>Team 1</label><input type="text" id="new-team1" placeholder="e.g. Cork">
@@ -344,7 +453,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 
       <hr class="divider">
       <div class="section-title" style="color:#dc2626">GDPR - delete all data</div>
-      <div class="gdpr-notice">Permanently deletes all entries for the current competition from the Google Sheet. Cannot be undone.</div>
+      <div class="gdpr-notice">Permanently deletes all entries for the current competition. Cannot be undone.</div>
       <button class="btn btn-danger" onclick="deleteAllData()">Delete all entries</button>
       <div class="msg" id="delete-msg"></div>
     </div>
@@ -352,88 +461,87 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 </div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw7DrZ-zW_irECvzWt3nS421ionDTyCNBs0YgCWa7wuPhQ83yAZBwyFO0AYY1PNhUcq/exec';
-const ADMIN_PASS = 'rockban2025';
-const SESSION_KEY = 'rockban-my-entries';
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbw7DrZ-zW_irECvzWt3nS421ionDTyCNBs0YgCWa7wuPhQ83yAZBwyFO0AYY1PNhUcq/exec';
+const ADMIN_PASS='rockban2025';
+const SESSION_KEY='rockban-my-entries';
+const NETLIFY_URL='https://rockbanguessthescore.netlify.app';
 
-let selectedPackage = null;
-let currentStatus = {};
-let allAdminEntries = [];
-let entriesLoaded = false;
-let bannerLoaded = false;
-let entryFilter = 'all';
-let entrySort = 'default';
-let currentWinnerData = {};
+let selectedPackage=null,selectedManualPackage=null;
+let currentStatus={},allAdminEntries=[],entriesLoaded=false,bannerLoaded=false;
+let entryFilter='all',entrySort='default',currentWinnerData={};
+let lastPaymentRef='',lastPaymentAmount=0;
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-function hurl(g,p){ return g+'-'+String(p).padStart(2,'0'); }
-function hurlScore(e,t1,t2){ return (t1||'T1')+' '+hurl(e.corkGoals,e.corkPoints)+' v '+hurl(e.limGoals,e.limPoints)+' '+(t2||'T2'); }
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function hurl(g,p){return g+'-'+String(p).padStart(2,'0');}
+function hurlScore(e,t1,t2){return (t1||'T1')+' '+hurl(e.corkGoals,e.corkPoints)+' v '+hurl(e.limGoals,e.limPoints)+' '+(t2||'T2');}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function showLoading(m){document.getElementById('loading-msg').textContent=m||'Loading...';document.getElementById('loading-overlay').style.display='flex';}
+function hideLoading(){document.getElementById('loading-overlay').style.display='none';}
 
 function fmtDateTime(val){
   if(!val) return '--';
-  var d=new Date(val);
-  var days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var pad=n=>String(n).padStart(2,'0');
+  var d=new Date(val),days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],pad=n=>String(n).padStart(2,'0');
   return days[d.getDay()]+' '+pad(d.getDate())+' '+months[d.getMonth()]+' '+d.getFullYear()+' '+pad(d.getHours())+':'+pad(d.getMinutes());
 }
-
-function showLoading(msg){ document.getElementById('loading-msg').textContent=msg||'Loading...'; document.getElementById('loading-overlay').style.display='flex'; }
-function hideLoading(){ document.getElementById('loading-overlay').style.display='none'; }
 
 function toDatetimeLocal(val){
   if(!val) return '';
   var s=String(val);
-  if(s.endsWith('Z')){
-    var d=new Date(s), pad=n=>String(n).padStart(2,'0');
-    return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
-  }
+  if(s.endsWith('Z')){var d=new Date(s),pad=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());}
   return s.substring(0,16);
 }
-function toISOForStorage(val){ return val&&val.length===16?new Date(val).toISOString():val||''; }
+function toISOForStorage(val){return val&&val.length===16?new Date(val).toISOString():val||'';}
+
+function genRef(){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let r='RB-';
+  for(let i=0;i<4;i++) r+=chars[Math.floor(Math.random()*chars.length)];
+  return r;
+}
 
 async function api(params){
-  const ctrl=new AbortController(), timer=setTimeout(()=>ctrl.abort(),30000);
-  try{ const r=await fetch(SCRIPT_URL+'?'+new URLSearchParams(params),{signal:ctrl.signal}); return r.json(); }
-  finally{ clearTimeout(timer); }
+  const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),30000);
+  try{const r=await fetch(SCRIPT_URL+'?'+new URLSearchParams(params),{signal:ctrl.signal});return r.json();}
+  finally{clearTimeout(timer);}
 }
 async function apiPost(payload){
-  const ctrl=new AbortController(), timer=setTimeout(()=>ctrl.abort(),30000);
-  try{ const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload),signal:ctrl.signal}); return r.json(); }
-  finally{ clearTimeout(timer); }
+  const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),30000);
+  try{const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload),signal:ctrl.signal});return r.json();}
+  finally{clearTimeout(timer);}
 }
 
-function getMyEntries(){ try{ return JSON.parse(sessionStorage.getItem(SESSION_KEY)||'[]'); } catch{ return []; } }
-function addMyEntry(e){ const m=getMyEntries(); m.push(e); sessionStorage.setItem(SESSION_KEY,JSON.stringify(m)); }
+function getMyEntries(){try{return JSON.parse(sessionStorage.getItem(SESSION_KEY)||'[]');}catch{return [];}}
+function addMyEntry(e){const m=getMyEntries();m.push(e);sessionStorage.setItem(SESSION_KEY,JSON.stringify(m));}
 
 // ─── Banner ───────────────────────────────────────────────────────────────────
 async function refreshBanner(){
   try {
     const d=await api({action:'status'});
-    currentStatus=d;
-    bannerLoaded=true;
+    currentStatus=d; bannerLoaded=true;
 
     document.getElementById('header-title').innerHTML='"'+esc(d.matchTitle||'Guess the Score')+'!"';
-    var matchDateStr='';
-    if(d.matchStartTime){
-      var md=new Date(d.matchStartTime);
-      var days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-      var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      var pad=n=>String(n).padStart(2,'0');
-      matchDateStr=' · '+days[md.getDay()]+' '+pad(md.getDate())+' '+months[md.getMonth()]+' '+md.getFullYear();
-    }
-    document.getElementById('header-sub').textContent=(d.team1||'Team 1')+' v '+(d.team2||'Team 2')+matchDateStr;
-    // Fixture banner
-    const fb=document.getElementById('fixture-banner');
-    const ft=document.getElementById('fixture-teams');
-    const fd=document.getElementById('fixture-date');
-    ft.textContent=(d.team1||'Team 1')+' v '+(d.team2||'Team 2');
-    fd.textContent=matchDateStr.replace(' · ','');
-    fb.style.display='block';
     document.getElementById('prize-amount').textContent='€'+(d.prize||'100');
-    if(d.revolutLink) document.getElementById('pay-btn').href=d.revolutLink;
+    document.getElementById('public-entry-count').textContent=d.entryCount||0;
+    if(d.revolutLink) document.getElementById('modal-revolut-btn').href=d.revolutLink;
 
+    // Fixture banner
+    if(d.team1||d.team2){
+      const fb=document.getElementById('fixture-banner');
+      fb.style.display='block';
+      document.getElementById('fixture-teams').textContent=(d.team1||'Team 1')+' v '+(d.team2||'Team 2');
+      if(d.matchStartTime){
+        var md=new Date(d.matchStartTime),days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],pad=n=>String(n).padStart(2,'0');
+        document.getElementById('fixture-date').textContent=days[md.getDay()]+' '+pad(md.getDate())+' '+months[md.getMonth()]+' '+md.getFullYear();
+      }
+    }
+
+    // Info strip
+    if(d.matchStartTime||d.entryCloseTime){
+      document.getElementById('info-strip').style.display='block';
+      if(d.matchStartTime) document.getElementById('strip-match-time').textContent=fmtDateTime(d.matchStartTime);
+      if(d.entryCloseTime) document.getElementById('strip-close-time').textContent=fmtDateTime(d.entryCloseTime);
+    }
+
+    // Winner banner
     if(d.winner){
       var wb=document.getElementById('winner-banner');
       wb.style.display='block';
@@ -442,33 +550,19 @@ async function refreshBanner(){
       document.getElementById('winner-prize').textContent=d.winner.prizeEach?'€'+d.winner.prizeEach+' each':'€'+d.winner.prize+' prize';
     }
 
-    // Info strip
-    if(d.matchStartTime||d.entryCloseTime){
-      const strip=document.getElementById('match-info-strip');
-      strip.style.display='block';
-      if(d.matchStartTime){
-        document.getElementById('strip-match-time').textContent=fmtDateTime(d.matchStartTime);
-      }
-      if(d.entryCloseTime){
-        document.getElementById('strip-close-time').textContent=fmtDateTime(d.entryCloseTime);
-      }
-    }
-
     if(d.entriesClosed){
       document.getElementById('entry-form-card').style.display='none';
       document.getElementById('closed-banner').style.display='block';
     }
 
-    const statusEl=document.getElementById('reveal-status');
-    const cdEl=document.getElementById('reveal-countdown');
+    const statusEl=document.getElementById('reveal-status'),cdEl=document.getElementById('reveal-countdown');
     if(d.revealed){
       document.getElementById('prize-banner').style.display='none';
-      cdEl.textContent='';
-      loadAllEntries();
+      cdEl.textContent=''; loadAllEntries();
     } else if(d.revealTime){
       const diff=new Date(d.revealTime)-new Date();
-      if(diff>0){ statusEl.textContent='All entries visible in'; cdEl.textContent=formatCountdown(diff); }
-      else{ document.getElementById('prize-banner').style.display='none'; cdEl.textContent=''; loadAllEntries(); }
+      if(diff>0){statusEl.textContent='All entries visible in';cdEl.textContent=formatCountdown(diff);}
+      else{document.getElementById('prize-banner').style.display='none';cdEl.textContent='';loadAllEntries();}
     } else {
       statusEl.textContent='Entries hidden until reveal'; cdEl.textContent='';
     }
@@ -484,8 +578,7 @@ async function loadAllEntries(){
   try {
     const d=await api({action:'entries'});
     if(!d.entries) return;
-    const card=document.getElementById('all-entries-card');
-    const list=document.getElementById('all-entries-list');
+    const card=document.getElementById('all-entries-card'),list=document.getElementById('all-entries-list');
     card.classList.remove('entries-hidden');
     const tg=d.entries.reduce((a,e)=>a+e.guesses.length,0);
     document.getElementById('entries-header').textContent=d.entries.length+' entrant'+(d.entries.length!==1?'s':'')+', '+tg+' guess'+(tg!==1?'es':'');
@@ -501,93 +594,98 @@ function formatCountdown(ms){
   if(h>0) return h+'h '+m+'m'; if(m>0) return m+'m '+s+'s'; return s+'s';
 }
 
+// ─── Share ────────────────────────────────────────────────────────────────────
+async function shareLink(){
+  const url=NETLIFY_URL;
+  if(navigator.share){
+    try{await navigator.share({title:'Guess the Score - Rockban GAA',text:'Enter your prediction and win €'+((currentStatus.prize)||100)+'!',url});return;}catch(e){}
+  }
+  try{await navigator.clipboard.writeText(url);alert('Link copied to clipboard!');}
+  catch(e){prompt('Copy this link:',url);}
+}
+
+// ─── Payment modal ────────────────────────────────────────────────────────────
+function openPaymentModal(){
+  document.getElementById('modal-amount').textContent='€'+lastPaymentAmount;
+  document.getElementById('modal-ref').textContent=lastPaymentRef;
+  document.getElementById('payment-modal').style.display='flex';
+}
+function closePaymentModal(){
+  document.getElementById('payment-modal').style.display='none';
+}
+
+// ─── Terms ────────────────────────────────────────────────────────────────────
+function toggleTerms(){
+  const c=document.getElementById('terms-content');
+  c.style.display=c.style.display==='block'?'none':'block';
+}
+
 // ─── Packages & score inputs ──────────────────────────────────────────────────
 function selectPackage(el,price,guesses){
-  document.querySelectorAll('.package').forEach(p=>p.classList.remove('selected'));
+  document.querySelectorAll('#entry-form-card .package').forEach(p=>p.classList.remove('selected'));
   el.classList.add('selected');
   selectedPackage={price,guesses};
-  buildScoreInputs(guesses);
+  buildScoreInputs(guesses,'score-groups');
   document.getElementById('details-and-scores').style.display='block';
   document.getElementById('pay-btn-container').style.display='none';
   document.getElementById('entry-msg').textContent='';
+  document.getElementById('dup-warning').style.display='none';
 }
 
-function buildScoreInputs(count){
-  const groups=document.getElementById('score-groups');
+function selectManualPackage(el,price,guesses){
+  document.querySelectorAll('#admin-tab-manual .package').forEach(p=>p.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedManualPackage={price,guesses};
+  buildScoreInputs(guesses,'manual-score-groups');
+}
+
+function buildScoreInputs(count,containerId){
+  const groups=document.getElementById(containerId);
   groups.innerHTML='';
-  for(let i=0;i<count;i++){
-    const label=count===1?'Your prediction':'Prediction '+(i+1);
-    groups.innerHTML+=scoreGroupHTML(i,label);
-  }
+  for(let i=0;i<count;i++) groups.innerHTML+=scoreGroupHTML(i,count===1?'Your prediction':'Prediction '+(i+1),containerId);
 }
 
-function scoreGroupHTML(i,label){
-  const t1=esc(currentStatus.team1||'Team 1');
-  const t2=esc(currentStatus.team2||'Team 2');
-  const ii=String(i);
+function scoreGroupHTML(i,label,containerId){
+  const t1=esc(currentStatus.team1||'Team 1'),t2=esc(currentStatus.team2||'Team 2'),ii=String(i);
   const ts='font-size:.72rem;color:#6b7280;text-align:center;margin-top:.25rem;font-family:monospace';
-  let out='<div class="score-group">';
-  out+='<span class="score-group-label">'+label+'</span>';
-  out+='<div class="score-inputs">';
+  const pfx=containerId==='manual-score-groups'?'m':'p';
+  let out='<div class="score-group"><span class="score-group-label">'+label+'</span><div class="score-inputs">';
   out+='<div><div class="score-team">'+t1+'</div><div class="gp-row">';
-  out+='<div><div class="gp-label">Goals</div><input type="number" class="cork-goals" data-i="'+ii+'" min="0" max="20" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateSide(this,'+ii+',0)"></div>';
+  out+='<div><div class="gp-label">Goals</div><input type="number" class="'+pfx+'-cork-goals" data-i="'+ii+'" min="0" max="20" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateSide(this,'+ii+',0,\''+pfx+'\')"></div>';
   out+='<div class="gp-sep">-</div>';
-  out+='<div><div class="gp-label">Points</div><input type="number" class="cork-points" data-i="'+ii+'" min="0" max="40" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateSide(this,'+ii+',0)"></div>';
-  out+='</div><div id="cork-total-'+ii+'" style="'+ts+'">= 0 pts</div></div>';
+  out+='<div><div class="gp-label">Points</div><input type="number" class="'+pfx+'-cork-points" data-i="'+ii+'" min="0" max="20" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateSide(this,'+ii+',0,\''+pfx+'\')"></div>';
+  out+='</div><div id="'+pfx+'-cork-total-'+ii+'" style="'+ts+'">= 0 pts</div></div>';
   out+='<div class="vs-sep">v</div>';
   out+='<div><div class="score-team">'+t2+'</div><div class="gp-row">';
-  out+='<div><div class="gp-label">Goals</div><input type="number" class="lim-goals" data-i="'+ii+'" min="0" max="20" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateSide(this,'+ii+',1)"></div>';
+  out+='<div><div class="gp-label">Goals</div><input type="number" class="'+pfx+'-lim-goals" data-i="'+ii+'" min="0" max="20" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateSide(this,'+ii+',1,\''+pfx+'\')"></div>';
   out+='<div class="gp-sep">-</div>';
-  out+='<div><div class="gp-label">Points</div><input type="number" class="lim-points" data-i="'+ii+'" min="0" max="40" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateSide(this,'+ii+',1)"></div>';
-  out+='</div><div id="lim-total-'+ii+'" style="'+ts+'">= 0 pts</div></div>';
+  out+='<div><div class="gp-label">Points</div><input type="number" class="'+pfx+'-lim-points" data-i="'+ii+'" min="0" max="20" placeholder="0" style="text-align:center;margin-bottom:0" oninput="updateSide(this,'+ii+',1,\''+pfx+'\')"></div>';
+  out+='</div><div id="'+pfx+'-lim-total-'+ii+'" style="'+ts+'">= 0 pts</div></div>';
   out+='</div></div>';
   return out;
 }
 
-function updateSide(el,i,sideIdx){
-  const sides=['cork','lim'];
-  const s=sides[sideIdx];
-  const g=parseInt(document.querySelector('.'+s+'-goals[data-i="'+i+'"]').value)||0;
-  const p=parseInt(document.querySelector('.'+s+'-points[data-i="'+i+'"]').value)||0;
-  const t=document.getElementById(s+'-total-'+i);
+function updateSide(el,i,sideIdx,pfx){
+  const s=sideIdx===0?'cork':'lim';
+  const g=parseInt(document.querySelector('.'+pfx+'-'+s+'-goals[data-i="'+i+'"]').value)||0;
+  const p=parseInt(document.querySelector('.'+pfx+'-'+s+'-points[data-i="'+i+'"]').value)||0;
+  const t=document.getElementById(pfx+'-'+s+'-total-'+i);
   if(t) t.textContent='= '+(g*3+p)+' pts';
-  advanceFromInput(el,i,sideIdx);
-}
-
-function advanceFromInput(el,i,sideIdx){
-  const val=el.value;
-  if(val.length>=2||parseInt(val)>=parseInt(el.max)){
-    const order=[
-      '.cork-goals[data-i="'+i+'"]','.cork-points[data-i="'+i+'"]',
-      '.lim-goals[data-i="'+i+'"]','.lim-points[data-i="'+i+'"]'
-    ];
-    const classes=['cork-goals','cork-points','lim-goals','lim-points'];
-    const curClass=sideIdx===0?(el.classList.contains('cork-goals')?0:1):(el.classList.contains('lim-goals')?2:3);
-    if(curClass<3){
-      const next=document.querySelector(order[curClass+1]);
-      if(next){ next.focus(); next.select(); }
-    } else {
-      // Move to first input of next prediction
-      const nextI=i+1;
-      const nextEl=document.querySelector('.cork-goals[data-i="'+nextI+'"]');
-      if(nextEl){ nextEl.focus(); nextEl.select(); }
-    }
+  // Auto advance
+  if(el.value.length>=2||parseInt(el.value)>=parseInt(el.max)){
+    const order=['.'+pfx+'-cork-goals[data-i="'+i+'"]','.'+pfx+'-cork-points[data-i="'+i+'"]','.'+pfx+'-lim-goals[data-i="'+i+'"]','.'+pfx+'-lim-points[data-i="'+i+'"]'];
+    const curIdx=sideIdx===0?(el.classList.contains(pfx+'-cork-goals')?0:1):(el.classList.contains(pfx+'-lim-goals')?2:3);
+    if(curIdx<3){const next=document.querySelector(order[curIdx+1]);if(next){next.focus();next.select();}}
+    else{const next=document.querySelector('.'+pfx+'-cork-goals[data-i="'+(i+1)+'"]');if(next){next.focus();next.select();}}
   }
 }
 
 function adminAutoAdvance(el,nextId){
-  const val=el.value;
-  if(val.length>=2||parseInt(val)>=parseInt(el.max)){
-    const next=document.getElementById(nextId);
-    if(next){ next.focus(); next.select(); }
-  }
+  if(el.value.length>=2||parseInt(el.value)>=parseInt(el.max)){const next=document.getElementById(nextId);if(next){next.focus();next.select();}}
 }
-
 function updateFinalTotal(){
-  const t1g=parseInt(document.getElementById('final-t1-goals').value)||0;
-  const t1p=parseInt(document.getElementById('final-t1-points').value)||0;
-  const t2g=parseInt(document.getElementById('final-t2-goals').value)||0;
-  const t2p=parseInt(document.getElementById('final-t2-points').value)||0;
+  const t1g=parseInt(document.getElementById('final-t1-goals').value)||0,t1p=parseInt(document.getElementById('final-t1-points').value)||0;
+  const t2g=parseInt(document.getElementById('final-t2-goals').value)||0,t2p=parseInt(document.getElementById('final-t2-points').value)||0;
   document.getElementById('final-t1-total').textContent='= '+(t1g*3+t1p)+' pts';
   document.getElementById('final-t2-total').textContent='= '+(t2g*3+t2p)+' pts';
 }
@@ -596,47 +694,61 @@ function updateFinalTotal(){
 async function submitEntry(){
   const name=document.getElementById('name').value.trim();
   const phone=document.getElementById('phone').value.trim();
+  const email=document.getElementById('email').value.trim();
   const consent=document.getElementById('consent').checked;
   const msg=document.getElementById('entry-msg');
   const btn=document.getElementById('submit-btn');
+  const dupWarn=document.getElementById('dup-warning');
 
-  if(!name){ msg.className='msg error'; msg.textContent='Please enter your name.'; return; }
-  if(!phone){ msg.className='msg error'; msg.textContent='Please enter your phone number.'; return; }
-  if(!selectedPackage){ msg.className='msg error'; msg.textContent='Please choose a package.'; return; }
-  if(!consent){ msg.className='msg error'; msg.textContent='Please tick the consent box.'; return; }
+  if(!name){msg.className='msg error';msg.textContent='Please enter your name.';return;}
+  if(!phone){msg.className='msg error';msg.textContent='Please enter your phone number.';return;}
+  if(!selectedPackage){msg.className='msg error';msg.textContent='Please choose a package.';return;}
+  if(!consent){msg.className='msg error';msg.textContent='Please tick the consent box.';return;}
 
   const guesses=[];
   let valid=true;
-  document.querySelectorAll('.cork-points').forEach((el,i)=>{
-    const cp=el.value, lp=document.querySelectorAll('.lim-points')[i].value;
-    if(cp===''||lp===''){ valid=false; return; }
-    const cg=document.querySelectorAll('.cork-goals')[i].value;
-    const lg=document.querySelectorAll('.lim-goals')[i].value;
+  document.querySelectorAll('.p-cork-points').forEach((el,i)=>{
+    const cp=el.value,lp=document.querySelectorAll('.p-lim-points')[i].value;
+    if(cp===''||lp===''){valid=false;return;}
+    const cg=document.querySelectorAll('.p-cork-goals')[i].value;
+    const lg=document.querySelectorAll('.p-lim-goals')[i].value;
     guesses.push({corkGoals:parseInt(cg)||0,corkPoints:parseInt(cp),limGoals:parseInt(lg)||0,limPoints:parseInt(lp)});
   });
-  if(!valid){ msg.className='msg error'; msg.textContent='Please fill in the points for both teams in each prediction.'; return; }
+  if(!valid){msg.className='msg error';msg.textContent='Please fill in the points for both teams in each prediction.';return;}
 
-  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Saving...';
+  // Duplicate check within this submission
+  const seen=new Set();
+  const dups=guesses.filter(g=>{const k=g.corkGoals+'-'+g.corkPoints+'-'+g.limGoals+'-'+g.limPoints;if(seen.has(k))return true;seen.add(k);return false;});
+  if(dups.length){
+    dupWarn.style.display='block';
+    dupWarn.textContent='You have duplicate score predictions in this entry. Please make each prediction unique.';
+    return;
+  }
+  dupWarn.style.display='none';
+
+  const ref=genRef();
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Saving...';
   try {
-    const result=await apiPost({action:'submit',entry:{name,phone,price:selectedPackage.price,guesses}});
+    const result=await apiPost({action:'submit',entry:{name,phone,email,price:selectedPackage.price,guesses,ref}});
     if(result.ok){
-      msg.className='msg success'; msg.textContent='Predictions saved!';
-      addMyEntry({name,phone,price:selectedPackage.price,guesses});
-      document.getElementById('pay-amount').textContent='€'+selectedPackage.price;
+      msg.className='msg success';msg.textContent='Predictions saved!';
+      addMyEntry({name,phone,price:selectedPackage.price,guesses,ref});
+      lastPaymentRef=ref; lastPaymentAmount=selectedPackage.price;
       document.getElementById('pay-btn-container').style.display='block';
       document.getElementById('details-and-scores').style.display='none';
       document.getElementById('score-groups').innerHTML='';
       document.getElementById('name').value='';
       document.getElementById('phone').value='';
+      document.getElementById('email').value='';
       document.getElementById('consent').checked=false;
-      document.querySelectorAll('.package').forEach(p=>p.classList.remove('selected'));
+      document.querySelectorAll('#entry-form-card .package').forEach(p=>p.classList.remove('selected'));
       selectedPackage=null;
       refreshMyEntries();
     } else {
-      msg.className='msg error'; msg.textContent=result.error||'Something went wrong.';
+      msg.className='msg error';msg.textContent=result.error||'Something went wrong.';
     }
-  } catch(e){ msg.className='msg error'; msg.textContent='Could not connect. Try again.'; }
-  btn.disabled=false; btn.innerHTML='Submit prediction &rarr;';
+  } catch(e){msg.className='msg error';msg.textContent='Could not connect. Try again.';}
+  btn.disabled=false;btn.innerHTML='Submit prediction &rarr;';
 }
 
 // ─── My entries ───────────────────────────────────────────────────────────────
@@ -646,15 +758,15 @@ function refreshMyEntries(){
   document.getElementById('my-entries-card').style.display='block';
   document.getElementById('my-entries-list').innerHTML=mine.map(e=>{
     const scores=e.guesses.map(g=>'<span class="score-tag">'+esc(hurlScore(g,currentStatus.team1,currentStatus.team2))+'</span>').join('');
-    return '<div class="my-entry"><div class="my-entry-header"><span>'+esc(e.name)+'</span><span class="my-entry-pkg">€'+e.price+'</span></div><div class="my-entry-scores">'+scores+'</div></div>';
+    return '<div class="my-entry"><div class="my-entry-header"><span>'+esc(e.name)+'</span><span class="my-entry-pkg">€'+e.price+'</span></div>'+(e.ref?'<div class="my-entry-ref">Ref: '+esc(e.ref)+'</div>':'')+'<div class="my-entry-scores">'+scores+'</div></div>';
   }).join('');
 }
 
 // ─── Admin ────────────────────────────────────────────────────────────────────
 function toggleAdmin(){
   const el=document.getElementById('admin-section');
-  const current=window.getComputedStyle(el).display;
-  el.style.display=current==='none'?'block':'none';
+  const cur=window.getComputedStyle(el).display;
+  el.style.display=cur==='none'?'block':'none';
 }
 
 function adminLogin(){
@@ -683,7 +795,7 @@ function loadAdminPanel(){
 }
 
 function showAdminTab(tab,el){
-  ['settings','entries','winners','new','drawlog'].forEach(t=>{
+  ['settings','entries','winners','manual','new','drawlog'].forEach(t=>{
     document.getElementById('admin-tab-'+t).style.display=t===tab?'block':'none';
   });
   document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
@@ -692,11 +804,11 @@ function showAdminTab(tab,el){
 }
 
 async function loadAdminEntries(){
-  if(entriesLoaded){ applyEntryFilters(); return; }
+  if(entriesLoaded){applyEntryFilters();return;}
   showLoading('Loading latest competition...');
   try {
     const d=await api({action:'adminLoad',pass:ADMIN_PASS});
-    if(!d||d.error){ hideLoading(); return; }
+    if(!d||d.error){hideLoading();return;}
     document.getElementById('stat-total').textContent=d.count||0;
     document.getElementById('stat-paid').textContent=d.paidCount||0;
     document.getElementById('stat-unpaid').textContent=d.unpaidCount||0;
@@ -709,15 +821,14 @@ async function loadAdminEntries(){
     applyEntryFilters();
     const drawList=document.getElementById('draw-log-list');
     if(d.drawLog&&d.drawLog.length>0){
-      drawList.innerHTML=d.drawLog.map(row=>'<div class="draw-log-row"><div class="draw-log-comp">'+esc(String(row[1]))+' - '+esc(String(row[2]))+'</div><div class="draw-log-detail">'+esc(String(row[3]))+': '+esc(String(row[4]))+'</div><div class="draw-log-detail" style="color:#a0aec0">'+esc(String(row[0]).substring(0,16).replace('T',' '))+'</div></div>').join('');
+      drawList.innerHTML=d.drawLog.map(row=>'<div class="draw-log-row"><div class="draw-log-comp">'+esc(String(row[1]))+' - '+esc(String(row[2]))+'</div><div class="draw-log-detail">'+esc(String(row[3]))+': '+esc(String(row[4]))+'</div><div class="draw-log-detail" style="color:#a0aec0">'+esc(fmtDateTime(String(row[0])))+'</div></div>').join('');
     }
-  } catch(e){ console.error(e); }
-  finally{ hideLoading(); }
+  } catch(e){console.error(e);}
+  finally{hideLoading();}
 }
 
 function updateStatAmounts(){
-  const paid=allAdminEntries.filter(e=>e.paid);
-  const unpaid=allAdminEntries.filter(e=>!e.paid);
+  const paid=allAdminEntries.filter(e=>e.paid),unpaid=allAdminEntries.filter(e=>!e.paid);
   document.getElementById('stat-total').textContent=allAdminEntries.length;
   document.getElementById('stat-paid').textContent=paid.length;
   document.getElementById('stat-unpaid').textContent=unpaid.length;
@@ -727,44 +838,49 @@ function updateStatAmounts(){
 
 function setEntryFilter(type,el){
   entryFilter=type;
-  document.querySelectorAll('#admin-tab-entries .admin-tab').forEach(b=>{ if(['All','Unpaid only'].includes(b.textContent)) b.classList.remove('active'); });
+  document.querySelectorAll('#admin-tab-entries .admin-tab').forEach(b=>{if(['All','Unpaid only'].includes(b.textContent))b.classList.remove('active');});
   el.classList.add('active');
   applyEntryFilters();
 }
-
 function setEntrySort(type,el){
   entrySort=entrySort===type?'default':type;
   el.classList.toggle('active',entrySort===type);
   applyEntryFilters();
 }
-
 function applyEntryFilters(){
   const search=(document.getElementById('entries-search').value||'').toLowerCase();
-  let filtered=allAdminEntries.filter((e)=>{
-    const nm=!search||e.name.toLowerCase().includes(search);
-    const pm=entryFilter==='all'||(entryFilter==='unpaid'&&!e.paid);
-    return nm&&pm;
+  let filtered=allAdminEntries.filter(e=>{
+    return (!search||e.name.toLowerCase().includes(search))&&(entryFilter==='all'||(entryFilter==='unpaid'&&!e.paid));
   });
   if(entrySort==='name') filtered=filtered.slice().sort((a,b)=>a.name.localeCompare(b.name));
   renderAdminEntries(filtered);
 }
+function selectAllVisible(){document.querySelectorAll('.entry-checkbox').forEach(cb=>cb.checked=true);}
+function clearSelection(){document.querySelectorAll('.entry-checkbox').forEach(cb=>cb.checked=false);}
 
-function selectAllVisible(){ document.querySelectorAll('.entry-checkbox').forEach(cb=>cb.checked=true); }
-function clearSelection(){ document.querySelectorAll('.entry-checkbox').forEach(cb=>cb.checked=false); }
+function exportCSV(){
+  const headers=['Name','Phone','Email','Price','Reference','Paid','Guesses','Timestamp'];
+  const rows=allAdminEntries.map(e=>[
+    '"'+e.name+'"','"'+(e.phone||'')+'"','"'+(e.email||'')+'"',e.price,'"'+(e.ref||'')+'"',e.paid?'Y':'N',
+    '"'+e.guesses.map(g=>hurlScore(g,currentStatus.team1,currentStatus.team2)).join(' | ')+'"','"'+(e.timestamp||'')+'"'
+  ]);
+  const csv=[headers.join(','),...rows.map(r=>r.join(','))].join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='rockban-entries-'+new Date().toISOString().substring(0,10)+'.csv';
+  a.click();
+}
 
 async function bulkMarkPaid(){
   const checked=Array.from(document.querySelectorAll('.entry-checkbox:checked'));
-  if(!checked.length){ alert('No entries selected.'); return; }
+  if(!checked.length){alert('No entries selected.');return;}
   const indices=checked.map(cb=>parseInt(cb.dataset.idx));
   showLoading('Marking '+indices.length+' entr'+(indices.length===1?'y':'ies')+' as paid...');
   try {
     const result=await apiPost({action:'bulkPaid',pass:ADMIN_PASS,indices});
-    if(result.ok){
-      indices.forEach(idx=>{ if(allAdminEntries[idx]) allAdminEntries[idx].paid=true; });
-      updateStatAmounts(); applyEntryFilters();
-    }
-  } catch(e){ alert('Could not connect.'); }
-  finally{ hideLoading(); }
+    if(result.ok){indices.forEach(idx=>{if(allAdminEntries[idx])allAdminEntries[idx].paid=true;});updateStatAmounts();applyEntryFilters();}
+  } catch(e){alert('Could not connect.');}
+  finally{hideLoading();}
 }
 
 async function toggleEntryPaid(idx){
@@ -772,80 +888,83 @@ async function toggleEntryPaid(idx){
   if(el) el.classList.add('toggling');
   try {
     const result=await apiPost({action:'togglePaid',pass:ADMIN_PASS,rowIndex:idx});
-    if(result.ok){ allAdminEntries[idx].paid=result.paid; updateStatAmounts(); applyEntryFilters(); }
-  } catch(e){ console.error(e); }
-  finally{ if(el) el.classList.remove('toggling'); }
+    if(result.ok){allAdminEntries[idx].paid=result.paid;updateStatAmounts();applyEntryFilters();}
+  } catch(e){console.error(e);}
+  finally{if(el) el.classList.remove('toggling');}
+}
+
+async function deleteEntry(idx){
+  if(!confirm('Delete this entry permanently?')) return;
+  showLoading('Deleting...');
+  try {
+    const result=await apiPost({action:'deleteEntry',pass:ADMIN_PASS,rowIndex:idx});
+    if(result.ok){allAdminEntries.splice(idx,1);entriesLoaded=false;await loadAdminEntries();}
+    else{alert('Delete failed.');}
+  } catch(e){alert('Could not connect.');}
+  finally{hideLoading();}
 }
 
 function attachSwipe(el,idx){
   let startX=0,currentX=0,swiping=false;
-  const inner=el.querySelector('.entry-swipe-inner');
-  const bgPay=el.querySelector('.entry-swipe-bg.pay');
-  const bgUnpay=el.querySelector('.entry-swipe-bg.unpay');
-  el.addEventListener('touchstart',e=>{ startX=e.touches[0].clientX; swiping=true; },{passive:true});
+  const inner=el.querySelector('.entry-swipe-inner'),bgPay=el.querySelector('.entry-swipe-bg.pay'),bgUnpay=el.querySelector('.entry-swipe-bg.unpay');
+  el.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;swiping=true;},{passive:true});
   el.addEventListener('touchmove',e=>{
-    if(!swiping) return;
+    if(!swiping)return;
     currentX=e.touches[0].clientX-startX;
     inner.style.transform='translateX('+Math.max(-80,Math.min(80,currentX))+'px)';
-    if(currentX>0){ bgPay.style.opacity=Math.min(1,currentX/60); bgUnpay.style.opacity=0; }
-    else{ bgUnpay.style.opacity=Math.min(1,-currentX/60); bgPay.style.opacity=0; }
+    if(currentX>0){bgPay.style.opacity=Math.min(1,currentX/60);bgUnpay.style.opacity=0;}
+    else{bgUnpay.style.opacity=Math.min(1,-currentX/60);bgPay.style.opacity=0;}
   },{passive:true});
   el.addEventListener('touchend',()=>{
-    swiping=false; inner.style.transform=''; bgPay.style.opacity=0; bgUnpay.style.opacity=0;
-    if(Math.abs(currentX)>60) toggleEntryPaid(idx);
+    swiping=false;inner.style.transform='';bgPay.style.opacity=0;bgUnpay.style.opacity=0;
+    if(Math.abs(currentX)>60)toggleEntryPaid(idx);
     currentX=0;
   });
 }
 
 function renderAdminEntries(entries){
   const list=document.getElementById('admin-entries-list');
-  const t1=currentStatus.team1||'T1', t2=currentStatus.team2||'T2';
-  if(!entries.length){ list.innerHTML='<p style="font-size:.85rem;color:var(--grey)">No entries found.</p>'; return; }
+  const t1=currentStatus.team1||'T1',t2=currentStatus.team2||'T2';
+  if(!entries.length){list.innerHTML='<p style="font-size:.85rem;color:var(--grey)">No entries found.</p>';return;}
   list.innerHTML=entries.map(e=>{
     const ri=allAdminEntries.indexOf(e);
     const scores=e.guesses.map(g=>'<span class="entry-score">'+esc(hurlScore(g,t1,t2))+'</span>').join('');
-    const badge=e.paid?'<span class="badge-paid" onclick="toggleEntryPaid('+ri+')" style="cursor:pointer" title="Click to mark unpaid">PAID</span>':'<span class="badge-unpaid" onclick="toggleEntryPaid('+ri+')" style="cursor:pointer" title="Click to mark paid">UNPAID</span>';
-    return '<div class="entry-swipe-wrap" id="swipe-'+ri+'">' +
-      '<div class="entry-swipe-bg pay">Paid</div>' +
-      '<div class="entry-swipe-bg unpay">Unpaid</div>' +
-      '<div class="entry-swipe-inner">' +
-        '<div class="entry-check-row">' +
-          '<input type="checkbox" class="entry-checkbox" data-idx="'+ri+'">' +
-          '<div style="flex:1">' +
-            '<div class="entry-row-header">' +
-              '<div><div class="entry-name">'+esc(e.name)+'</div><div class="entry-phone">'+esc(e.phone)+'</div></div>' +
-              '<div style="display:flex;gap:.4rem;align-items:center">'+badge+'<span class="my-entry-pkg">€'+e.price+'</span></div>' +
-            '</div>' +
-            '<div class="entry-scores">'+scores+'</div>' +
-          '</div>' +
-        '</div>' +
+    const badge=e.paid?'<span class="badge-paid" onclick="toggleEntryPaid('+ri+')" title="Click to toggle">PAID</span>':'<span class="badge-unpaid" onclick="toggleEntryPaid('+ri+')" title="Click to toggle">UNPAID</span>';
+    return '<div class="entry-swipe-wrap" id="swipe-'+ri+'">'+
+      '<div class="entry-swipe-bg pay">Paid</div>'+
+      '<div class="entry-swipe-bg unpay">Unpaid</div>'+
+      '<div class="entry-swipe-inner">'+
+        '<div class="entry-check-row">'+
+          '<input type="checkbox" class="entry-checkbox" data-idx="'+ri+'">'+
+          '<div style="flex:1">'+
+            '<div class="entry-row-header">'+
+              '<div><div class="entry-name">'+esc(e.name)+'</div><div class="entry-phone">'+esc(e.phone)+'</div>'+(e.ref?'<div class="entry-ref">Ref: '+esc(e.ref)+'</div>':'')+'</div>'+
+              '<div style="display:flex;gap:.4rem;align-items:center">'+badge+'<span class="my-entry-pkg">€'+e.price+'</span>'+
+              '<button onclick="deleteEntry('+ri+')" style="background:none;border:none;color:#dc2626;cursor:pointer;font-size:.75rem;padding:.1rem .3rem" title="Delete entry">✕</button></div>'+
+            '</div>'+
+            '<div class="entry-scores">'+scores+'</div>'+
+          '</div>'+
+        '</div>'+
       '</div></div>';
   }).join('');
-  entries.forEach(e=>{ const ri=allAdminEntries.indexOf(e); const el=document.getElementById('swipe-'+ri); if(el) attachSwipe(el,ri); });
+  entries.forEach(e=>{const ri=allAdminEntries.indexOf(e);const el=document.getElementById('swipe-'+ri);if(el)attachSwipe(el,ri);});
 }
 
 async function saveSettings(){
+  const matchStart=document.getElementById('s-matchStartTime').value;
+  const entryClose=document.getElementById('s-entryCloseTime').value;
+  const reveal=document.getElementById('s-revealTime').value;
+  const msg=document.getElementById('settings-msg');
+  if(matchStart&&entryClose&&new Date(entryClose)>=new Date(matchStart)){msg.className='msg error';msg.textContent='Entries close time must be before match start.';return;}
+  if(matchStart&&reveal&&new Date(reveal)>=new Date(matchStart)){msg.className='msg error';msg.textContent='Reveal time must be before match start.';return;}
   showLoading('Saving...');
   try {
-    await apiPost({
-      action:'saveSettings',pass:ADMIN_PASS,
-      matchTitle:document.getElementById('s-matchTitle').value.trim(),
-      team1:document.getElementById('s-team1').value.trim(),
-      team2:document.getElementById('s-team2').value.trim(),
-      prize:document.getElementById('s-prize').value.trim(),
-      revolutLink:document.getElementById('s-revolutLink').value.trim(),
-      matchStartTime:toISOForStorage(document.getElementById('s-matchStartTime').value),
-      entryCloseTime:toISOForStorage(document.getElementById('s-entryCloseTime').value),
-      revealTime:toISOForStorage(document.getElementById('s-revealTime').value)
-    });
-    document.getElementById('settings-msg').className='msg success';
-    document.getElementById('settings-msg').textContent='Saved.';
-    setTimeout(()=>document.getElementById('settings-msg').textContent='',2000);
+    await apiPost({action:'saveSettings',pass:ADMIN_PASS,matchTitle:document.getElementById('s-matchTitle').value.trim(),team1:document.getElementById('s-team1').value.trim(),team2:document.getElementById('s-team2').value.trim(),prize:document.getElementById('s-prize').value.trim(),revolutLink:document.getElementById('s-revolutLink').value.trim(),matchStartTime:toISOForStorage(matchStart),entryCloseTime:toISOForStorage(entryClose),revealTime:toISOForStorage(reveal)});
+    msg.className='msg success';msg.textContent='Saved.';
+    setTimeout(()=>msg.textContent='',2000);
     refreshBanner();
-  } catch(e){
-    document.getElementById('settings-msg').className='msg error';
-    document.getElementById('settings-msg').textContent='Save failed.';
-  } finally{ hideLoading(); }
+  } catch(e){msg.className='msg error';msg.textContent='Save failed.';}
+  finally{hideLoading();}
 }
 
 async function findWinners(){
@@ -853,89 +972,99 @@ async function findWinners(){
   const t1p=parseInt(document.getElementById('final-t1-points').value);
   const t2g=parseInt(document.getElementById('final-t2-goals').value);
   const t2p=parseInt(document.getElementById('final-t2-points').value);
-  if([t1g,t1p,t2g,t2p].some(isNaN)){ alert('Enter goals and points for both teams.'); return; }
-
+  if([t1g,t1p,t2g,t2p].some(isNaN)){alert('Enter goals and points for both teams.');return;}
   showLoading('Checking entries...');
   await new Promise(r=>setTimeout(r,50));
-
   try {
-    if(!allAdminEntries.length){ hideLoading(); alert('No entries loaded. Open the Entries tab first.'); return; }
-    const paidEntries=allAdminEntries.filter(e=>e.paid);
-    const unpaidCount=allAdminEntries.length-paidEntries.length;
+    if(!allAdminEntries.length){hideLoading();alert('No entries loaded. Open the Entries tab first.');return;}
+    const paidEntries=allAdminEntries.filter(e=>e.paid),unpaidCount=allAdminEntries.length-paidEntries.length;
     const winners=[];
-    paidEntries.forEach(e=>e.guesses.forEach(g=>{ if(g.corkGoals===t1g&&g.corkPoints===t1p&&g.limGoals===t2g&&g.limPoints===t2p) winners.push(e.name); }));
-    const t1=currentStatus.team1||'Team 1', t2=currentStatus.team2||'Team 2';
+    paidEntries.forEach(e=>e.guesses.forEach(g=>{if(g.corkGoals===t1g&&g.corkPoints===t1p&&g.limGoals===t2g&&g.limPoints===t2p)winners.push(e.name);}));
+    const t1=currentStatus.team1||'Team 1',t2=currentStatus.team2||'Team 2';
     const scoreStr=t1+' '+hurl(t1g,t1p)+' v '+hurl(t2g,t2p)+' '+t2;
     const unpaidNote=unpaidCount>0?' ('+unpaidCount+' unpaid entr'+(unpaidCount===1?'y':'ies')+' excluded)':'';
     const prize=parseInt(currentStatus.prize||100);
-    const box=document.getElementById('result-box');
-    box.style.display='block';
+    document.getElementById('result-box').style.display='block';
     let resultType,namesStr,prizeEach;
     if(winners.length>0){
       const uw=[...new Set(winners)];
-      resultType=uw.length>1?'Winners':'Winner';
-      namesStr=uw.join(', ');
+      resultType=uw.length>1?'Winners':'Winner';namesStr=uw.join(', ');
       prizeEach=uw.length>1?(prize/uw.length).toFixed(2):prize;
-      const prizeMsg=uw.length>1?' Prize split: €'+prizeEach+' each.':' Prize: €'+prize+'.';
       document.getElementById('result-title').textContent='Winner'+(uw.length>1?'s':'')+'!';
-      document.getElementById('result-body').textContent='Correct prediction ('+scoreStr+'): '+namesStr+'.'+prizeMsg+unpaidNote;
+      document.getElementById('result-body').textContent='Correct prediction ('+scoreStr+'): '+namesStr+'. Prize'+(uw.length>1?' split: €'+prizeEach+' each':': €'+prize)+'.'+unpaidNote;
     } else {
       const pool=[];
       paidEntries.forEach(e=>e.guesses.forEach(()=>pool.push(e.name)));
-      const shuffled=pool.slice().sort(()=>Math.random()-.5);
-      const drawn=[], seen=new Set();
-      for(const n of shuffled){ if(!seen.has(n)){ seen.add(n); drawn.push(n); } if(drawn.length===2) break; }
-      resultType='Draw'; namesStr=drawn.join(' & '); prizeEach=(prize/2).toFixed(2);
+      const shuffled=pool.slice().sort(()=>Math.random()-.5),drawn=[],seen=new Set();
+      for(const n of shuffled){if(!seen.has(n)){seen.add(n);drawn.push(n);}if(drawn.length===2)break;}
+      resultType='Draw';namesStr=drawn.join(' & ');prizeEach=(prize/2).toFixed(2);
       document.getElementById('result-title').textContent='No exact match - draw required';
       document.getElementById('result-body').textContent='No one predicted '+scoreStr+'. Random draw from '+pool.length+' paid guesses: '+namesStr+'. Prize split: €'+prizeEach+' each.'+unpaidNote;
     }
     currentWinnerData={names:namesStr,scoreStr,resultType,prize,prizeEach};
     document.getElementById('announce-btn').style.display='block';
     document.getElementById('announce-msg').textContent='';
-  } catch(e){ console.error(e); }
-  finally{ hideLoading(); }
+  } catch(e){console.error(e);}
+  finally{hideLoading();}
 }
 
 async function saveAndAnnounce(){
-  const btn=document.getElementById('announce-btn');
-  const msg=document.getElementById('announce-msg');
-  btn.disabled=true; btn.textContent='Saving...';
+  const btn=document.getElementById('announce-btn'),msg=document.getElementById('announce-msg');
+  btn.disabled=true;btn.textContent='Saving...';
   showLoading('Announcing winner...');
   try {
     const result=await apiPost({action:'saveWinner',pass:ADMIN_PASS,...currentWinnerData});
+    if(result.ok){msg.className='msg success';msg.textContent='Winner saved and announced on the public page.';btn.style.display='none';refreshBanner();}
+    else{msg.className='msg error';msg.textContent=result.error||'Save failed.';}
+  } catch(e){msg.className='msg error';msg.textContent='Could not connect.';}
+  finally{hideLoading();btn.disabled=false;btn.textContent='Save & announce winner';}
+}
+
+// Manual entry
+async function submitManualEntry(){
+  const name=document.getElementById('m-name').value.trim();
+  const phone=document.getElementById('m-phone').value.trim();
+  const paid=document.getElementById('m-paid').checked;
+  const msg=document.getElementById('manual-msg');
+  if(!name){msg.className='msg error';msg.textContent='Please enter a name.';return;}
+  if(!phone){msg.className='msg error';msg.textContent='Please enter a phone number.';return;}
+  if(!selectedManualPackage){msg.className='msg error';msg.textContent='Please choose a package.';return;}
+  const guesses=[];
+  let valid=true;
+  document.querySelectorAll('.m-cork-points').forEach((el,i)=>{
+    const cp=el.value,lp=document.querySelectorAll('.m-lim-points')[i].value;
+    if(cp===''||lp===''){valid=false;return;}
+    const cg=document.querySelectorAll('.m-cork-goals')[i].value,lg=document.querySelectorAll('.m-lim-goals')[i].value;
+    guesses.push({corkGoals:parseInt(cg)||0,corkPoints:parseInt(cp),limGoals:parseInt(lg)||0,limPoints:parseInt(lp)});
+  });
+  if(!valid){msg.className='msg error';msg.textContent='Please fill in all score predictions.';return;}
+  showLoading('Adding entry...');
+  try {
+    const ref=genRef();
+    const result=await apiPost({action:'submit',entry:{name,phone,email:'',price:selectedManualPackage.price,guesses,ref,manualPaid:paid}});
     if(result.ok){
-      msg.className='msg success'; msg.textContent='Winner saved and announced on the public page.';
-      btn.style.display='none'; refreshBanner();
-    } else { msg.className='msg error'; msg.textContent=result.error||'Save failed.'; }
-  } catch(e){ msg.className='msg error'; msg.textContent='Could not connect.'; }
-  finally{ hideLoading(); btn.disabled=false; btn.textContent='Save & announce winner'; }
+      msg.className='msg success';msg.textContent='Entry added successfully. Ref: '+ref;
+      document.getElementById('m-name').value='';document.getElementById('m-phone').value='';
+      document.getElementById('m-paid').checked=false;
+      document.querySelectorAll('#admin-tab-manual .package').forEach(p=>p.classList.remove('selected'));
+      selectedManualPackage=null;document.getElementById('manual-score-groups').innerHTML='';
+      entriesLoaded=false;
+    } else {msg.className='msg error';msg.textContent=result.error||'Failed.';}
+  } catch(e){msg.className='msg error';msg.textContent='Could not connect.';}
+  finally{hideLoading();}
 }
 
 async function createNewCompetition(){
   const tabName=document.getElementById('new-tabName').value.trim();
-  if(!tabName){ document.getElementById('new-comp-msg').className='msg error'; document.getElementById('new-comp-msg').textContent='Please enter a competition name.'; return; }
+  if(!tabName){document.getElementById('new-comp-msg').className='msg error';document.getElementById('new-comp-msg').textContent='Please enter a competition name.';return;}
   if(!confirm('This will archive the current competition and start a new one. Are you sure?')) return;
   showLoading('Creating new competition...');
   try {
-    const result=await apiPost({
-      action:'newCompetition',pass:ADMIN_PASS,tabName,
-      matchTitle:document.getElementById('new-matchTitle').value.trim(),
-      team1:document.getElementById('new-team1').value.trim(),
-      team2:document.getElementById('new-team2').value.trim(),
-      prize:document.getElementById('new-prize').value.trim(),
-      revolutLink:document.getElementById('new-revolutLink').value.trim(),
-      matchStartTime:toISOForStorage(document.getElementById('new-matchStartTime').value),
-      entryCloseTime:toISOForStorage(document.getElementById('new-entryCloseTime').value),
-      revealTime:toISOForStorage(document.getElementById('new-revealTime').value)
-    });
-    if(result.ok){
-      entriesLoaded=false;
-      document.getElementById('new-comp-msg').className='msg success';
-      document.getElementById('new-comp-msg').textContent='New competition started!';
-      refreshBanner(); loadAdminPanel();
-    } else { document.getElementById('new-comp-msg').className='msg error'; document.getElementById('new-comp-msg').textContent=result.error||'Failed.'; }
-  } catch(e){ document.getElementById('new-comp-msg').className='msg error'; document.getElementById('new-comp-msg').textContent='Could not connect.'; }
-  finally{ hideLoading(); }
+    const result=await apiPost({action:'newCompetition',pass:ADMIN_PASS,tabName,matchTitle:document.getElementById('new-matchTitle').value.trim(),team1:document.getElementById('new-team1').value.trim(),team2:document.getElementById('new-team2').value.trim(),prize:document.getElementById('new-prize').value.trim(),revolutLink:document.getElementById('new-revolutLink').value.trim(),matchStartTime:toISOForStorage(document.getElementById('new-matchStartTime').value),entryCloseTime:toISOForStorage(document.getElementById('new-entryCloseTime').value),revealTime:toISOForStorage(document.getElementById('new-revealTime').value)});
+    if(result.ok){entriesLoaded=false;document.getElementById('new-comp-msg').className='msg success';document.getElementById('new-comp-msg').textContent='New competition started!';refreshBanner();loadAdminPanel();}
+    else{document.getElementById('new-comp-msg').className='msg error';document.getElementById('new-comp-msg').textContent=result.error||'Failed.';}
+  } catch(e){document.getElementById('new-comp-msg').className='msg error';document.getElementById('new-comp-msg').textContent='Could not connect.';}
+  finally{hideLoading();}
 }
 
 async function deleteAllData(){
@@ -944,14 +1073,10 @@ async function deleteAllData(){
   showLoading('Deleting...');
   try {
     const result=await apiPost({action:'deleteAll',pass:ADMIN_PASS});
-    if(result.ok){
-      entriesLoaded=false; allAdminEntries=[];
-      document.getElementById('delete-msg').className='msg success';
-      document.getElementById('delete-msg').textContent='All entries deleted.';
-      updateStatAmounts(); applyEntryFilters();
-    } else { document.getElementById('delete-msg').className='msg error'; document.getElementById('delete-msg').textContent='Delete failed.'; }
-  } catch(e){ document.getElementById('delete-msg').className='msg error'; document.getElementById('delete-msg').textContent='Could not connect.'; }
-  finally{ hideLoading(); }
+    if(result.ok){entriesLoaded=false;allAdminEntries=[];document.getElementById('delete-msg').className='msg success';document.getElementById('delete-msg').textContent='All entries deleted.';updateStatAmounts();applyEntryFilters();}
+    else{document.getElementById('delete-msg').className='msg error';document.getElementById('delete-msg').textContent='Delete failed.';}
+  } catch(e){document.getElementById('delete-msg').className='msg error';document.getElementById('delete-msg').textContent='Could not connect.';}
+  finally{hideLoading();}
 }
 
 refreshMyEntries();
