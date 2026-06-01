@@ -258,18 +258,16 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
       <input type="text" id="name" placeholder="Full name" autocomplete="name">
       <label>Phone number</label>
       <input type="tel" id="phone" placeholder="+353 87 123 4567" autocomplete="tel">
-      <label>Email (optional — for entry confirmation)</label>
-      <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
       <div class="dup-warning" id="dup-warning"></div>
       <div id="score-groups" style="margin-bottom:.5rem"></div>
 
       <div class="privacy-box">
         <strong>Data notice</strong><br>
-        Rockbán GAA collects your name, phone number and optional email solely for the purpose of running this competition. Your data will not be shared with any third party and will be deleted after the draw. To request removal, contact <a href="mailto:secretary@rockbangaa.ie">secretary@rockbangaa.ie</a>. Rockbán GAA is the data controller under GDPR.
+        Rockbán GAA collects your name and phone number solely for the purpose of running this competition. Your data will not be shared with any third party and will be deleted after the draw. To request removal, contact <a href="mailto:secretary@rockbangaa.ie">secretary@rockbangaa.ie</a>. Rockbán GAA is the data controller under GDPR.
       </div>
       <div class="consent-row">
         <input type="checkbox" id="consent">
-        <span>I agree that Rockbán GAA may store my name, phone number and email for the purpose of this competition.</span>
+        <span>I agree that Rockbán GAA may store my name and phone number for the purpose of this competition.</span>
       </div>
       <button class="btn btn-primary" id="submit-btn" onclick="submitEntry()">Submit prediction &rarr;</button>
       <div class="msg" id="entry-msg"></div>
@@ -306,7 +304,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
       <strong>Eligibility</strong><br>
       This competition is open to players, parents and friends of Rockbán GAA. Entries must be submitted and paid before the closing time shown above.<br><br>
       <strong>Data &amp; privacy</strong><br>
-      Personal data collected (name, phone, optional email) is used solely to administer this competition and will be deleted following the draw. Rockbán GAA is the data controller under GDPR. You may request deletion of your data at any time by contacting secretary@rockbangaa.ie.<br><br>
+      Personal data collected (name and phone number) is used solely to administer this competition and will be deleted following the draw. Rockbán GAA is the data controller under GDPR. You may request deletion of your data at any time by contacting secretary@rockbangaa.ie.<br><br>
       <strong>Responsible gambling</strong><br>
       This is a fundraising competition run by a voluntary GAA club. Please only enter amounts you are comfortable with.
     </div>
@@ -694,7 +692,6 @@ function updateFinalTotal(){
 async function submitEntry(){
   const name=document.getElementById('name').value.trim();
   const phone=document.getElementById('phone').value.trim();
-  const email=document.getElementById('email').value.trim();
   const consent=document.getElementById('consent').checked;
   const msg=document.getElementById('entry-msg');
   const btn=document.getElementById('submit-btn');
@@ -729,7 +726,7 @@ async function submitEntry(){
   const ref=genRef();
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Saving...';
   try {
-    const result=await apiPost({action:'submit',entry:{name,phone,email,price:selectedPackage.price,guesses,ref}});
+    const result=await apiPost({action:'submit',entry:{name,phone,price:selectedPackage.price,guesses,ref}});
     if(result.ok){
       msg.className='msg success';msg.textContent='Predictions saved!';
       addMyEntry({name,phone,price:selectedPackage.price,guesses,ref});
@@ -739,7 +736,6 @@ async function submitEntry(){
       document.getElementById('score-groups').innerHTML='';
       document.getElementById('name').value='';
       document.getElementById('phone').value='';
-      document.getElementById('email').value='';
       document.getElementById('consent').checked=false;
       document.querySelectorAll('#entry-form-card .package').forEach(p=>p.classList.remove('selected'));
       selectedPackage=null;
@@ -859,7 +855,7 @@ function selectAllVisible(){document.querySelectorAll('.entry-checkbox').forEach
 function clearSelection(){document.querySelectorAll('.entry-checkbox').forEach(cb=>cb.checked=false);}
 
 function exportCSV(){
-  const headers=['Name','Phone','Email','Price','Reference','Paid','Guesses','Timestamp'];
+  const headers=['Name','Phone','Price','Reference','Paid','Guesses','Timestamp'];
   const rows=allAdminEntries.map(e=>[
     '"'+e.name+'"','"'+(e.phone||'')+'"',e.price,'"'+(e.ref||'')+'"',e.paid?'Y':'N',
     '"'+e.guesses.map(g=>hurlScore(g,currentStatus.team1,currentStatus.team2)).join(' | ')+'"','"'+(e.timestamp||'')+'"'
@@ -1041,7 +1037,7 @@ async function submitManualEntry(){
   showLoading('Adding entry...');
   try {
     const ref=genRef();
-    const result=await apiPost({action:'submit',entry:{name,phone,email:'',price:selectedManualPackage.price,guesses,ref,manualPaid:paid}});
+    const result=await apiPost({action:'submit',entry:{name,phone,price:selectedManualPackage.price,guesses,ref,manualPaid:paid}});
     if(result.ok){
       msg.className='msg success';msg.textContent='Entry added successfully. Ref: '+ref;
       document.getElementById('m-name').value='';document.getElementById('m-phone').value='';
