@@ -559,8 +559,8 @@ async function refreshBanner(){
       cdEl.textContent=''; loadAllEntries();
     } else if(d.revealTime){
       const diff=new Date(d.revealTime)-new Date();
-      if(diff>0){statusEl.textContent='All entries visible in';cdEl.textContent=formatCountdown(diff);}
-      else{document.getElementById('prize-banner').style.display='none';cdEl.textContent='';loadAllEntries();}
+    if(diff>0){statusEl.textContent='All entries will be revealed on';cdEl.textContent=fmtDateTime(d.revealTime);}
+    else{document.getElementById('prize-banner').style.display='none';cdEl.textContent='';loadAllEntries();}
     } else {
       statusEl.textContent='Entries hidden until reveal'; cdEl.textContent='';
     }
