@@ -184,8 +184,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 <header>
   <img src="Rockban_logo.jpg" alt="Rockbán GAA">
   <div class="badge">Rockbán GAA - Fundraiser</div>
-  <h1 id="header-title">"Guess the <span>Score!</span>"</h1>
-  <p id="header-sub"></p>
+<h1>"Guess the <span>Score!</span>"</h1>  <p id="header-sub"></p>
 </header>
 
 <div class="fixture-banner" id="fixture-banner" style="display:none">
@@ -336,7 +335,6 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
       <!-- Settings -->
       <div id="admin-tab-settings">
         <div class="section-title">Competition details</div>
-        <label>Match title</label><input type="text" id="s-matchTitle" placeholder="e.g. Guess the Score">
         <label>Team 1</label><input type="text" id="s-team1" placeholder="e.g. Cork">
         <label>Team 2</label><input type="text" id="s-team2" placeholder="e.g. Limerick">
         <label>Prize (€)</label><input type="number" id="s-prize" placeholder="100">
@@ -431,7 +429,6 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
         <div class="section-title">Create new competition</div>
         <p style="font-size:.85rem;color:var(--grey);margin-bottom:1rem;line-height:1.6">Archives the current competition and starts a fresh one. All current entries are preserved in the Google Sheet.</p>
         <label>Competition name (Sheet tab)</label><input type="text" id="new-tabName" placeholder="e.g. Cork v Clare 14-07-25">
-        <label>Match title</label><input type="text" id="new-matchTitle" placeholder="e.g. Guess the Score">
         <label>Team 1</label><input type="text" id="new-team1" placeholder="e.g. Cork">
         <label>Team 2</label><input type="text" id="new-team2" placeholder="e.g. Clare">
         <label>Prize (€)</label><input type="number" id="new-prize" placeholder="100">
@@ -516,7 +513,6 @@ async function refreshBanner(){
     const d=await api({action:'status'});
     currentStatus=d; bannerLoaded=true;
 
-    document.getElementById('header-title').innerHTML='"'+esc(d.matchTitle||'Guess the Score')+'!"';
     document.getElementById('prize-amount').textContent='€'+(d.prize||'100');
     document.getElementById('public-entry-count').textContent=d.entryCount||0;
     if(d.revolutLink) document.getElementById('modal-revolut-btn').href=d.revolutLink;
@@ -777,8 +773,7 @@ function adminLogin(){
 
 function loadAdminPanel(){
   const d=currentStatus;
-  if(!d||!d.matchTitle) return;
-  document.getElementById('s-matchTitle').value=d.matchTitle||'';
+if(!d||!d.team1) return;
   document.getElementById('s-team1').value=d.team1||'';
   document.getElementById('s-team2').value=d.team2||'';
   document.getElementById('s-prize').value=d.prize||'';
@@ -955,7 +950,7 @@ async function saveSettings(){
   if(matchStart&&reveal&&new Date(reveal)>=new Date(matchStart)){msg.className='msg error';msg.textContent='Reveal time must be before match start.';return;}
   showLoading('Saving...');
   try {
-    await apiPost({action:'saveSettings',pass:ADMIN_PASS,matchTitle:document.getElementById('s-matchTitle').value.trim(),team1:document.getElementById('s-team1').value.trim(),team2:document.getElementById('s-team2').value.trim(),prize:document.getElementById('s-prize').value.trim(),revolutLink:document.getElementById('s-revolutLink').value.trim(),matchStartTime:toISOForStorage(matchStart),entryCloseTime:toISOForStorage(entryClose),revealTime:toISOForStorage(reveal)});
+    await apiPost({action:'saveSettings',pass:ADMIN_PASS,team1:document.getElementById('s-team1').value.trim(),team2:document.getElementById('s-team2').value.trim(),prize:document.getElementById('s-prize').value.trim(),revolutLink:document.getElementById('s-revolutLink').value.trim(),matchStartTime:toISOForStorage(matchStart),entryCloseTime:toISOForStorage(entryClose),revealTime:toISOForStorage(reveal)});
     msg.className='msg success';msg.textContent='Saved.';
     setTimeout(()=>msg.textContent='',2000);
     refreshBanner();
@@ -1056,7 +1051,7 @@ async function createNewCompetition(){
   if(!confirm('This will archive the current competition and start a new one. Are you sure?')) return;
   showLoading('Creating new competition...');
   try {
-    const result=await apiPost({action:'newCompetition',pass:ADMIN_PASS,tabName,matchTitle:document.getElementById('new-matchTitle').value.trim(),team1:document.getElementById('new-team1').value.trim(),team2:document.getElementById('new-team2').value.trim(),prize:document.getElementById('new-prize').value.trim(),revolutLink:document.getElementById('new-revolutLink').value.trim(),matchStartTime:toISOForStorage(document.getElementById('new-matchStartTime').value),entryCloseTime:toISOForStorage(document.getElementById('new-entryCloseTime').value),revealTime:toISOForStorage(document.getElementById('new-revealTime').value)});
+    const result=await apiPost({action:'newCompetition',pass:ADMIN_PASS,tabName,team1:document.getElementById('new-team1').value.trim(),team2:document.getElementById('new-team2').value.trim(),prize:document.getElementById('new-prize').value.trim(),revolutLink:document.getElementById('new-revolutLink').value.trim(),matchStartTime:toISOForStorage(document.getElementById('new-matchStartTime').value),entryCloseTime:toISOForStorage(document.getElementById('new-entryCloseTime').value),revealTime:toISOForStorage(document.getElementById('new-revealTime').value)});
     if(result.ok){entriesLoaded=false;document.getElementById('new-comp-msg').className='msg success';document.getElementById('new-comp-msg').textContent='New competition started!';refreshBanner();loadAdminPanel();}
     else{document.getElementById('new-comp-msg').className='msg error';document.getElementById('new-comp-msg').textContent=result.error||'Failed.';}
   } catch(e){document.getElementById('new-comp-msg').className='msg error';document.getElementById('new-comp-msg').textContent='Could not connect.';}
